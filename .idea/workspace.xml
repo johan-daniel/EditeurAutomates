@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8746d864-2e19-4140-b151-57cf06631153" name="Changes" comment="Hello World setup">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Src/main/java/fr/amu/polytech/EditeurAutomates/AutomateViewer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Src/main/java/fr/amu/polytech/EditeurAutomates/Controller/HelloController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Src/main/java/fr/amu/polytech/EditeurAutomates/Launcher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Src/main/java/fr/amu/polytech/EditeurAutomates/Model/.gitkeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Src/main/resources/fr/amu/polytech/EditeurAutomates/view/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/EditeurAutomates/view/hello-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-    </list>
+    <list default="true" id="8746d864-2e19-4140-b151-57cf06631153" name="Changes" comment="Hello World setup" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,23 +23,45 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
-}]]></component>
-  <component name="RunManager">
-    <configuration name="View" type="Application" factoryName="Application">
+}</component>
+  <component name="RunManager" selected="Application.Controller">
+    <configuration name="Controller" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="EditeurAutomates.Launcher" />
       <module name="EditeurAutomates" />
+      <option name="PROGRAM_PARAMETERS" value="main -dc" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Model" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="EditeurAutomates.Launcher" />
+      <module name="EditeurAutomates" />
+      <option name="PROGRAM_PARAMETERS" value="main -dm" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="View" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="EditeurAutomates.Launcher" />
+      <module name="EditeurAutomates" />
+      <option name="PROGRAM_PARAMETERS" value="main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.View" />
+      <item itemvalue="Application.Model" />
+      <item itemvalue="Application.Controller" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
