@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8746d864-2e19-4140-b151-57cf06631153" name="Changes" comment="Hello World setup">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/amu/polytech/editeurautomates/Launcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/amu/polytech/editeurautomates/Launcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/amu/polytech/editeurautomates/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/EditeurAutomates/AutomateViewer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/amu/polytech/editeurautomates/Launcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/EditeurAutomates/Launcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/amu/polytech/editeurautomates/controller/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/EditeurAutomates/Controller/HelloController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/amu/polytech/editeurautomates/model/.gitkeep" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/EditeurAutomates/Model/.gitkeep" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fr/amu/polytech/editeurautomates/view/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Resources/EditeurAutomates/view/hello-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,16 +56,19 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Documents\Programmes\Java\EditeurAutomates\java" />
+      <recent name="D:\Documents\Programmes\Java\EditeurAutomates" />
       <recent name="D:\Documents\Programmes\Java\EditeurAutomates\src" />
       <recent name="$PROJECT_DIR$/src/main/resources/fr/amu/polytech/editeurautomates/view" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="EditeurAutomates" />
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Debug Controller">
+  <component name="RunManager" selected="Application.View">
     <configuration name="Debug Controller" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="fr.amu.polytech.editeurautomates.Launcher" />
+      <option name="MAIN_CLASS_NAME" value="EditeurAutomates.Launcher" />
       <module name="EditeurAutomates" />
       <option name="PROGRAM_PARAMETERS" value="main -dc" />
       <method v="2">
@@ -68,7 +76,7 @@
       </method>
     </configuration>
     <configuration name="Debug Model" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="fr.amu.polytech.editeurautomates.Launcher" />
+      <option name="MAIN_CLASS_NAME" value="EditeurAutomates.Launcher" />
       <module name="EditeurAutomates" />
       <option name="PROGRAM_PARAMETERS" value="main -dm" />
       <method v="2">
@@ -76,7 +84,7 @@
       </method>
     </configuration>
     <configuration name="View" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="fr.amu.polytech.editeurautomates.Launcher" />
+      <option name="MAIN_CLASS_NAME" value="EditeurAutomates.Launcher" />
       <module name="EditeurAutomates" />
       <option name="PROGRAM_PARAMETERS" value="main" />
       <method v="2">

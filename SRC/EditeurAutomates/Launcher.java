@@ -1,4 +1,4 @@
-package fr.amu.polytech.editeurautomates;
+package EditeurAutomates;
 
 import java.util.Objects;
 
@@ -16,9 +16,8 @@ public class Launcher {
             return;
         }
 
-        // Default main
-        HelloApplication.main(args);
-
+        // Default: launch main view
+        AutomateViewer.main(args);
     }
 
     private static void debugModel(){
