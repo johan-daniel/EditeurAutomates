@@ -13,6 +13,8 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/fr/amu/polytech/editeurautomates/controller/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/EditeurAutomates/Controller/HelloController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fr/amu/polytech/editeurautomates/model/.gitkeep" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/EditeurAutomates/Model/.gitkeep" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fr/amu/polytech/editeurautomates/view/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Resources/EditeurAutomates/view/hello-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,10 +52,9 @@
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "D:/Documents/Programmes/Java/EditeurAutomates"
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true"
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Documents\Programmes\Java\EditeurAutomates\java" />
@@ -113,7 +114,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670865282137</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Hello World setup">
+      <created>1670865365938</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1670865365938</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
