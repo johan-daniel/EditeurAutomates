@@ -1,4 +1,4 @@
-package EditeurAutomates;
+package fr.amu.polytech.EditeurAutomates;
 
 import java.util.Objects;
 

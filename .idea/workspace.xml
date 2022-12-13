@@ -6,122 +6,35 @@
   <component name="ChangeListManager">
     <list default="true" id="8746d864-2e19-4140-b151-57cf06631153" name="Changes" comment="Hello World setup">
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/amu/polytech/editeurautomates/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/EditeurAutomates/AutomateViewer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/amu/polytech/editeurautomates/Launcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/EditeurAutomates/Launcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/amu/polytech/editeurautomates/controller/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/EditeurAutomates/Controller/HelloController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/amu/polytech/editeurautomates/model/.gitkeep" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/EditeurAutomates/Model/.gitkeep" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fr/amu/polytech/editeurautomates/view/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/SRC/Resources/EditeurAutomates/view/hello-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/EditeurAutomates/AutomateViewer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/EditeurAutomates/Controller/HelloController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/EditeurAutomates/Launcher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/EditeurAutomates/Model/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC/Resources/EditeurAutomates/view/hello-view.fxml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="useMavenConfig" value="true" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
-  <component name="ProjectId" id="2Iov9zEQEtpfK2Nh2YT5tJjYyJr" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true"
-  }
-}</component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Documents\Programmes\Java\EditeurAutomates\java" />
-      <recent name="D:\Documents\Programmes\Java\EditeurAutomates" />
-      <recent name="D:\Documents\Programmes\Java\EditeurAutomates\src" />
-      <recent name="$PROJECT_DIR$/src/main/resources/fr/amu/polytech/editeurautomates/view" />
-    </key>
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="EditeurAutomates" />
-      <recent name="" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Application.View">
-    <configuration name="Debug Controller" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="EditeurAutomates.Launcher" />
-      <module name="EditeurAutomates" />
-      <option name="PROGRAM_PARAMETERS" value="main -dc" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Debug Model" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="EditeurAutomates.Launcher" />
-      <module name="EditeurAutomates" />
-      <option name="PROGRAM_PARAMETERS" value="main -dm" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager">
     <configuration name="View" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="EditeurAutomates.Launcher" />
+      <option name="MAIN_CLASS_NAME" value="fr.amu.polytech.EditeurAutomates.Launcher" />
       <module name="EditeurAutomates" />
-      <option name="PROGRAM_PARAMETERS" value="main" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <list>
-      <item itemvalue="Application.Debug Controller" />
-      <item itemvalue="Application.Debug Model" />
-      <item itemvalue="Application.View" />
-    </list>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="8746d864-2e19-4140-b151-57cf06631153" name="Changes" comment="" />
-      <created>1670860603873</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1670860603873</updated>
-    </task>
-    <task id="LOCAL-00001" summary="Hello World setup">
-      <created>1670865282137</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1670865282137</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Hello World setup">
-      <created>1670865365938</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1670865365938</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -134,9 +47,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Hello World setup" />
-    <option name="LAST_COMMIT_MESSAGE" value="Hello World setup" />
   </component>
 </project>

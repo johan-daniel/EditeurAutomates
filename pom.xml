@@ -140,7 +140,7 @@
                             <outfile>target/${project.name}.exe</outfile>
                             <downloadUrl>http://java.com/download</downloadUrl>
                             <classPath>
-                                <mainClass>fr.amu.polytech.editeurautomates.Launcher</mainClass>
+                                <mainClass>fr.amu.polytech.EditeurAutomates.Launcher</mainClass>
                                 <preCp>anything</preCp>
                             </classPath>
                             <jre>
