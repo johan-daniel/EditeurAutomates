@@ -6,13 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="8746d864-2e19-4140-b151-57cf06631153" name="Changes" comment="Hello World setup">
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SRC/EditeurAutomates/AutomateViewer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SRC/EditeurAutomates/Controller/HelloController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SRC/EditeurAutomates/Launcher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SRC/EditeurAutomates/Model/.gitkeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SRC/Resources/EditeurAutomates/view/hello-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/main/java/fr/amu/polytech/EditeurAutomates/AutomateViewer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/main/java/fr/amu/polytech/EditeurAutomates/Controller/HelloController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/main/java/fr/amu/polytech/EditeurAutomates/Launcher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/main/java/fr/amu/polytech/EditeurAutomates/Model/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/main/resources/fr/amu/polytech/EditeurAutomates/view/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/EditeurAutomates/view/hello-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,19 +21,43 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2Is5598sfwCpZ75ZrgvXi3D4q0g" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
+  }
+}]]></component>
   <component name="RunManager">
     <configuration name="View" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="fr.amu.polytech.EditeurAutomates.Launcher" />
+      <option name="MAIN_CLASS_NAME" value="EditeurAutomates.Launcher" />
       <module name="EditeurAutomates" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8746d864-2e19-4140-b151-57cf06631153" name="Changes" comment="Hello World setup" />
+      <created>1670957266366</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1670957266366</updated>
+    </task>
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

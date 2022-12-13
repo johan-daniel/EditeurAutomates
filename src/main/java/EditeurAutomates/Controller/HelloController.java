@@ -1,4 +1,4 @@
-package fr.amu.polytech.EditeurAutomates.Controller;
+package EditeurAutomates.Controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
