@@ -6,7 +6,10 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
 
 public class AutomateViewer extends Application {
@@ -20,8 +23,22 @@ public class AutomateViewer extends Application {
 		stage.setTitle("AutomatesLab");
 
 		// Icône de la fenêtre
-		String icon_name = Objects.requireNonNull(AutomateViewer.class.getResource("Images/Icon.png")).toString();
+		URL iconURL = AutomateViewer.class.getResource("Images/Icon.png");
+		assert iconURL != null;
+		String icon_name = Objects.requireNonNull(iconURL.toString());
+		// Windows et linux
 		stage.getIcons().add(new Image(icon_name));
+		// macOS
+		java.awt.Image image = new ImageIcon(iconURL).getImage();
+		final Taskbar taskbar = Taskbar.getTaskbar();
+		try {
+			//set icon for mac os (and other systems which do support this method)
+			taskbar.setIconImage(image);
+		} catch (final UnsupportedOperationException e) {
+			System.out.println("The os does not support: 'taskbar.setIconImage'");
+		} catch (final SecurityException e) {
+			System.out.println("There was a security exception for: 'taskbar.setIconImage'");
+		}
 
 		stage.setScene(scene);
 		stage.show();
