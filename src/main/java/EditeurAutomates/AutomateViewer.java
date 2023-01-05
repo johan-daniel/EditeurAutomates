@@ -30,12 +30,12 @@ public class AutomateViewer extends Application {
 		stage.getIcons().add(new Image(icon_name));
 		// macOS
 		java.awt.Image image = new ImageIcon(iconURL).getImage();
-		final Taskbar taskbar = Taskbar.getTaskbar();
 		try {
+			final Taskbar taskbar = Taskbar.getTaskbar();
 			//set icon for mac os (and other systems which do support this method)
 			taskbar.setIconImage(image);
 		} catch (final UnsupportedOperationException e) {
-			System.out.println("The os does not support: 'taskbar.setIconImage'");
+			System.out.println("The os does not support the taskbar API");
 		} catch (final SecurityException e) {
 			System.out.println("There was a security exception for: 'taskbar.setIconImage'");
 		}
