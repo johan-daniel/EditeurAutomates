@@ -10,7 +10,7 @@ target/
 .idea/libraries/
 .idea/shelf
 .idea/misc.xml
-# .idea/workspace.xml # Ne pas enlever !! Contient les configurations de debug
+.idea/workspace.xml
 # .idea/inspectionProfiles/ # Ne pas enlever, il s'agit des profils d'inspection du projet (et pas d'IntelliJ)
 *.iws
 *.iml
