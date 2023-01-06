@@ -10,24 +10,24 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="EditeurAutomates.Controller.HelloController">
 
-    <MenuBar fx:id="mainMenuBar">
-        <Menu text="Fichier">
-            <MenuItem text="Créer"/>
-            <MenuItem text="Enregistrer"/>
-            <MenuItem text="Enregistrer sous..."/>
-        </Menu>
-        <Menu text="Aide">
-            <MenuItem text="A propos..."/>
-        </Menu>
-    </MenuBar>
+	<MenuBar fx:id="mainMenuBar">
+		<Menu text="Fichier">
+			<MenuItem text="Créer"/>
+			<MenuItem text="Enregistrer"/>
+			<MenuItem text="Enregistrer sous..."/>
+		</Menu>
+		<Menu text="Aide">
+			<MenuItem text="A propos..."/>
+		</Menu>
+	</MenuBar>
 
-    <VBox alignment="CENTER" spacing="20.0">
-        <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-        </padding>
+	<VBox alignment="CENTER" spacing="20.0">
+		<padding>
+			<Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+		</padding>
 
-        <Label fx:id="welcomeText"/>
-        <Button text="Hello!" onAction="#onHelloButtonClick"/>
-    </VBox>
+		<Label fx:id="welcomeText"/>
+		<Button text="Hello!" onAction="#onHelloButtonClick"/>
+	</VBox>
 
 </VBox>
