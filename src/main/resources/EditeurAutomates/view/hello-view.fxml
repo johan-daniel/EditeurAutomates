@@ -10,7 +10,7 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="EditeurAutomates.Controller.HelloController">
 
-    <MenuBar>
+    <MenuBar fx:id="mainMenuBar">
         <Menu text="Fichier">
             <MenuItem text="Créer"/>
             <MenuItem text="Enregistrer"/>
