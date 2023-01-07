@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8746d864-2e19-4140-b151-57cf06631153" name="Changes" comment="">
+    <list default="true" id="8746d864-2e19-4140-b151-57cf06631153" name="Changes" comment="Added file to gitignore">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/EditeurAutomates/Views/GraphicView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/EditeurAutomates/Views/GraphicView.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/EditeurAutomates/Views/MainWindow.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/EditeurAutomates/Views/MainWindow.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/EditeurAutomates/Views/XMLView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/EditeurAutomates/Views/XMLView.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,6 +19,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="module-info" />
+        <option value="FxmlFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -32,20 +37,26 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "D:/Documents/Programmes/Java/EditeurAutomates/target/classes/EditeurAutomates/Controller",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Documents\Programmes\Java\EditeurAutomates\target\classes\EditeurAutomates\Controller" />
+    </key>
+  </component>
   <component name="RunManager" selected="Application.View">
     <configuration name="Controller" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="EditeurAutomates.Launcher" />
-      <module name="EditeurAutomates" />
+      <module name="AutomatesLab" />
       <option name="PROGRAM_PARAMETERS" value="main -dc" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -53,7 +64,7 @@
     </configuration>
     <configuration name="Model" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="EditeurAutomates.Launcher" />
-      <module name="EditeurAutomates" />
+      <module name="AutomatesLab" />
       <option name="PROGRAM_PARAMETERS" value="main -dm" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -61,8 +72,21 @@
     </configuration>
     <configuration name="View" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="EditeurAutomates.Launcher" />
-      <module name="EditeurAutomates" />
+      <module name="AutomatesLab" />
       <option name="PROGRAM_PARAMETERS" value="main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="AutomatesLab" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="AutomatesLab" />
+      <option name="filePath" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -82,7 +106,39 @@
       <option name="presentableId" value="Default" />
       <updated>1670957266366</updated>
     </task>
+    <task id="LOCAL-00001" summary="Added global TabBar and View tabs">
+      <created>1673101549107</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1673101549107</updated>
+    </task>
+    <task id="LOCAL-00002" summary="I forgor files lol">
+      <created>1673101685520</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1673101685520</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Reformatted icons">
+      <created>1673102723394</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1673102723394</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Added file to gitignore">
+      <created>1673102766227</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1673102766227</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.name" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -94,6 +150,13 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added global TabBar and View tabs" />
+    <MESSAGE value="I forgor files lol" />
+    <MESSAGE value="Reformatted icons" />
+    <MESSAGE value="Added file to gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added file to gitignore" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

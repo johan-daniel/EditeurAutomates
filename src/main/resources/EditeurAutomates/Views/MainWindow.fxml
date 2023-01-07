@@ -16,7 +16,7 @@
 		</Menu>
 	</MenuBar>
 
-	<TabPane side="RIGHT">
+	<TabPane side="RIGHT" prefWidth="145" minHeight="35565">
 		<Tab fx:id="graphicsTab" closable="false">
 			<fx:include source="GraphicView.fxml"/> <!-- Fichier FXML de la vue graphique -->
 		</Tab>
