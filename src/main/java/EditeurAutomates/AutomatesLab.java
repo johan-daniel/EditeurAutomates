@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.Objects;
 
 public class AutomatesLab extends Application {
-	protected static String Icon = "Images/Icon.png";
+	protected static String Icon = "Images/App_Icon.png";
 
 	/**
 	 * Définit l'icône du Stage en fonction du système d'exploitation
