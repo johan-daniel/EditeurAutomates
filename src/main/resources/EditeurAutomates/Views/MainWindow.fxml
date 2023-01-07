@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="EditeurAutomates.Controller.MainWindowController">
+
+	<MenuBar fx:id="mainMenuBar">
+		<Menu text="Fichier">
+			<MenuItem text="Créer"/>
+			<MenuItem text="Enregistrer"/>
+			<MenuItem text="Enregistrer sous..."/>
+		</Menu>
+		<Menu text="Aide">
+			<MenuItem text="A propos..."/>
+		</Menu>
+	</MenuBar>
+
+	<TabPane side="RIGHT">
+		<Tab fx:id="graphicsTab" closable="false">
+			<fx:include source="GraphicView.fxml"/> <!-- Fichier FXML de la vue graphique -->
+		</Tab>
+		<Tab fx:id="XMLTab" closable="false">
+			<fx:include source="XMLView.fxml"/> <!-- Fichier FXML de la vue XML -->
+		</Tab>
+	</TabPane>
+
+</VBox>

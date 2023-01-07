@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 
-public class AutomateViewer extends Application {
+public class AutomatesLab extends Application {
 	protected static String Icon = "Images/Icon.png";
 
 	/**
@@ -21,7 +21,7 @@ public class AutomateViewer extends Application {
 	 * @param icon_path Le lien de l'image (absolu ou relatif)
 	 */
 	private static void setAppIcon(Stage stage, String icon_path){
-		URL iconURL = AutomateViewer.class.getResource(icon_path);
+		URL iconURL = AutomatesLab.class.getResource(icon_path);
 		assert iconURL != null;
 		String icon_name = Objects.requireNonNull(iconURL.toString());
 		// Windows et linux
@@ -32,17 +32,14 @@ public class AutomateViewer extends Application {
 			final Taskbar taskbar = Taskbar.getTaskbar();
 			//set icon for mac os (and other systems which do support this method)
 			taskbar.setIconImage(image);
-		} catch (final UnsupportedOperationException e) {
-			System.out.println("The os does not support the taskbar API");
-		} catch (final SecurityException e) {
-			System.out.println("There was a security exception for: 'taskbar.setIconImage'");
 		}
+		catch (final UnsupportedOperationException | SecurityException ignored){} // Pas besoin de traitements supplémentaires
 	}
 
 	@Override
 	public void start(Stage stage) throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(AutomateViewer.class.getResource("view/hello-view.fxml"));
-		Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+		FXMLLoader fxmlLoader = new FXMLLoader(AutomatesLab.class.getResource("Views/MainWindow.fxml"));
+		Scene scene = new Scene(fxmlLoader.load(), 1080, 720);
 
 		// Titre de la fenêtre
 		stage.setTitle("AutomatesLab");

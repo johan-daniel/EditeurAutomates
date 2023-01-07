@@ -17,8 +17,10 @@ public class Launcher {
 			return;
 		}
 
-		// Default: launch main view
-		AutomateViewer.main(args);
+		// Default: launch main View
+		AutomatesLab.main(args);
+
+		System.out.println("Closing application AutomatesLab");
 	}
 
 	private static void debugModel(){
