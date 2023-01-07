@@ -7,12 +7,13 @@
 
 	<MenuBar fx:id="mainMenuBar">
 		<Menu text="Fichier">
-			<MenuItem text="Créer"/>
-			<MenuItem text="Enregistrer"/>
-			<MenuItem text="Enregistrer sous..."/>
+			<MenuItem text="Créer" onAction="#createButton" accelerator="Ctrl+N"/>
+			<MenuItem text="Enregistrer" onAction="#saveButton" accelerator="Ctrl+S"/>
+			<MenuItem text="Enregistrer sous..." onAction="#saveAsButton" accelerator="Ctrl+Shift+S"/>
 		</Menu>
 		<Menu text="Aide">
-			<MenuItem text="A propos..."/>
+			<MenuItem text="A propos..." onAction="#openHelpWindow" accelerator="f1"/>
+			<MenuItem text="Représentation XML" onAction="#openXMLDoc"/>
 		</Menu>
 	</MenuBar>
 
