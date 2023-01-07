@@ -1,0 +1,8 @@
+.root {
+    -fx-pref-width: 1080px;
+    -fx-pref-height: 720px;
+}
+
+.tab-pane {
+    -fx-pref-height: 35000px;
+}

@@ -39,7 +39,10 @@ public class AutomatesLab extends Application {
 	@Override
 	public void start(Stage stage) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(AutomatesLab.class.getResource("Views/MainWindow.fxml"));
-		Scene scene = new Scene(fxmlLoader.load(), 1080, 720);
+		Scene scene = new Scene(fxmlLoader.load());
+
+		String css = Objects.requireNonNull(getClass().getResource("CSS/tabbar.css")).toExternalForm();
+		scene.getStylesheets().add(css);
 
 		// Titre de la fenêtre
 		stage.setTitle("AutomatesLab");
