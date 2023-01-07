@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="EditeurAutomates.Controller.XMLController" prefHeight="400.0" prefWidth="600.0">
+
+	<VBox>
+		<Label text="Vue XML"/>
+		<TextField>
+			Insérer le XML de l'automate ici
+		</TextField>
+	</VBox>
+
+</AnchorPane>
