@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="EditeurAutomates.Controller.MainWindowController">
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="EditeurAutomates.Controller.MainWindowController" stylesheets="@../CSS/WindowStyle.css">
 
 	<MenuBar fx:id="mainMenuBar">
 		<Menu text="Fichier">
@@ -16,7 +16,7 @@
 		</Menu>
 	</MenuBar>
 
-	<TabPane side="RIGHT">
+	<TabPane side="RIGHT" stylesheets="@../CSS/Tabbar.css">
 		<Tab fx:id="graphicsTab" closable="false">
 			<fx:include source="GraphicView.fxml"/> <!-- Fichier FXML de la vue graphique -->
 		</Tab>
