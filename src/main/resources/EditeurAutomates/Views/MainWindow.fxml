@@ -18,6 +18,7 @@
 		</Menu>
 		<Menu text="Aide">
 			<MenuItem text="À propos..." onAction="#openHelpWindow"/>
+			<MenuItem text="Raccourcis clavier" onAction="#openKeyboardShortcutsWindow"/>
 			<MenuItem text="Représentation XML" onAction="#openXMLDoc" accelerator="F1"/>
 		</Menu>
 	</MenuBar>

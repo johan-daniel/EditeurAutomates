@@ -122,6 +122,14 @@ public class MainWindowController {
 		viewsTabpane.getSelectionModel().select(xmlViewTab);
 	}
 
+	/**
+	 * Function called when the "Aide -> Raccourcis clavier" button is pressed
+	 * TODO Implement, and rename "ignored" parameter if used in future implementation
+	 * @param ignored ActionEvent
+	 */
+	public void openKeyboardShortcutsWindow(ActionEvent ignored) {
+		System.out.println("KeyboardShortcuts window not implemented yet");
+	}
 
 	/**
 	 * Function called when the "Aide -> A propos" button is pressed
