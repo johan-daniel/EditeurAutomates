@@ -18,6 +18,7 @@ import java.util.Objects;
 public class MainWindowController {
 	// Paramètres
 	private final boolean isMacos;
+	private static final String spec_temp_file_name = "./Specifications XML des Automates.pdf";
 
 	// Objets du FXML
 	@FXML private MenuBar mainMenuBar;
@@ -97,8 +98,8 @@ public class MainWindowController {
 		}
 
 		try {
-			File myFile = new File("./temp.pdf"); // Buffer file
-			Path path = FileSystems.getDefault().getPath("./temp.pdf");
+			File myFile = new File(spec_temp_file_name); // Buffer file
+			Path path = FileSystems.getDefault().getPath(spec_temp_file_name);
 			InputStream inputStream = AutomatesLab.class.getResourceAsStream("HelpResources/XML_representation_specifications.pdf"); // Reading original data (using stream for .jar compatibility)
 			assert inputStream != null;
 
@@ -108,7 +109,7 @@ public class MainWindowController {
 			Desktop.getDesktop().open(myFile);
 			// Delete temp file (after letting time at the reader to open it)
 			Thread.sleep(300);
-			if (!myFile.delete()) System.err.println("Le fichier temporaire \"temp.pdf\" n'a pas pu être supprimé");
+			if (!myFile.delete()) System.err.println("Le fichier temporaire \"" + spec_temp_file_name + "\" n'a pas pu être supprimé");
 		}
 		catch (IOException e) {
 			System.err.println("Couldn't copy or open PDF help file");
