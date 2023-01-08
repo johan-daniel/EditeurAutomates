@@ -1,11 +1,16 @@
 package EditeurAutomates.Controller;
+
 import EditeurAutomates.AutomatesLab;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 
 import java.awt.*;
 import java.io.*;
@@ -22,6 +27,9 @@ public class MainWindowController {
 
 	// Objets du FXML
 	@FXML private MenuBar mainMenuBar;
+	@FXML private MenuItem create_button;
+	@FXML private MenuItem save_button;
+	@FXML private MenuItem save_as_button;
 	@FXML private Tab graphicsTab;
 	@FXML private Tab XMLTab;
 
@@ -32,7 +40,15 @@ public class MainWindowController {
 
 	@FXML
 	public void initialize() {
-		if (isMacos) mainMenuBar.setUseSystemMenuBar(true);
+
+		if (isMacos){
+			// Use macOS menu bar
+			mainMenuBar.setUseSystemMenuBar(true);
+			// Override defauts accelerator (accelerator="Ctrl+S" in FXML) for macOS: uses Command (META) key
+			create_button.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.META_DOWN)); // Command + N
+			save_button.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.META_DOWN)); // Cmd + S
+			save_as_button.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.SHIFT_DOWN ,KeyCombination.META_DOWN)); // Cmd + Shift + S
+		}
 
 		// Load tabs icons
 		String graphicView_icon_location = Objects.requireNonNull(AutomatesLab.class.getResource("Images/Graphic_Icon.png")).toString();
