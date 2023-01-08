@@ -9854,7 +9854,7 @@
 													"top": 271,
 													"width": 207.54931640625,
 													"height": 13,
-													"text": "Une fenêtre contexstuelle s'ouvre"
+													"text": "Une fenêtre contextuelle s'ouvre"
 												},
 												{
 													"_type": "LabelView",
@@ -11016,12 +11016,12 @@
 												"$ref": "AAAAAAGFke8VgFAQVxc="
 											},
 											"font": "Arial;13;0",
-											"left": 528,
-											"top": 517,
+											"left": 647,
+											"top": 504,
 											"width": 76.58447265625,
 											"height": 13,
-											"alpha": -1.6494745412016467,
-											"distance": 69.18092222571191,
+											"alpha": 1.9339430529394341,
+											"distance": 53.48831648126533,
 											"hostEdge": {
 												"$ref": "AAAAAAGFke8VgFARHKw="
 											},
@@ -11417,12 +11417,12 @@
 												"$ref": "AAAAAAGFke+LtlBk1sI="
 											},
 											"font": "Arial;13;0",
-											"left": 423,
-											"top": 436,
+											"left": 456,
+											"top": 447,
 											"width": 157.498046875,
 											"height": 13,
-											"alpha": -0.7017819936592589,
-											"distance": 49.09175083453431,
+											"alpha": -1.3377223352316663,
+											"distance": 20.615528128088304,
 											"hostEdge": {
 												"$ref": "AAAAAAGFke+LtlBlj7Y="
 											},
@@ -11731,7 +11731,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGFkenCLe3akvk="
 							},
-							"name": "Une fenêtre contexstuelle s'ouvre"
+							"name": "Une fenêtre contextuelle s'ouvre"
 						},
 						{
 							"_type": "UMLAction",
