@@ -109,26 +109,25 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.3.0</version>
+				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
 					<execution>
 						<phase>package</phase>
 						<goals>
-							<goal>shade</goal>
+							<goal>single</goal>
 						</goals>
-						<configuration>
-							<transformers>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>EditeurAutomates.Launcher</mainClass>
-								</transformer>
-							</transformers>
-							<createDependencyReducedPom>false</createDependencyReducedPom>
-							<shadedArtifactAttached>true</shadedArtifactAttached>
-							<shadedClassifierName>jar-with-dependencies</shadedClassifierName>
-						</configuration>
 					</execution>
 				</executions>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>EditeurAutomates.Launcher</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -144,7 +143,7 @@
 						</goals>
 						<configuration>
 							<headerType>gui</headerType>
-							<jar>target/${artifactId}-${version}-jar-with-dependencies.jar</jar>
+							<jar>target/${artifactId}-${project.version}-jar-with-dependencies.jar</jar>
 							<outfile>target/${project.name}.exe</outfile>
 							<downloadUrl>http://java.com/download</downloadUrl>
 							<classPath>
