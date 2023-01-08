@@ -5,9 +5,13 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="EditeurAutomates.Controller.GraphicController">
 
-	<VBox>
+	<HBox spacing="5" prefHeight="35565" prefWidth="200">
+		<Label text="Boîte à outils"/>
+	</HBox>
+
+	<HBox spacing="5" prefHeight="35565" prefWidth="Infinity" layoutX="200">
 		<Label text="Vue graphique"/>
-	</VBox>
+	</HBox>
 
 </AnchorPane>
 
