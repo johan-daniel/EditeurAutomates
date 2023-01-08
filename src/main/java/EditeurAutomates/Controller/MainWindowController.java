@@ -4,9 +4,9 @@ import EditeurAutomates.AutomatesLab;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Tab;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -31,8 +31,9 @@ public class MainWindowController {
 	@FXML private MenuItem open_button;
 	@FXML private MenuItem save_button;
 	@FXML private MenuItem save_as_button;
-	@FXML private Tab graphicsTab;
-	@FXML private Tab XMLTab;
+	@FXML private TabPane viewsTabpane;
+	@FXML private Tab graphicViewTab;
+	@FXML private Tab xmlViewTab;
 
 	public MainWindowController() {
 		final String os = System.getProperty("os.name");
@@ -58,12 +59,12 @@ public class MainWindowController {
 			ImageView graphic_icon = new ImageView(graphicView_icon_location);
 			graphic_icon.setFitWidth(40);
 			graphic_icon.setFitHeight(40);
-		graphicsTab.setGraphic(graphic_icon);
+		graphicViewTab.setGraphic(graphic_icon);
 		String XMLView_icon_location = Objects.requireNonNull(AutomatesLab.class.getResource("Images/XML_Icon.png")).toString();
 			ImageView xml_icon = new ImageView(XMLView_icon_location);
 			xml_icon.setFitWidth(40);
 			xml_icon.setFitHeight(40);
-		XMLTab.setGraphic(xml_icon);
+		xmlViewTab.setGraphic(xml_icon);
 
 	}
 
@@ -102,6 +103,25 @@ public class MainWindowController {
 	public void saveAsButton(ActionEvent ignored) {
 		System.out.println("Save As not implemented yet");
 	}
+
+	/**
+	 * Function called when the "Vue -> Affichage graphique" button is pressed.
+	 * Sets the current active view tab to the graphical view.
+	 * @param ignored ActionEvent
+	 */
+	public void setActiveGraphicalView(ActionEvent ignored) {
+		viewsTabpane.getSelectionModel().select(graphicViewTab);
+	}
+
+	/**
+	 * Function called when the "Vue -> Affichage XML" button is pressed.
+	 * Sets the current active view tab to the XML view.
+	 * @param ignored ActionEvent
+	 */
+	public void setActiveXMLView(ActionEvent ignored) {
+		viewsTabpane.getSelectionModel().select(xmlViewTab);
+	}
+
 
 	/**
 	 * Function called when the "Aide -> A propos" button is pressed
