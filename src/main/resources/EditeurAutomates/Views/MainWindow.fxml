@@ -7,7 +7,8 @@
 
 	<MenuBar fx:id="mainMenuBar">
 		<Menu text="Fichier">
-			<MenuItem text="Créer" fx:id="create_button" onAction="#createButton" accelerator="Ctrl+N"/>
+			<MenuItem text="Nouveau" fx:id="new_button" onAction="#newButton" accelerator="Ctrl+N"/>
+			<MenuItem text="Ouvrir..." fx:id="open_button" onAction="#openButton" accelerator="Ctrl+O"/>
 			<MenuItem text="Enregistrer" fx:id="save_button" onAction="#saveButton" accelerator="Ctrl+S"/>
 			<MenuItem text="Enregistrer sous..." fx:id="save_as_button" onAction="#saveAsButton" accelerator="Ctrl+Shift+S"/>
 		</Menu>

@@ -27,7 +27,8 @@ public class MainWindowController {
 
 	// Objets du FXML
 	@FXML private MenuBar mainMenuBar;
-	@FXML private MenuItem create_button;
+	@FXML private MenuItem new_button;
+	@FXML private MenuItem open_button;
 	@FXML private MenuItem save_button;
 	@FXML private MenuItem save_as_button;
 	@FXML private Tab graphicsTab;
@@ -45,7 +46,8 @@ public class MainWindowController {
 			// Use macOS menu bar
 			mainMenuBar.setUseSystemMenuBar(true);
 			// Override defauts accelerator (accelerator="Ctrl+S" in FXML) for macOS: uses Command (META) key
-			create_button.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.META_DOWN)); // Command + N
+			new_button.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.META_DOWN)); // Command + N
+			open_button.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.META_DOWN)); // Cmd + O
 			save_button.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.META_DOWN)); // Cmd + S
 			save_as_button.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.SHIFT_DOWN ,KeyCombination.META_DOWN)); // Cmd + Shift + S
 		}
@@ -70,8 +72,17 @@ public class MainWindowController {
 	 * TODO Implement, and rename "ignored" parameter if used in future implementation
 	 * @param ignored ActionEvent
 	 */
-	public void createButton(ActionEvent ignored) {
-		System.out.println("Create not implemented yet");
+	public void newButton(ActionEvent ignored) {
+		System.out.println("New not implemented yet");
+	}
+
+	/**
+	 * Function called when the "Fichier -> Ouvrir..." button is pressed
+	 * TODO Implement, and rename "ignored" parameter if used in future implementation
+	 * @param ignored ActionEvent
+	 */
+	public void openButton(ActionEvent ignored) {
+		System.out.println("Open not implemented yet");
 	}
 
 	/**
@@ -84,7 +95,7 @@ public class MainWindowController {
 	}
 
 	/**
-	 * Function called when the "Fichier -> Enregistrer sous" button is pressed
+	 * Function called when the "Fichier -> Enregistrer sous..." button is pressed
 	 * TODO Implement, and rename "ignored" parameter if used in future implementation
 	 * @param ignored ActionEvent
 	 */
