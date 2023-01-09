@@ -6,11 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
 
 import java.awt.*;
 import java.io.*;
@@ -31,8 +27,6 @@ public class MainWindowController {
 	@FXML private Tab graphicViewTab;
 	@FXML private Tab xmlViewTab;
 
-	@FXML private MenuItem graphic_tab;
-
 	public MainWindowController() {
 		final String os = System.getProperty("os.name");
 		this.isMacos = (os != null && os.startsWith("Mac"));
@@ -45,9 +39,6 @@ public class MainWindowController {
 			// Use macOS menu bar
 			mainMenuBar.setUseSystemMenuBar(true);
 		}
-
-		// Tentative de debug pour le raccourcis
-		graphic_tab.setAccelerator(new KeyCodeCombination(KeyCode.AMPERSAND, KeyCombination.CONTROL_DOWN));
 
 		// Load tabs icons
 		String graphicView_icon_location = Objects.requireNonNull(AutomatesLab.class.getResource("Images/Graphic_Icon.png")).toString();
