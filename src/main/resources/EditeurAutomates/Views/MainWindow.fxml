@@ -7,14 +7,22 @@
 
 	<MenuBar fx:id="mainMenuBar">
 		<Menu text="Fichier">
-			<MenuItem text="Nouveau" fx:id="new_button" onAction="#newButton" accelerator="Ctrl+N"/>
-			<MenuItem text="Ouvrir..." fx:id="open_button" onAction="#openButton" accelerator="Ctrl+O"/>
-			<MenuItem text="Enregistrer" fx:id="save_button" onAction="#saveButton" accelerator="Ctrl+S"/>
-			<MenuItem text="Enregistrer sous..." fx:id="save_as_button" onAction="#saveAsButton" accelerator="Ctrl+Shift+S"/>
+			<MenuItem text="Nouveau" onAction="#newButton" accelerator="shortcut+N"/>
+			<MenuItem text="Ouvrir..." onAction="#openButton" accelerator="shortcut+O"/>
+			<MenuItem text="Enregistrer" onAction="#saveButton" accelerator="shortcut+S"/>
+			<MenuItem text="Enregistrer sous..." onAction="#saveAsButton" accelerator="shortcut+Shift+S"/>
 		</Menu>
 		<Menu text="Vue">
-			<MenuItem text="Affichage graphique" onAction="#setActiveGraphicalView" accelerator="Ctrl+1"/>
+			<MenuItem text="Affichage graphique" fx:id="graphic_tab" onAction="#setActiveGraphicalView" accelerator="Ctrl+1"/>
 			<MenuItem text="Affichage XML" onAction="#setActiveXMLView" accelerator="Ctrl+2"/>
+<!--			<MenuItem text="Manatee" accelerator="Ctrl+3"/>-->
+<!--			<MenuItem text="Manatee" accelerator="Ctrl+4"/>-->
+<!--			<MenuItem text="Manatee" accelerator="Ctrl+5"/>-->
+<!--			<MenuItem text="Manatee" accelerator="Ctrl+6"/>-->
+<!--			<MenuItem text="Manatee" accelerator="Ctrl+7"/>-->
+<!--			<MenuItem text="Manatee" accelerator="Ctrl+8"/>-->
+<!--			<MenuItem text="Manatee" accelerator="Ctrl+9"/>-->
+<!--			<MenuItem text="Manatee" accelerator="Ctrl+0"/>-->
 		</Menu>
 		<Menu text="Aide">
 			<MenuItem text="À propos..." onAction="#openHelpWindow"/>

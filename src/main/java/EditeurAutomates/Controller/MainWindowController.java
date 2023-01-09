@@ -27,13 +27,11 @@ public class MainWindowController {
 
 	// Objets du FXML
 	@FXML private MenuBar mainMenuBar;
-	@FXML private MenuItem new_button;
-	@FXML private MenuItem open_button;
-	@FXML private MenuItem save_button;
-	@FXML private MenuItem save_as_button;
 	@FXML private TabPane viewsTabpane;
 	@FXML private Tab graphicViewTab;
 	@FXML private Tab xmlViewTab;
+
+	@FXML private MenuItem graphic_tab;
 
 	public MainWindowController() {
 		final String os = System.getProperty("os.name");
@@ -46,12 +44,10 @@ public class MainWindowController {
 		if (isMacos){
 			// Use macOS menu bar
 			mainMenuBar.setUseSystemMenuBar(true);
-			// Override defauts accelerator (accelerator="Ctrl+S" in FXML) for macOS: uses Command (META) key
-			new_button.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.META_DOWN)); // Command + N
-			open_button.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.META_DOWN)); // Cmd + O
-			save_button.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.META_DOWN)); // Cmd + S
-			save_as_button.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.SHIFT_DOWN ,KeyCombination.META_DOWN)); // Cmd + Shift + S
 		}
+
+		// Tentative de debug pour le raccourcis
+		graphic_tab.setAccelerator(new KeyCodeCombination(KeyCode.AMPERSAND, KeyCombination.CONTROL_DOWN));
 
 		// Load tabs icons
 		String graphicView_icon_location = Objects.requireNonNull(AutomatesLab.class.getResource("Images/Graphic_Icon.png")).toString();
@@ -65,7 +61,6 @@ public class MainWindowController {
 			xml_icon.setFitWidth(40);
 			xml_icon.setFitHeight(40);
 		xmlViewTab.setGraphic(xml_icon);
-
 	}
 
 	/**
