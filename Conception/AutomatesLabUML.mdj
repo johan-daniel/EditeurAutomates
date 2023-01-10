@@ -763,7 +763,7 @@
 									"font": "Arial;13;0",
 									"left": 564,
 									"top": 164.5,
-									"width": 133.525390625,
+									"width": 132,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGFceDOeMkMS+A="
@@ -2470,7 +2470,7 @@
 									"font": "Arial;13;0",
 									"left": 461.5,
 									"top": 252.5,
-									"width": 102.47265625,
+									"width": 101,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGFchM+TXqquh0="
@@ -11580,9 +11580,9 @@
 												"$ref": "AAAAAAGFlZf/FpNBCuY="
 											},
 											"font": "Arial;13;0",
-											"left": 549,
+											"left": 534,
 											"top": 183,
-											"width": 74.41357421875,
+											"width": 105.4853515625,
 											"height": 13,
 											"alpha": -4.612721317992635,
 											"distance": 10.04987562112089,
@@ -11590,7 +11590,7 @@
 												"$ref": "AAAAAAGFlZf/FpNCqhU="
 											},
 											"edgePosition": 1,
-											"text": " [Enregistrer]"
+											"text": " [Enregistrer sous]"
 										},
 										{
 											"_type": "EdgeLabelView",
@@ -11684,7 +11684,7 @@
 												"$ref": "AAAAAAGFlZmu0ZNqNU8="
 											},
 											"edgePosition": 1,
-											"text": " [Enregistrer sous]"
+											"text": " [Enregistrer]"
 										},
 										{
 											"_type": "EdgeLabelView",
@@ -13693,7 +13693,7 @@
 							"target": {
 								"$ref": "AAAAAAGFlZdL4pMld2Y="
 							},
-							"guard": "Enregistrer"
+							"guard": "Enregistrer sous"
 						},
 						{
 							"_type": "UMLControlFlow",
@@ -13707,7 +13707,7 @@
 							"target": {
 								"$ref": "AAAAAAGFlamLeJS6BnM="
 							},
-							"guard": "Enregistrer sous"
+							"guard": "Enregistrer"
 						},
 						{
 							"_type": "UMLControlFlow",
