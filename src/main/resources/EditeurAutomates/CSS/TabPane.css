@@ -1,3 +1,4 @@
 .tab-pane {
     -fx-pref-height: 35000px;
+    -fx-pref-width: 142px; /* ça marche pas oskour */
 }
