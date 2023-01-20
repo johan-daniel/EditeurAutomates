@@ -1,6 +1,7 @@
 package EditeurAutomates.Model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Automate {
 	ArrayList<ArrayList<ArrayList<State>>> transitionMatrix;
@@ -28,13 +29,23 @@ public class Automate {
 
 	public void deleteState(int state_number){
 		int indice = getStateIndex(state_number);
+		State temp;
+
+		// On supprime l'état de la liste des états
 		statesList.remove(indice);
 
-//		for (ArrayList<ArrayList<State>> each_state : transitionMatrix) {
-//			for(ArrayList<State> each_transition : each_state){
-//				each_transition.remove(state_number);
-//			}
-//		}
+		// On supprime la ligne de la matrice associée à l'état
+		transitionMatrix.remove(indice);
+
+		// On supprime toutes les références (transition) qui arrivent vers cet état
+		for (ArrayList<ArrayList<State>> from_states : transitionMatrix) {
+			for(ArrayList<State> to_states : from_states){
+				for (Iterator<State> it = to_states.iterator(); it.hasNext(); ) {
+					temp = it.next();
+					if (temp.numero == state_number) it.remove();
+				}
+			}
+		}
 	}
 
 	public void createTransition(int from_state, int to_state){
@@ -78,10 +89,9 @@ public class Automate {
 
 	@Override
 	public String toString() {
-		return "Automate{" + "\n" +
+		return "Automate:" + "\n" +
 				"\t" + "transitionMatrix=" + transitionMatrix + "\n" +
 				"\t" + "symbolsList=" + symbolsList + "\n" +
-				"\t" + "statesList=" + statesList + "\n" +
-				'}';
+				"\t" + "statesList=" + statesList;
 	}
 }
