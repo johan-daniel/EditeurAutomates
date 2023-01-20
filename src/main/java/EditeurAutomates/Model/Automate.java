@@ -4,12 +4,18 @@ import java.util.ArrayList;
 
 public class Automate {
 	ArrayList<ArrayList<ArrayList<State>>> transitionMatrix;
+	ArrayList<String> symbolsList;
+
+	public Automate(){
+		this.transitionMatrix = new ArrayList<>();
+		this.symbolsList = new ArrayList<>();
+	}
 
 	public void setFromXML(String xml_string){
 
 	}
 
-	public void createState(){
+	public void createState(int x, int y){
 
 	}
 
@@ -34,7 +40,12 @@ public class Automate {
 	}
 
 	private int getNextFreeStateNumber(){
-		return 0;
+		if (transitionMatrix.size() == 0) return 0;
+
+		// si un état a été supprimé: l'array list correspondant dans la matrice (la ligne) est nulle
+		int i = 0;
+		while(transitionMatrix.get(i) != null) i++;
+		return i;
 	}
 
 	@Override
