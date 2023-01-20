@@ -1,5 +1,7 @@
 package EditeurAutomates;
 
+import EditeurAutomates.Model.Automate;
+
 import java.util.Set;
 
 public class Launcher {
@@ -12,10 +14,6 @@ public class Launcher {
 			debugModel();
 			return;
 		}
-		if (arguments.contains("--debugController") || arguments.contains("-dc")){
-			debugController();
-			return;
-		}
 
 		// Default: launch main View
 		AutomatesLab.main(args);
@@ -24,11 +22,8 @@ public class Launcher {
 	}
 
 	private static void debugModel(){
-		System.out.println("debugModel");
-	}
-
-	private static void debugController(){
-		System.out.println("debugController");
+		Automate a = new Automate();
+		System.out.println(a);
 	}
 
 }

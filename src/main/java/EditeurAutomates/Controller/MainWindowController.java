@@ -2,6 +2,7 @@ package EditeurAutomates.Controller;
 
 import EditeurAutomates.AutomatesLab;
 
+import EditeurAutomates.Model.Automate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -20,6 +21,9 @@ public class MainWindowController {
 	// Paramètres
 	private final boolean isMacos;
 	private static final String spec_temp_file_name = "./Specifications XML des Automates.pdf";
+
+	protected Automate curAutomate = null;
+	private File curFile = null;
 
 	// Objets du FXML
 	@FXML private MenuBar mainMenuBar;
@@ -53,6 +57,22 @@ public class MainWindowController {
 			xml_icon.setFitHeight(40);
 		xmlViewTab.setGraphic(xml_icon);
 	}
+
+	// Fichier
+
+	protected void loadFile(File f){
+
+	}
+
+	protected void loadDefaultFile(){
+
+	}
+
+	protected void saveCurrentFile(){
+		// String xml = curAutomate.toXML();
+	}
+
+	// Handler de boutons
 
 	/**
 	 * Function called when the "Fichier -> Créer" button is pressed
