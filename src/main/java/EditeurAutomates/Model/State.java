@@ -31,4 +31,15 @@ public class State {
 		this.acceptsEmptyWord = acceptsEmptyWord;
 	}
 
+	@Override
+	public String toString() {
+		return "State{" +
+				"numero=" + numero +
+				", x=" + x +
+				", y=" + y +
+				", isInitial=" + isInitial +
+				", isFinal=" + isFinal +
+				", acceptsEmptyWord=" + acceptsEmptyWord +
+				'}';
+	}
 }
