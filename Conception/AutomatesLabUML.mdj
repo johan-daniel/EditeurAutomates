@@ -16057,7 +16057,7 @@
 													"top": 431,
 													"width": 151.861328125,
 													"height": 13,
-													"text": "Etat"
+													"text": "State"
 												},
 												{
 													"_type": "LabelView",
@@ -17804,7 +17804,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGFuqsYAqht9xA="
 							},
-							"name": "Etat",
+							"name": "State",
 							"ownedElements": [
 								{
 									"_type": "UMLInterfaceRealization",
