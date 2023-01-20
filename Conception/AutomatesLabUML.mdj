@@ -15726,7 +15726,7 @@
 													"top": 94,
 													"width": 343.916015625,
 													"height": 13,
-													"text": "-transitionsMatrix: ArrayList<ArrayList<<ArrayList<Etat>>>>",
+													"text": "-transitionsMatrix: ArrayList<ArrayList<ArrayList<Etat>>>",
 													"horizontalAlignment": 0
 												},
 												{
@@ -16040,7 +16040,7 @@
 													"top": 431,
 													"width": 151.861328125,
 													"height": 13,
-													"text": "State"
+													"text": "Etat"
 												},
 												{
 													"_type": "LabelView",
@@ -17552,7 +17552,7 @@
 									},
 									"name": "transitionsMatrix",
 									"visibility": "private",
-									"type": "ArrayList<ArrayList<<ArrayList<Etat>>>>"
+									"type": "ArrayList<ArrayList<ArrayList<Etat>>>"
 								},
 								{
 									"_type": "UMLAttribute",
@@ -17770,7 +17770,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGFuqsYAqht9xA="
 							},
-							"name": "State",
+							"name": "Etat",
 							"ownedElements": [
 								{
 									"_type": "UMLInterfaceRealization",
@@ -17876,7 +17876,8 @@
 											"_parent": {
 												"$ref": "AAAAAAGFuvAhCistnB0="
 											},
-											"name": "File"
+											"name": "File",
+											"type": ""
 										},
 										{
 											"_type": "UMLParameter",
@@ -17906,7 +17907,8 @@
 											"_parent": {
 												"$ref": "AAAAAAGFuw8aC0eRWQA="
 											},
-											"name": "String"
+											"name": "String",
+											"type": ""
 										},
 										{
 											"_type": "UMLParameter",
