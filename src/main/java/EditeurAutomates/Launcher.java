@@ -2,6 +2,7 @@ package EditeurAutomates;
 
 import EditeurAutomates.Model.Automate;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public class Launcher {
@@ -23,6 +24,11 @@ public class Launcher {
 
 	private static void debugModel(){
 		Automate a = new Automate();
+		a.createState(0, 0);
+		a.createState(1, 1);
+		a.createState(1, 2);
+		System.out.println(a);
+		a.deleteState(0);
 		System.out.println(a);
 	}
 
