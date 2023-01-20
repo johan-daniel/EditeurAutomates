@@ -11,4 +11,8 @@ public class XMLParser {
 	public static Automate parseXML(String xml){
 		return null;
 	}
+
+	public static long calculateChecksum(Automate input){
+		return 0;
+	}
 }
