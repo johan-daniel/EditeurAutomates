@@ -1,6 +1,6 @@
 package EditeurAutomates.Controller;
 
-public interface IAutomateView {
+public interface IViewController {
 	void updateModel();
 	void pullModel();
 }
