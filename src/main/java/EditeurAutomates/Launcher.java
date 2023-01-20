@@ -2,7 +2,6 @@ package EditeurAutomates;
 
 import EditeurAutomates.Model.Automate;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 public class Launcher {
@@ -29,6 +28,11 @@ public class Launcher {
 		a.createState(1, 2);
 		System.out.println(a);
 		a.deleteState(0);
+		System.out.println(a);
+		a.createTransition(1, 2, "abc");
+		a.createTransition(1, 2, "a");
+		System.out.println(a);
+		a.createState(0,0);
 		System.out.println(a);
 	}
 
