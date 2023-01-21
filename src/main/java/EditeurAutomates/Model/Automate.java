@@ -14,6 +14,9 @@ public class Automate {
 		this.statesList = new ArrayList<>();
 	}
 
+	public void createState(State s){
+		createState(s.x, s.y, s.isInitial, s.isFinal, s.acceptsEmptyWord);
+	}
 	public void createState(int x, int y){
 		createState(x, y, false, false, false);
 	}
