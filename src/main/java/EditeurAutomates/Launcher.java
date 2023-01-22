@@ -1,6 +1,7 @@
 package EditeurAutomates;
 
 import EditeurAutomates.Model.Automate;
+import EditeurAutomates.Model.ParserException;
 import EditeurAutomates.Model.XMLParser;
 
 import java.util.Set;
@@ -30,8 +31,8 @@ public class Launcher {
 		System.out.println(a);
 		a.deleteState(0);
 		System.out.println(a);
-		a.createTransition(1, 2, "abc");
-		a.createTransition(1, 2, "a");
+		a.createTransition(1, 2, "abc", false);
+		a.createTransition(1, 2, "a", false);
 		System.out.println(a);
 		a.createState(0,0);
 		System.out.println(a);
@@ -56,7 +57,16 @@ public class Launcher {
 				"    \n" +
 				"</AutomateFile>";
 
-		XMLParser.parseXML(xml);
+
+		Automate res;
+
+		try{
+			res = XMLParser.parseXML(xml);
+		} catch (ParserException e) {
+			throw new RuntimeException(e);
+		}
+
+		System.out.println(res);
 	}
 
 }

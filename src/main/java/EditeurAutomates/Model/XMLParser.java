@@ -1,67 +1,199 @@
 package EditeurAutomates.Model;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class XMLParser {
 	private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
-	public static String parseFile(File f){
-		return "";
-	}
+	public static Automate parseXML(String xml) throws ParserException {
+		Automate cur_automate = null;
+		State cur_state = null;
+		ArrayList<Transition> cur_transitions = null;
+		boolean first_tag_found = false;
+		boolean last_tag_reached = false;
 
-	public static Automate parseXML(String xml){
 		Automate res = null;
-		String temp = "";
+
+		String temp, first_token;
 		String[] tokens;
-		State curState;
-//		ArrayList<Transition> t = new ArrayList<>();
 
-		// On récupère un tableau des tags (tableau des String entre chevrons)
+		// On récupère le tableau des balises (tags) XML
 		ArrayList<String> tags = tokenize(xml);
+		if (tags.size() == 0) throw new ParserException("No token found in XML string");
 
-		if (!Objects.equals(tags.get(0), XML_HEADER)) throw new RuntimeException("XML_HEADER");
+		// Vérification du header
+		if (!Objects.equals(tags.get(0), XML_HEADER)) throw new ParserException("Incorrect XML Header");
 
 		for (String each_tag : tags) {
+
+			if (last_tag_reached) throw new ParserException("AutomateFile should be the last tag of the file");
+
 			temp = each_tag.replace("<", "");
 			temp = temp.replace(">", "");
+
+			// On récupère les tokens
 			tokens = temp.split(" ");
+			if (tokens.length == 0) continue; // On ignore les chevrons vides
+			if (Objects.equals(tokens[0], "")) continue;
 
-			if (tokens.length == 0) continue; // On ignore les chevrons ; raise une erreur ?
+			// Switch sur le premier token
+			first_token = tokens[0].toLowerCase();
 
-			temp = tokens[0].toLowerCase();
-
-//			switch (temp) {
-//				case "automatefile":
-//					if (tokens.length < 2) throw new RuntimeException("No checksum");
-//					verifyChecksum(xml, tokens[1]);
-//					break;
-//				case "automate":
-//					res = new Automate();
-//					break;
-//				case "state":
-//					curState = parseState(tokens);
-//					if (res == null) throw new RuntimeException("State found outside of Automate");
-//					res.createState(curState);
-//					break;
-//				case "transition":
-//					t.add(parseTransition(tokens, curState));
-//					break;
-//				case "/state":
-//					continue;
-//				case "/automate":
-//					applyTransitions(res, Transition[] t);
-//					break;
-//				default:
-//					throw new RuntimeException("Unknown XML tag");
-//			}
+			switch (first_token) {
+				case "?xml" -> { }
+				case "automatefile" -> {
+					first_tag_found = true;
+					if (tokens.length < 2) throw new ParserException("No checksum in string");
+				}
+				case "/automatefile" -> {
+					last_tag_reached = true; // doit être la dernière balise du fichier
+					if (cur_automate != null) throw new ParserException("Any opened tag must be closed in correct order [Automate]");
+					if (cur_state != null) throw new ParserException("Any opened tag must be closed in correct order [State]");
+				}
+				case "automate" -> {
+					if (cur_automate != null) throw new ParserException("Any opened tag must be closed in correct order [Automate]");
+					if (cur_state != null) throw new ParserException("Any opened tag must be closed in correct order [State]");
+					cur_automate = new Automate();
+					cur_transitions = new ArrayList<>();
+				}
+				case "/automate" -> {
+					if (cur_automate == null) throw new ParserException("Found closing tag without opening [Automate]");
+					if (cur_state != null) throw new ParserException("Any opened tag must be closed in correct order [State]");
+					applyTransitions(cur_automate, cur_transitions);
+					res = cur_automate;
+					cur_automate = null;
+				}
+				case "state" -> {
+					if (cur_automate == null) throw new ParserException("State tag found outside of Automate");
+					if (cur_state != null) throw new ParserException("State tag openend inside a state");
+					try {
+						cur_state = parseState(tokens);
+					} catch (NumberFormatException e){
+						throw new ParserException("Incorrect integer attribute value in State");
+					}
+					cur_transitions = new ArrayList<>(); // On ouvre la liste de transition de l'état courant
+					cur_automate.createState(cur_state); // On l'ajoute à l'automate
+				}
+				case "/state" -> cur_state = null;
+				case "transition" -> {
+					if (cur_state == null) {
+						throw new ParserException("Cannot add Transition outside of source State");
+					}
+					try {
+						cur_transitions.add(parseTransition(tokens, cur_state));
+					} catch (NumberFormatException e){
+						throw new ParserException("Incorrect integer attribute value in transition");
+					}
+				}
+				case "/transition" -> throw new ParserException("Transition tags must be auto-closing !");
+				default -> throw new ParserException("Unknown XML tag");
+			}
 
 		}
 
-		System.out.println(tags);
-		System.out.println(temp);
+		if(!first_tag_found) throw new ParserException("Couldn't find opening AutomateFile tag");
+		if(!last_tag_reached) throw new ParserException("Couldn't find closing AutomateFile tag");
+		if (cur_automate != null) throw new ParserException("Any opened tag must be closed in correct order [Automate]");
+		if (cur_state != null) throw new ParserException("Any opened tag must be closed in correct order [State]");
+		for(int i=0, n=res.statesList.size() ; i<n ; i++) {
+			for(int j = 0 ; j<n ; j++) {
+				if (i!=j && res.statesList.get(i).numero == res.statesList.get(j).numero) {
+					throw new ParserException("Automate contains two States with same number");
+				}
+			}
+		}
+
 		return res;
+	}
+
+	private static State parseState(String[] tokens) throws ParserException, NumberFormatException {
+		Integer n = null;
+		int x = 0, y = 0;
+		boolean isInitial = false, isFinal = false;
+
+		for(String token : tokens){
+			token = token.toLowerCase();
+
+			// Number
+			if (token.startsWith("number=\"") && token.endsWith("\"")){
+				token = token.replace("number=\"", "");
+				token = token.substring(0, token.length()-1);
+				n = Integer.parseInt(token);
+			}
+			// X
+			if (token.startsWith("x=\"") && token.endsWith("\"")){
+				token = token.replace("x=\"", "");
+				token = token.substring(0, token.length()-1);
+				x = Integer.parseInt(token);
+			}
+			// Y
+			if (token.startsWith("y=\"") && token.endsWith("\"")){
+				token = token.replace("y=\"", "");
+				token = token.substring(0, token.length()-1);
+				y = Integer.parseInt(token);
+			}
+			// isInitial
+			if (token.startsWith("isinitial=\"") && token.endsWith("\"")){
+				token = token.replace("isinitial=\"", "");
+				token = token.substring(0, token.length()-1);
+				isInitial = Boolean.parseBoolean(token);
+			}
+			// isFinal
+			if (token.startsWith("isfinal=\"") && token.endsWith("\"")){
+				token = token.replace("isfinal=\"", "");
+				token = token.substring(0, token.length()-1);
+				isFinal = Boolean.parseBoolean(token);
+			}
+		}
+
+		if(n==null) throw new ParserException("State does not contain number");
+		return new State(n, x, y, isInitial, isFinal);
+	}
+
+	private static Transition parseTransition(String[] tokens, State from) throws ParserException, NumberFormatException {
+		Integer to = null;
+		String symboles = "";
+		boolean acceptsEmptyWord = false;
+
+		// TODO parse to, symboles and acceptsEmptyWord from tokens
+
+		for(String token : tokens){
+			token = token.toLowerCase();
+
+			// Number
+			if (token.startsWith("destination=\"") && token.endsWith("\"")){
+				token = token.replace("destination=\"", "");
+				token = token.substring(0, token.length()-1);
+				to = Integer.parseInt(token);
+			}
+			// Symboles
+			if (token.startsWith("letters=\"") && token.endsWith("\"")){
+				token = token.replace("letters=\"", "");
+				token = token.substring(0, token.length()-1);
+				symboles = token;
+			}
+			// AcceptsEmptyWord
+			if (token.startsWith("acceptsEmptyWord=\"") && token.endsWith("\"")){
+				token = token.replace("acceptsEmptyWord=\"", "");
+				token = token.substring(0, token.length()-1);
+				acceptsEmptyWord = Boolean.parseBoolean(token);
+			}
+		}
+
+		if (to == null) throw new ParserException("Transition has no destination State");
+		return new Transition(from.numero, to, symboles, acceptsEmptyWord);
+	}
+
+	private static void applyTransitions(Automate mato, ArrayList<Transition> transitions) throws ParserException {
+		for(Transition t : transitions){
+			try {
+				mato.createTransition(t.from, t.to, t.symbols, t.acceptsEmptyWord);
+			}
+			catch (RuntimeException e){ // State does not exist
+				throw new ParserException(e.getMessage());
+			}
+		}
 	}
 
 	private static ArrayList<String> tokenize(String xml){
@@ -86,7 +218,29 @@ public class XMLParser {
 		return res;
 	}
 
-	public static long calculateChecksum(Automate input){
+	// TODO: maybe MD5 ? or sha64 (if it exists) ?
+	public static long calculateChecksum(String input){
 		return 0;
+	}
+
+	// TODO: get checksum from xml
+	public static boolean verifyChecksum(String xml){
+		long file_checksum = 0; // récupérer depuis la balise
+		long string_checksum = calculateChecksum(xml);
+		return (file_checksum == string_checksum);
+	}
+}
+
+class Transition {
+	protected final int from;
+	protected final int to;
+	protected final String symbols;
+	protected final boolean acceptsEmptyWord;
+
+	public Transition(int from, int to, String symbols, boolean acceptsEmptyWord){
+		this.from = from;
+		this.to = to;
+		this.symbols = symbols;
+		this.acceptsEmptyWord = acceptsEmptyWord;
 	}
 }

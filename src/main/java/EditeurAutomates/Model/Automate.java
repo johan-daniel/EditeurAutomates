@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Automate {
-	ArrayList<State> statesList;
-	ArrayList<ArrayList<ArrayList<State>>> transitionMatrix;
-	ArrayList<String> alphabet;
+	protected ArrayList<State> statesList;
+	protected ArrayList<ArrayList<ArrayList<State>>> transitionMatrix;
+	protected ArrayList<String> alphabet;
 
 	public Automate(){
 		this.transitionMatrix = new ArrayList<>();
@@ -15,17 +15,14 @@ public class Automate {
 	}
 
 	public void createState(State s){
-		createState(s.x, s.y, s.isInitial, s.isFinal, s.acceptsEmptyWord);
+		createState(s.x, s.y, s.isInitial, s.isFinal);
 	}
 	public void createState(int x, int y){
-		createState(x, y, false, false, false);
+		createState(x, y, false, false);
 	}
 	public void createState(int x, int y, boolean isInitial, boolean isFinal){
-		createState(x, y, isInitial, isFinal, false);
-	}
-	public void createState(int x, int y, boolean isInitial, boolean isFinal, boolean acceptsEmptyWord){
 		int indice = getNextFreeStateNumber();
-		State s = new State(indice, x, y, isInitial, isFinal, acceptsEmptyWord);
+		State s = new State(indice, x, y, isInitial, isFinal);
 
 		// Si on insère dans un trou (état existant puis supprimé), on supprime la référence nulle
 		if (indice<statesList.size()) {
@@ -66,8 +63,8 @@ public class Automate {
 	}
 
 	// TODO finir la dernière partie "Ajout de la transition dans la matrice"
-	public void createTransition(int from_state, int to_state, String symbols){
-		if (from_state<0 || to_state<0) return; // Les états n'existent pas dans l'automate
+	public void createTransition(int from_state, int to_state, String symbols, boolean acceptsEmptyWord) throws RuntimeException {
+		if (from_state<0 || to_state<0) throw new RuntimeException("Cannot create transition between none existing states"); // Les états n'existent pas dans l'automate
 
 		// Ajout des symboles à l'alphabet de l'automate
 		char[] symbols_array = symbols.toCharArray();

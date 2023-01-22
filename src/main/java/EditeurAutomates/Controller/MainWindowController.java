@@ -3,6 +3,8 @@ package EditeurAutomates.Controller;
 import EditeurAutomates.AutomatesLab;
 
 import EditeurAutomates.Model.Automate;
+import EditeurAutomates.Model.ParserException;
+import EditeurAutomates.Model.XMLParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -60,8 +62,16 @@ public class MainWindowController {
 
 	// Fichier
 
-	protected void loadFile(File f){
-
+	protected void loadFile(String filePath){
+		try {
+			String content = Files.readString(Path.of(filePath));
+			if (!XMLParser.verifyChecksum(content)) throw new ParserException("Invalid checksum");
+			this.curAutomate = XMLParser.parseXML(content);
+		} catch (IOException e) {
+			throw new RuntimeException(e); // TODO Fichier corrompu ; pop-up d'erreur
+		} catch (ParserException e) {
+			System.err.println(e.getMessage()); // TODO Le fichier ne correspond pas à un automate (plus d'infos dans e.getMessage sur l'erreur) => pop-up puis vue XML
+		}
 	}
 
 	protected void loadDefaultFile(){
@@ -74,83 +84,44 @@ public class MainWindowController {
 
 	// Handler de boutons
 
-	/**
-	 * Function called when the "Fichier -> Créer" button is pressed
-	 * TODO Implement, and rename "ignored" parameter if used in future implementation
-	 * @param ignored ActionEvent
-	 */
 	public void newButton(ActionEvent ignored) {
 		System.out.println("New not implemented yet");
 	}
 
-	/**
-	 * Function called when the "Fichier -> Ouvrir..." button is pressed
-	 * TODO Implement, and rename "ignored" parameter if used in future implementation
-	 * @param ignored ActionEvent
-	 */
 	public void openButton(ActionEvent ignored) {
 		System.out.println("Open not implemented yet");
+
+		// TODO Afficher la fenêtre d'ouverture qui récupère le path
+		String path = "C:\\Users\\Alex\\Desktop\\AutomateDefault.xml";
+
+		loadFile(path);
+
 	}
 
-	/**
-	 * Function called when the "Fichier -> Enregistrer" button is pressed
-	 * TODO Implement, and rename "ignored" parameter if used in future implementation
-	 * @param ignored ActionEvent
-	 */
 	public void saveButton(ActionEvent ignored) {
 		System.out.println("Save not implemented yet");
 	}
 
-	/**
-	 * Function called when the "Fichier -> Enregistrer sous..." button is pressed
-	 * TODO Implement, and rename "ignored" parameter if used in future implementation
-	 * @param ignored ActionEvent
-	 */
 	public void saveAsButton(ActionEvent ignored) {
 		System.out.println("Save As not implemented yet");
 	}
 
-	/**
-	 * Function called when the "Vue -> Affichage graphique" button is pressed.
-	 * Sets the current active view tab to the graphical view.
-	 * @param ignored ActionEvent
-	 */
 	public void setActiveGraphicalView(ActionEvent ignored) {
 		viewsTabpane.getSelectionModel().select(graphicViewTab);
 	}
 
-	/**
-	 * Function called when the "Vue -> Affichage XML" button is pressed.
-	 * Sets the current active view tab to the XML view.
-	 * @param ignored ActionEvent
-	 */
 	public void setActiveXMLView(ActionEvent ignored) {
 		viewsTabpane.getSelectionModel().select(xmlViewTab);
 	}
 
-	/**
-	 * Function called when the "Aide -> Raccourcis clavier" button is pressed
-	 * TODO Implement, and rename "ignored" parameter if used in future implementation
-	 * @param ignored ActionEvent
-	 */
 	public void openKeyboardShortcutsWindow(ActionEvent ignored) {
 		System.out.println("KeyboardShortcuts window not implemented yet");
 	}
 
-	/**
-	 * Function called when the "Aide -> A propos" button is pressed
-	 * TODO Implement, and rename "ignored" parameter if used in future implementation
-	 * @param ignored ActionEvent
-	 */
 	public void openHelpWindow(ActionEvent ignored) {
 		System.out.println("Help window not implemented yet");
 	}
 
-	/**
-	 * Function called when the "Aide -> Représentation XML" button is pressed ;
-	 * it opens the XML specifiation file.
-	 * @param ignored ActionEvent
-	 */
 	public void openXMLDoc(ActionEvent ignored) {
 
 		if (!Desktop.isDesktopSupported()) {
