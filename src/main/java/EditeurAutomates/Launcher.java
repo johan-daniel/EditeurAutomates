@@ -66,7 +66,7 @@ public class Launcher {
 			throw new RuntimeException(e);
 		}
 
-		System.out.println(res);
+		System.out.println(res.toDetails());
 	}
 
 }
