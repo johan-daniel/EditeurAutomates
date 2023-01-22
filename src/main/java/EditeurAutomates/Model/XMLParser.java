@@ -220,7 +220,7 @@ public class XMLParser {
 
 	// TODO: maybe MD5 ? or sha64 (if it exists) ?
 	public static long calculateChecksum(String input){
-		return 0;
+		return input.length() % 2;
 	}
 
 	// TODO: get checksum from xml
@@ -229,18 +229,7 @@ public class XMLParser {
 		long string_checksum = calculateChecksum(xml);
 		return (file_checksum == string_checksum);
 	}
-}
 
-class Transition {
-	protected final int from;
-	protected final int to;
-	protected final String symbols;
-	protected final boolean acceptsEmptyWord;
+	record Transition(int from, int to, String symbols, boolean acceptsEmptyWord) {	}
 
-	public Transition(int from, int to, String symbols, boolean acceptsEmptyWord){
-		this.from = from;
-		this.to = to;
-		this.symbols = symbols;
-		this.acceptsEmptyWord = acceptsEmptyWord;
-	}
 }
