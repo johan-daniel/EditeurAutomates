@@ -4,8 +4,8 @@ public class State {
 	protected int numero;
 	protected int x;
 	protected int y;
-	protected boolean isInitial = false;
-	protected boolean isFinal = false;
+	protected boolean isInitial;
+	protected boolean isFinal;
 
 	protected State(int numero, int x, int y, boolean isInitial, boolean isFinal){
 		this.numero = numero;
