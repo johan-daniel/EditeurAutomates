@@ -6,7 +6,7 @@ import java.util.Objects;
 public class XMLParser {
 	private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
-	public static Automate parseXML(String xml) throws ParserException {
+	public static Automate parseXML(String xml) throws ParserException, RuntimeException {
 		Automate cur_automate = null;
 		State cur_state = null;
 		ArrayList<Transition> cur_transitions = null;
