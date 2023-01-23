@@ -72,36 +72,48 @@ public class Automate {
 		cleanAlphabet();
 	}
 
-	// TODO transformer la première ligne "Cannot add empty transition" en appel deleteTransition ?
 	// TODO débugger: ne crash pas, mais la matrice ne contient pas de transitions
 	public void createTransition(int from_state, int to_state, String symbols, boolean acceptsEmptyWord) throws RuntimeException {
-		if ((symbols==null || symbols.equals("")) && !acceptsEmptyWord) return; // Cannot add empty transition
 		if (from_state<0 || to_state<0) throw new RuntimeException("Cannot create transition between none existing states");
 
+		if ((symbols==null || symbols.equals("")) && !acceptsEmptyWord) {
+			deleteTransition(from_state, to_state);
+			return;
+		}
+
+		ArrayList<Destinations> temp;
 		Character[] symbols_array = getCharacterArray(symbols, acceptsEmptyWord);
 
-		// Ajout des NOUVEAUX symboles à l'alphabet et à l'automate
+		// Ajout des NOUVEAUX symboles à l'alphabet, et à l'automate
 		for(Character cur_symbol : symbols_array){
 			if (getIndex(cur_symbol)==-1) {
-				alphabet.add(cur_symbol);
-				transitionMatrix.get(from_state).add(new Destinations()); // Ajout d'une liste de destinations à la fin de celles existantes, correspondant au nouveau symbole
+				alphabet.add(cur_symbol); 								// On ajoute le symbole à fin de l'alphabet
+				for(int i=0 ; i<statesList.size() ; i++ ){ 				// Pour tout les états
+					temp = transitionMatrix.get(i); 					// On ajoute une liste de destinations, lisant le nouveau symbole
+					if (temp != null) temp.add(new Destinations()); 	// (à la fin, comme pour l'alphabet)
+				}
 			}
 		}
 
 		// Ajout de la destination
-		Destinations d_temp;
-		int char_index;
-		for(Character c : alphabet){ 									// Pour chaque symbole de l'alphabet (on parcourt transitionMatrix selon j)
-			char_index = getIndex(c);
-			if (char_index <0 ) continue; 								// Si le symbole ne fait partie de ceux de la transition, on l'ignore
-			d_temp = transitionMatrix.get(from_state).get(char_index); 	// en transitionMatrix[from_state, char]
-			d_temp.add(to_state); 										// on ajoute la destination to_state aux Destinations
-		}
+//		Destinations d_temp;
+//		int char_index;
+//		for(Character c : alphabet){ 									// Pour chaque symbole de l'alphabet (on parcourt transitionMatrix selon j)
+//			char_index = getIndex(c);
+//			if (char_index <0 ) continue; 								// Si le symbole ne fait partie de ceux de la transition, on l'ignore
+//			d_temp = transitionMatrix.get(from_state).get(char_index); 	// en transitionMatrix[from_state, char]
+//			d_temp.add(to_state); 										// on ajoute la destination to_state aux Destinations
+//		}
 	}
 
 	// TODO
 	public void editTransition(int from_state, int to_state, String new_symbols, boolean acceptsEmptyWord){
 		System.out.println("Edit transition: " + from_state + " " +  to_state + " " + new_symbols + " " + acceptsEmptyWord);
+	}
+
+	// TODO
+	public void deleteTransition(int from_state, int to_state){
+		System.out.println("Edit transition: " + from_state + " " +  to_state);
 	}
 
 	public void setStateInitial(int state){
@@ -127,15 +139,16 @@ public class Automate {
 		// Pour cela, parcourir tout les symboles de la matrice, et si toutes les Destinations sont vides, on supprime le symbole
 	}
 
-	private Character[] getCharacterArray(String str, boolean acceptsEmptyWord){
-		if(acceptsEmptyWord && (str==null)) return new Character[] {null};
+	private static Character[] getCharacterArray(String str, boolean acceptsEmptyWord){
+		if (str==null) return acceptsEmptyWord ? new Character[]{null} : new Character[0];
 
-		int taille_tab = acceptsEmptyWord ? str.length()+1 : str.length();
+		int offset = acceptsEmptyWord ? 1 : 0; // On rajoute une case pour le mot vide
+		int taille_tab = str.length() + offset;
 		Character[] res = new Character[taille_tab];
 
 		int i = 0;
 		if (acceptsEmptyWord) res[i++] = null;
-		for( ; i<taille_tab ; i++) res[i] = str.charAt(i);
+		for( ; i<taille_tab ; i++) res[i] = str.charAt(i-offset);
 
 		return res;
 	}
