@@ -16,12 +16,15 @@ public class Automate {
 	}
 
 	public void createState(int x, int y){
-		createState(x, y, false, false);
+		int indice = getNextFreeStateNumber();
+		createState(new State(indice, x, y, false, false));
 	}
+
 	public void createState(int x, int y, boolean isInitial, boolean isFinal){
 		int indice = getNextFreeStateNumber();
 		createState(new State(indice, x, y, isInitial, isFinal));
 	}
+
 	public void createState(State s){
 		int indice = s.numero;
 
@@ -96,19 +99,6 @@ public class Automate {
 		}
 	}
 
-	private Character[] getCharacterArray(String str, boolean acceptsEmptyWord){
-		if(acceptsEmptyWord && (str==null)) return new Character[] {null};
-
-		int taille_tab = acceptsEmptyWord ? str.length()+1 : str.length();
-		Character[] res = new Character[taille_tab];
-
-		int i = 0;
-		if (acceptsEmptyWord) res[i++] = null;
-		for( ; i<taille_tab ; i++) res[i] = str.charAt(i);
-
-		return res;
-	}
-
 	// TODO
 	public void editTransition(int from_state, int to_state, String new_symbols, boolean acceptsEmptyWord){
 		System.out.println("Edit transition: " + from_state + " " +  to_state + " " + new_symbols + " " + acceptsEmptyWord);
@@ -137,8 +127,21 @@ public class Automate {
 		// Pour cela, parcourir tout les symboles de la matrice, et si toutes les Destinations sont vides, on supprime le symbole
 	}
 
+	private Character[] getCharacterArray(String str, boolean acceptsEmptyWord){
+		if(acceptsEmptyWord && (str==null)) return new Character[] {null};
+
+		int taille_tab = acceptsEmptyWord ? str.length()+1 : str.length();
+		Character[] res = new Character[taille_tab];
+
+		int i = 0;
+		if (acceptsEmptyWord) res[i++] = null;
+		for( ; i<taille_tab ; i++) res[i] = str.charAt(i);
+
+		return res;
+	}
+
 	/**Retourne l'index du char dans l'alphabet (et dans la matrice, ce sont les mêmes indices). -1 si le char n'est pas dans l'alphabet.*/
-	public int getIndex(Character c){
+	private int getIndex(Character c){
 		int i = 0;
 		for(Character s : alphabet){
 			if (s == c) return i;
