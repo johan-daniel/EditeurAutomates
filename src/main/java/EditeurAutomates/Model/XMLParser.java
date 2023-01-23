@@ -73,6 +73,7 @@ public class XMLParser {
 						throw new ParserException("Incorrect integer attribute value in State");
 					}
 					cur_transitions = new ArrayList<>(); // On ouvre la liste de transition de l'état courant
+					if (cur_state.numero < cur_automate.statesList.size() && cur_automate.statesList.get(cur_state.numero) != null) throw new ParserException("Automate contains two States with same number");
 					cur_automate.createState(cur_state); // On l'ajoute à l'automate
 				}
 				case "/state" -> cur_state = null;
@@ -96,13 +97,6 @@ public class XMLParser {
 		if(!last_tag_reached) throw new ParserException("Couldn't find closing AutomateFile tag");
 		if (cur_automate != null) throw new ParserException("Any opened tag must be closed in correct order [Automate]");
 		if (cur_state != null) throw new ParserException("Any opened tag must be closed in correct order [State]");
-		for(int i=0, n=res.statesList.size() ; i<n ; i++) {
-			for(int j = 0 ; j<n ; j++) {
-				if (i!=j && res.statesList.get(i).numero == res.statesList.get(j).numero) {
-					throw new ParserException("Automate contains two States with same number");
-				}
-			}
-		}
 
 		return res;
 	}
