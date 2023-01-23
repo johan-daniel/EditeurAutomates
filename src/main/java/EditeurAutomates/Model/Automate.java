@@ -15,15 +15,15 @@ public class Automate {
 		this.transitionMatrix = new ArrayList<>();
 	}
 
-	public void createState(State s){
-		createState(s.x, s.y, s.isInitial, s.isFinal);
-	}
 	public void createState(int x, int y){
 		createState(x, y, false, false);
 	}
 	public void createState(int x, int y, boolean isInitial, boolean isFinal){
 		int indice = getNextFreeStateNumber();
-		State s = new State(indice, x, y, isInitial, isFinal);
+		createState(new State(indice, x, y, isInitial, isFinal));
+	}
+	public void createState(State s){
+		int indice = s.numero;
 
 		// Si on insère dans un trou (état existant puis supprimé), on supprime la référence nulle
 		if (indice<statesList.size()) {
@@ -31,20 +31,29 @@ public class Automate {
 			transitionMatrix.remove(indice);
 		}
 
+		// Si on insère après la taille de la matrice/liste d'états, il faut ajouter des références nulles pour les états inexistants
+		if (indice>statesList.size()){
+			for(int i=statesList.size() ; i<indice ; i++) {
+				statesList.add(null);
+				transitionMatrix.add(null);
+			}
+		}
+
+		// Si on insère pile à la fin, (indice==statesList.size()), on n'a rien de plus à faire qu'à insérer à l'indice
+
 		// Ajout de l'état
 		statesList.add(indice, s);
-		transitionMatrix.add(indice, new ArrayList<>());
+		ArrayList<Destinations> transitions = new ArrayList<>();
+		for(char ignored : alphabet) transitions.add(new Destinations()); // on ajoute un groupe de Destinations par lettre de l'alphabet
+		transitionMatrix.add(indice, transitions);
 	}
 
-	// TODO initialiser toutes les Destinations à la création d'un état (respectivement rendre null la référence / à la suppression)
 	public void deleteState(int state_number){
 		if (state_number>statesList.size()) return; // Il n'existe pas dans la liste d'états
 
-		// On remplace l'état de la liste des états par une référence nulle
+		// On remplace l'état par une référence nulle : dans la liste des états, dans la matrice (sa ligne devient nulle)
 		statesList.remove(state_number);
 		statesList.add(state_number, null);
-
-		// On remplace la ligne de la matrice associée à l'état par une référence nulle
 		transitionMatrix.remove(state_number);
 		transitionMatrix.add(state_number, null);
 
@@ -100,6 +109,7 @@ public class Automate {
 		return res;
 	}
 
+	// TODO
 	public void editTransition(int from_state, int to_state, String new_symbols, boolean acceptsEmptyWord){
 		System.out.println("Edit transition: " + from_state + " " +  to_state + " " + new_symbols + " " + acceptsEmptyWord);
 	}
