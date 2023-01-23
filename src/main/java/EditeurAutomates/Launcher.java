@@ -25,51 +25,48 @@ public class Launcher {
 
 	private static void debugModel(){
 		Automate a = new Automate();
-		a.createState(0, 0);
-		a.createState(1, 1);
-		a.createTransition(0, 1, "abc", true);
-		a.createTransition(1, 0, "abc", false);
+		a.createState(0, 0); // 0
+		a.createState(1, 1); // 1
+		a.createTransition(0, 1, "abce", true);
+		a.createTransition(1, 0, "abcf", false);
+		a.createState(0,0); // 2
+		a.createTransition(1, 2, "c", true);
+		a.createState(0,0); // 3
+		a.createTransition(2, 3, "de", true);
+		a.deleteState(3); // -3
+		a.deleteTransition(3,0);
 		System.out.println(a.toDetails());
-//		a.createState(1, 2);
-//		System.out.println(a);
-//		a.deleteState(0);
-//		System.out.println(a);
-//		a.createTransition(1, 2, "abc", false);
-//		a.createTransition(1, 2, "a", false);
-//		System.out.println(a);
-//		a.createState(0,0);
-//		System.out.println(a);
 
-//		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<>\noiuoiuoiu" +
-//				"<AutomateFile checksum=\"57\">\n" +
-//				"    \n" +
-//				"    <Automate>\n" +
-//				"   \t <State number=\"0\" isInitial=\"true\" X=\"15\" Y=\"25\">\n" +
-//				"   \t\t <Transition destination=\"0\" letters=\"ab\"/>\n" +
-//				"   \t\t <Transition destination=\"1\" letters=\"b\" acceptsEmptyWord=\"true\"/>\n" +
-//				"   \t </State>\n" +
-//				"   \t <State number=\"1\" X=\"35\" Y=\"25\">\n" +
-//				"   \t\t <Transition destination=\"2\" letters=\"a\"/>\n" +
-//				"   \t </State>\n" +
-//				"   \t <State number=\"2\" X=\"65\" Y=\"25\">\n" +
-//				"   \t\t <Transition destination=\"3\" letters=\"b\"/>\n" +
-//				"   \t </State>\n" +
-//				"   \t <State number=\"3\" isFinal=\"true\" X=\"95\" Y=\"25\">\n" +
-//				"   \t </State>\n" +
-//				"    </Automate>\n" +
-//				"    \n" +
-//				"</AutomateFile>";
-//
-//
-//		Automate res;
-//
-//		try{
-//			res = XMLParser.parseXML(xml);
-//		} catch (ParserException e) {
-//			throw new RuntimeException(e);
-//		}
-//
-//		System.out.println(res.toDetails());
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<>\noiuoiuoiu" +
+				"<AutomateFile checksum=\"57\">\n" +
+				"    \n" +
+				"    <Automate>\n" +
+				"   \t <State number=\"0\" isInitial=\"true\" X=\"15\" Y=\"25\">\n" +
+				"   \t\t <Transition destination=\"0\" letters=\"ab\"/>\n" +
+				"   \t\t <Transition destination=\"1\" letters=\"b\" acceptsEmptyWord=\"true\"/>\n" +
+				"   \t </State>\n" +
+				"   \t <State number=\"1\" X=\"35\" Y=\"25\">\n" +
+				"   \t\t <Transition destination=\"2\" letters=\"a\"/>\n" +
+				"   \t </State>\n" +
+				"   \t <State number=\"2\" X=\"65\" Y=\"25\">\n" +
+				"   \t\t <Transition destination=\"3\" letters=\"b\"/>\n" +
+				"   \t </State>\n" +
+				"   \t <State number=\"3\" isFinal=\"true\" X=\"95\" Y=\"25\">\n" +
+				"   \t </State>\n" +
+				"    </Automate>\n" +
+				"    \n" +
+				"</AutomateFile>";
+
+
+		Automate res;
+
+		try{
+			res = XMLParser.parseXML(xml);
+		} catch (ParserException e) {
+			throw new RuntimeException(e);
+		}
+
+		System.out.println(res.toDetails());
 	}
 
 }

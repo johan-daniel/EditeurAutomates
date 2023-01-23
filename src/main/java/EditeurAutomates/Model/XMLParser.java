@@ -180,13 +180,10 @@ public class XMLParser {
 	}
 
 	private static void applyTransitions(Automate mato, ArrayList<Transition> transitions) throws ParserException {
+		int res;
 		for(Transition t : transitions){
-			try {
-				mato.createTransition(t.from, t.to, t.symbols, t.acceptsEmptyWord);
-			}
-			catch (RuntimeException e){ // State does not exist
-				throw new ParserException(e.getMessage());
-			}
+			res = mato.createTransition(t.from, t.to, t.symbols, t.acceptsEmptyWord);
+			if (res!=0) throw new ParserException("Cannot create transition between none existing states"); // State does not exist
 		}
 	}
 

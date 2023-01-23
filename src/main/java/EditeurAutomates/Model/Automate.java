@@ -47,18 +47,22 @@ public class Automate {
 		// Ajout de l'état
 		statesList.add(indice, s);
 		ArrayList<Destinations> transitions = new ArrayList<>();
-		for(char ignored : alphabet) transitions.add(new Destinations()); // on ajoute un groupe de Destinations par lettre de l'alphabet
+		for(Character ignored : alphabet) transitions.add(new Destinations()); // on ajoute un groupe de Destinations par lettre de l'alphabet
 		transitionMatrix.add(indice, transitions);
 	}
 
-	public void deleteState(int state_number){
-		if (state_number>statesList.size()) return; // Il n'existe pas dans la liste d'états
+	public void deleteState(int state_number) {
+		int dernier_indice = statesList.size()-1;
+		if (state_number>dernier_indice) return;
+		if (isInvalidState(state_number)) return;
 
-		// On remplace l'état par une référence nulle : dans la liste des états, dans la matrice (sa ligne devient nulle)
+		// On enlève l'état de la liste et de la matrice
 		statesList.remove(state_number);
-		statesList.add(state_number, null);
 		transitionMatrix.remove(state_number);
-		transitionMatrix.add(state_number, null);
+		if (state_number != dernier_indice){ 			// Si l'état n'est pas le dernier de la liste/matrice,
+			statesList.add(state_number, null);			// on le remplace par une référence nulle (pour conserver
+			transitionMatrix.add(state_number, null);	// la propriété: chaque Etat est rangé à son numéro
+		}
 
 		// On supprime toutes les références (transition) qui arrivent vers cet état
 		for (ArrayList<Destinations> from_states : transitionMatrix) {
@@ -69,16 +73,15 @@ public class Automate {
 		}
 
 		// Un symbole peut ne plus être référencé, on traite ce cas
-		cleanAlphabet();
+		clearAlphabet();
 	}
 
-	// TODO débugger: ne crash pas, mais la matrice ne contient pas de transitions
-	public void createTransition(int from_state, int to_state, String symbols, boolean acceptsEmptyWord) throws RuntimeException {
-		if (from_state<0 || to_state<0) throw new RuntimeException("Cannot create transition between none existing states");
+	public int createTransition(int from_state, int to_state, String symbols, boolean acceptsEmptyWord) {
+		if (isInvalidState(from_state) || isInvalidState(to_state)) return -1; // Error: Cannot create transition between none existing states
 
 		if ((symbols==null || symbols.equals("")) && !acceptsEmptyWord) {
 			deleteTransition(from_state, to_state);
-			return;
+			return 0; // Success
 		}
 
 		ArrayList<Destinations> temp;
@@ -96,33 +99,42 @@ public class Automate {
 		}
 
 		// Ajout de la destination
-//		Destinations d_temp;
-//		int char_index;
-//		for(Character c : alphabet){ 									// Pour chaque symbole de l'alphabet (on parcourt transitionMatrix selon j)
-//			char_index = getIndex(c);
-//			if (char_index <0 ) continue; 								// Si le symbole ne fait partie de ceux de la transition, on l'ignore
-//			d_temp = transitionMatrix.get(from_state).get(char_index); 	// en transitionMatrix[from_state, char]
-//			d_temp.add(to_state); 										// on ajoute la destination to_state aux Destinations
-//		}
+		temp = transitionMatrix.get(from_state);
+		Destinations d_temp;
+		int char_index;
+		for(Character c : symbols_array){ 								// Pour chaque symbole à ajouter
+			char_index = getIndex(c);									// On récupère son indice
+			d_temp = temp.get(char_index); 								// en transitionMatrix[from_state, char]
+			d_temp.add(to_state); 										// on ajoute la destination to_state aux Destinations
+		}
+
+		return 0; // Success
 	}
 
 	// TODO
-	public void editTransition(int from_state, int to_state, String new_symbols, boolean acceptsEmptyWord){
-		System.out.println("Edit transition: " + from_state + " " +  to_state + " " + new_symbols + " " + acceptsEmptyWord);
+	public void editTransition(int from_state, int to_state, String new_symbols, boolean acceptsEmptyWord) {
+		if (isInvalidState(from_state) || isInvalidState(to_state)) return;
+		System.out.println(new_symbols + acceptsEmptyWord);
 	}
 
-	// TODO
-	public void deleteTransition(int from_state, int to_state){
-		System.out.println("Edit transition: " + from_state + " " +  to_state);
+	public void deleteTransition(int from_state, int to_state) {
+		if (isInvalidState(from_state) || isInvalidState(to_state)) return;
+
+		for(Destinations d : transitionMatrix.get(from_state)) d.removeDestination(to_state);
+		clearAlphabet();
 	}
 
-	public void setStateInitial(int state){
+	public void setStateInitial(int state) {
+		if (isInvalidState(state)) return;
+
 		State s = statesList.get(state);
 		for(State each_state : statesList) if (each_state.isInitial) each_state.isInitial = false;
 		s.isInitial = !s.isInitial;
 	}
 
-	public void setStateFinal(int state){
+	public void setStateFinal(int state) {
+		if (isInvalidState(state)) return;
+
 		State s = statesList.get(state);
 		s.isFinal = !s.isFinal;
 	}
@@ -134,11 +146,35 @@ public class Automate {
 		return i;
 	}
 
-	// TODO : cette fonction doit supprimer les symboles de l'array-list alphabet si ils ne sont plus référencés par aucune transition dans la matrice
-	private void cleanAlphabet(){
-		// Pour cela, parcourir tout les symboles de la matrice, et si toutes les Destinations sont vides, on supprime le symbole
+	/**Nettoie l'alphabet et la matrice des lettres qui ne sont plus utilisées.*/
+	private void clearAlphabet(){
+		for(int i=0 ; i<alphabet.size() ; i++){ 	// Pour chaque lettre dans l'alphabet
+			if (!isInAnyTransition(i)){				// Si elle n'est référencée par aucune transition
+				removeChar(i);						// Ça dégage
+				i--;
+			}
+		}
 	}
 
+	// Pour clearAlphabet
+	private boolean isInAnyTransition(int char_index){
+		for (ArrayList<Destinations> state : transitionMatrix) {
+			if (state == null) continue;
+			if (state.get(char_index).size() > 0) return true;
+		}
+		return false;
+	}
+
+	// Pour clearAlphabet
+	private void removeChar(int char_index){
+		alphabet.remove(char_index);
+		for (ArrayList<Destinations> state : transitionMatrix) {
+			if (state == null) continue;
+			state.remove(char_index);
+		}
+	}
+
+	/**Retourne un tableau de Character pour chaque char dans str, plus une référence vide pour représenter acceptsEmptyWord si acceptsEmptyWord vaut true.*/
 	private static Character[] getCharacterArray(String str, boolean acceptsEmptyWord){
 		if (str==null) return acceptsEmptyWord ? new Character[]{null} : new Character[0];
 
@@ -161,6 +197,10 @@ public class Automate {
 			i++;
 		}
 		return -1; // pas dans la liste
+	}
+
+	private boolean isInvalidState(int state){
+		return (state < 0 || state >= statesList.size() || statesList.get(state) == null);
 	}
 
 	@Override
