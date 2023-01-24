@@ -1,11 +1,11 @@
 package EditeurAutomates.Model;
 
 public class State {
-	protected int numero;
-	protected int x;
-	protected int y;
-	protected boolean isInitial;
-	protected boolean isFinal;
+	public int numero;
+	public int x;
+	public int y;
+	public boolean isInitial;
+	public boolean isFinal;
 
 	protected State(int numero, int x, int y, boolean isInitial, boolean isFinal){
 		this.numero = numero;
