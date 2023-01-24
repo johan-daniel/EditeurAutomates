@@ -2,6 +2,8 @@ import EditeurAutomates.Model.Automate;
 import EditeurAutomates.Model.State;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 public class AutomateTest {
 
 	private Automate automate;
@@ -103,6 +105,10 @@ public class AutomateTest {
 		assert(automate.getAlphabet().size() == 2);
 		assert(automate.getAlphabet().get(0) == 'a');
 		assert(automate.getAlphabet().get(1) == null);
+
+		automate.createTransition(0, 0, "ab", false);
+		assert(automate.getAlphabet().size() == 3);
+		assert(automate.getAlphabet().get(2) == 'b');
 	}
 
 }
