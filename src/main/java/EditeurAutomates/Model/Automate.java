@@ -59,9 +59,15 @@ public class Automate {
 		// On enlève l'état de la liste et de la matrice
 		statesList.remove(state_number);
 		transitionMatrix.remove(state_number);
-		if (state_number != dernier_indice){ 			// Si l'état n'est pas le dernier de la liste/matrice,
-			statesList.add(state_number, null);			// on le remplace par une référence nulle (pour conserver
-			transitionMatrix.add(state_number, null);	// la propriété: chaque Etat est rangé à son numéro
+		statesList.add(state_number, null);			// On remplace l'état par une référence nulle (pour conserver
+		transitionMatrix.add(state_number, null);	// la propriété: chaque Etat est rangé à son numéro
+
+		// On enlève les null à la fin de la liste d'états et de la matrice
+		int i = transitionMatrix.size()-1;
+		while(i>=0 && transitionMatrix.get(i)==null){
+			statesList.remove(i);
+			transitionMatrix.remove(i);
+			i--;
 		}
 
 		// On supprime toutes les références (transition) qui arrivent vers cet état
