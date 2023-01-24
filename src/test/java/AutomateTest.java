@@ -67,4 +67,23 @@ public class AutomateTest {
         assert(automate.getTransitionMatrix().get(randIdx) != null);
     }
 
+    @Test
+    public void testCreateTransition() {
+        int nbStates = 2;
+        automate = new Automate();
+
+        for(int i=0; i < nbStates; i++) {
+            automate.createState(0,0);
+            assert(automate.getTransitionMatrix().get(i).size() == 0);
+        }
+        assert(automate.getAlphabet().size() == 0);
+
+        System.out.println(automate.getAlphabet());
+        automate.createTransition(1,2, "a", false);
+        System.out.println(automate.getAlphabet());
+
+        assert(automate.getAlphabet().size() == 1);
+        assert(automate.getAlphabet().get(0) == 'a');
+    }
+
 }
