@@ -8,4 +8,6 @@ module EditeurAutomates {
 
     exports EditeurAutomates to javafx.fxml, javafx.graphics;
     exports EditeurAutomates.Controller to javafx.fxml, javafx.graphics;
+
+    exports EditeurAutomates.Model;
 }
