@@ -9,6 +9,18 @@ public class Automate {
 	protected ArrayList<Character> alphabet;
 	protected ArrayList<ArrayList<Destinations>> transitionMatrix;
 
+	public ArrayList<State> getStatesList() {
+		return statesList;
+	}
+
+	public ArrayList<Character> getAlphabet() {
+		return alphabet;
+	}
+
+	public ArrayList<ArrayList<Destinations>> getTransitionMatrix() {
+		return transitionMatrix;
+	}
+
 	public Automate(){
 		this.statesList = new ArrayList<>();
 		this.alphabet = new ArrayList<>();
