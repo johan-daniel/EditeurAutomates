@@ -2,7 +2,7 @@ import EditeurAutomates.Model.Automate;
 import EditeurAutomates.Model.State;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.ArrayList;
 
 public class AutomateTest {
 
@@ -47,35 +47,43 @@ public class AutomateTest {
 
 	@Test
 	public void testDeleteState() {
-		int size = 5; // { 0, 1, 2, 3, 4 }
+		int size = 2;
 		automate = new Automate();
 
 		for(int i = 0; i < size; i++) {
 			automate.createState(0,0);
 		}
+
 		assert(automate.getStatesList().size() == size);
 		assert(automate.getTransitionMatrix().size() == size);
 
-		int randIdx = ThreadLocalRandom.current().nextInt(0, size);
-//		randIdx = size-1; // pour débugger ton histoire joj
-		automate.deleteState(randIdx);
-
-		State state;
-		try {
-			state = automate.getStatesList().get(randIdx);
-			assert(state == null);
-		} catch (IndexOutOfBoundsException ignored){
-			assert(automate.getStatesList().size() == size - 1);
+		// Suppression 1 par 1
+		for(int i=0; i < size; i++) {
+			automate.deleteState(i);
+			if(i == size-1) {
+				assert(automate.getStatesList().size() == size-1);
+				assert(automate.getTransitionMatrix().size() == size-1);
+			}
+			else {
+				assert(automate.getStatesList().size() == size);
+				assert(automate.getTransitionMatrix().size() == size);
+				assert(automate.getStatesList().get(i) == null);
+				assert(automate.getTransitionMatrix().get(i) == null);
+			}
+			automate.createState(0,0);
+			if(i == size-1) {
+				assert(automate.getTransitionMatrix().size() == size);
+				assert(automate.getStatesList().size() == size);
+			}
+			assert(automate.getStatesList().get(i) != null);
+			assert(automate.getTransitionMatrix().get(i) != null);
 		}
 
-		// @Joj TODO: débugger en dessous quand on getState si randIdx = size-1
-
-//		assert(automate.getTransitionMatrix().get(randIdx) == null);
-//
-//		automate.createState(0,0);
-//		state = automate.getStatesList().get(randIdx);
-//		assert(state != null && state.numero == randIdx);
-//		assert(automate.getTransitionMatrix().get(randIdx) != null);
+		// Suppression par la fin
+		for(int i=size-1; i > 0; i--) {
+			automate.deleteState(i);
+			assert(automate.getStatesList().size() == size - (size-i));
+		}
 	}
 
 	@Test
@@ -97,6 +105,10 @@ public class AutomateTest {
 		assert(automate.getAlphabet().size() == 2);
 		assert(automate.getAlphabet().get(0) == 'a');
 		assert(automate.getAlphabet().get(1) == null);
+
+		automate.createTransition(0, 0, "ab", false);
+		assert(automate.getAlphabet().size() == 3);
+		assert(automate.getAlphabet().get(2) == 'b');
 	}
 
 }
