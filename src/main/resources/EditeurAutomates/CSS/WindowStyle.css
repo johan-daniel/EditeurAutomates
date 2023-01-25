@@ -1,4 +1,63 @@
+/*
+ -- Couleurs --
+Sombre (fond):	#44414e
+Plus sombre:	#383843
+Clair: 			#f8f4f1
+Orange: 		#c54607
+*/
+
 .root {
     -fx-pref-width: 1080px;
     -fx-pref-height: 720px;
+
+	-fx-background-color: #44414e;
+
+	-fx-text-base-color: #f8f4f1; 			/* Menu bar (si non sélectionnée) */
+    -fx-text-background-color: #f8f4f1; 	/* Principal (dans les composants) */
+    -fx-text-inner-color: #f8f4f1; 			/* A l'intérieur de l'inputbox pour le XML */
+    -fx-selection-bar-text: #f8f4f1; 		/* Jsp */
+}
+
+/* MenuBar (haut) */
+
+.menu-bar {
+	-fx-background-color: #44414e;
+    -fx-border-width: 0px 0px 1px 0px;
+    -fx-border-color: #c54607;
+    -fx-border-style: solid;
+}
+
+.menu, .context-menu, .menu-item {
+	-fx-background-color: #44414e;
+	/* C'est ici qu'est "overriden" la sélection (quand on quitte mais que le menu reste ouvert, couleur bleue) */
+}
+
+.menu:hover, .menu-item:hover {
+	-fx-background-color: #c54607;
+}
+
+/* TabPane (onglets des vues, à droite) */
+
+.tab-pane {
+    -fx-pref-height: 2147483647px;
+}
+
+.tab {
+	-fx-tab-min-width: 60px;
+	-fx-tab-min-height: 60px;
+	-fx-pref-width: 60px;
+	-fx-pref-height: 60px;
+}
+
+.tab-pane:focused {	-fx-color: red; }
+.tab-pane:pressed {	-fx-color: blue; }
+.tab-pane:hover { -fx-color: green; }
+.tab-pane:selected { -fx-color: green; }
+.tab-pane:showing { -fx-color: green; }
+
+.tab-header-background {
+	-fx-background-color: #44414e;
+	-fx-border-width: 0px 0px 1px 0px;
+	-fx-border-color: #c54607;
+	-fx-border-style: solid;
 }

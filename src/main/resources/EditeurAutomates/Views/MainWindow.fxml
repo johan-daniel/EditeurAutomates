@@ -23,7 +23,7 @@
 		</Menu>
 	</MenuBar>
 
-	<TabPane fx:id="viewsTabpane" side="RIGHT" stylesheets="@../CSS/TabPane.css">
+	<TabPane fx:id="viewsTabpane" side="RIGHT">
 		<Tab fx:id="graphicViewTab" closable="false">
 			<fx:include source="GraphicView.fxml"/> <!-- Fichier FXML de la vue graphique -->
 		</Tab>
