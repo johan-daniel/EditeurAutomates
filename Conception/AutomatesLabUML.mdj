@@ -19492,23 +19492,6 @@
 												},
 												{
 													"_type": "UMLOperationView",
-													"_id": "AAAAAAGFutJyAMvyJmk=",
-													"_parent": {
-														"$ref": "AAAAAAGFurRsUbgYjBE="
-													},
-													"model": {
-														"$ref": "AAAAAAGFutJx+cvv6TA="
-													},
-													"font": "Arial;13;0",
-													"left": 269,
-													"top": 131,
-													"width": 192.21337890625,
-													"height": 13,
-													"text": "+saveCurrentFile()",
-													"horizontalAlignment": 0
-												},
-												{
-													"_type": "UMLOperationView",
 													"_id": "AAAAAAGFutMdQNYLDFc=",
 													"_parent": {
 														"$ref": "AAAAAAGFurRsUbgYjBE="
@@ -19518,10 +19501,27 @@
 													},
 													"font": "Arial;13;0",
 													"left": 269,
-													"top": 146,
+													"top": 131,
 													"width": 192.21337890625,
 													"height": 13,
 													"text": "+loadDefaultFile()",
+													"horizontalAlignment": 0
+												},
+												{
+													"_type": "UMLOperationView",
+													"_id": "AAAAAAGFutJyAMvyJmk=",
+													"_parent": {
+														"$ref": "AAAAAAGFurRsUbgYjBE="
+													},
+													"model": {
+														"$ref": "AAAAAAGFutJx+cvv6TA="
+													},
+													"font": "Arial;13;0",
+													"left": 269,
+													"top": 146,
+													"width": 192.21337890625,
+													"height": 13,
+													"text": "+saveCurrentFile()",
 													"horizontalAlignment": 0
 												}
 											],
@@ -21097,20 +21097,20 @@
 								},
 								{
 									"_type": "UMLOperation",
-									"_id": "AAAAAAGFutJx+cvv6TA=",
-									"_parent": {
-										"$ref": "AAAAAAGFurRsULgPJOM="
-									},
-									"name": "saveCurrentFile"
-								},
-								{
-									"_type": "UMLOperation",
 									"_id": "AAAAAAGFutMdOtYIRRs=",
 									"_parent": {
 										"$ref": "AAAAAAGFurRsULgPJOM="
 									},
 									"name": "loadDefaultFile",
 									"specification": "équivaut à créer un nouvel automate"
+								},
+								{
+									"_type": "UMLOperation",
+									"_id": "AAAAAAGFutJx+cvv6TA=",
+									"_parent": {
+										"$ref": "AAAAAAGFurRsULgPJOM="
+									},
+									"name": "saveCurrentFile"
 								}
 							]
 						},
