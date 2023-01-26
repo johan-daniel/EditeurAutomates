@@ -9,7 +9,7 @@ public class XMLParser {
 	public static Automate parseXML(String xml) throws ParserException, RuntimeException {
 		Automate cur_automate = null;
 		State cur_state = null;
-		ArrayList<Transition> cur_transitions = null;
+		ArrayList<Transition> all_transitions = null;
 		boolean first_tag_found = false;
 		boolean last_tag_reached = false;
 
@@ -55,12 +55,12 @@ public class XMLParser {
 					if (cur_automate != null) throw new ParserException("Any opened tag must be closed in correct order [Automate]");
 					if (cur_state != null) throw new ParserException("Any opened tag must be closed in correct order [State]");
 					cur_automate = new Automate();
-					cur_transitions = new ArrayList<>();
+					all_transitions = new ArrayList<>();
 				}
 				case "/automate" -> {
 					if (cur_automate == null) throw new ParserException("Found closing tag without opening [Automate]");
 					if (cur_state != null) throw new ParserException("Any opened tag must be closed in correct order [State]");
-					applyTransitions(cur_automate, cur_transitions);
+					applyTransitions(cur_automate, all_transitions);
 					res = cur_automate;
 					cur_automate = null;
 				}
@@ -72,7 +72,6 @@ public class XMLParser {
 					} catch (NumberFormatException e){
 						throw new ParserException("Incorrect integer attribute value in State");
 					}
-					cur_transitions = new ArrayList<>(); // On ouvre la liste de transition de l'état courant
 					if (cur_state.numero < cur_automate.statesList.size() && cur_automate.statesList.get(cur_state.numero) != null) throw new ParserException("Automate contains two States with same number");
 					cur_automate.createState(cur_state); // On l'ajoute à l'automate
 				}
@@ -82,7 +81,7 @@ public class XMLParser {
 						throw new ParserException("Cannot add Transition outside of source State");
 					}
 					try {
-						cur_transitions.add(parseTransition(tokens, cur_state));
+						all_transitions.add(parseTransition(tokens, cur_state));
 					} catch (NumberFormatException e){
 						throw new ParserException("Incorrect integer attribute value in transition");
 					}
@@ -150,7 +149,9 @@ public class XMLParser {
 		String symboles = "";
 		boolean acceptsEmptyWord = false;
 
-		// TODO parse to, symboles and acceptsEmptyWord from tokens
+		if (tokens.length<1) throw new ParserException("Error, state has not enought attributes (missing at least destination state)");
+		int temp = tokens.length-1;
+		tokens[temp] = tokens[temp].substring(0, tokens[temp].length()-1); // On enlève le / de la balise auto-fermante
 
 		for(String token : tokens){
 			token = token.toLowerCase();
