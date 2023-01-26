@@ -1,6 +1,6 @@
 package EditeurAutomates.Model;
 
-public class State {
+public class State implements XMLConvertible {
 	public int numero;
 	public int x;
 	public int y;
@@ -25,4 +25,10 @@ public class State {
 				", isFinal=" + isFinal +
 				'}';
 	}
+
+	@Override
+	public String toXML() {
+		return "<State number=\"" + numero + "\" isInitial=\"" + isInitial + "\" isFinal=\"" + isFinal + "\" X=\"" + x + "\" Y=\"" + y + "\">";
+	}
+
 }

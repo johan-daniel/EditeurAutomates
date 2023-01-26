@@ -24,6 +24,54 @@ public class Launcher {
 	}
 
 	private static void debugModel(){
+		testXMLParser();
+	}
+
+	private static void testXMLParser(){
+		String xml = """
+				<?xml version="1.0" encoding="UTF-8"?>
+				<>
+				oiuiuoiu
+				<AutomateFile checksum="57">
+				   \s
+				    <Automate>
+				   \t <State number="0" isInitial="true" X="15" Y="25">
+				   \t\t <Transition destination="0" letters="ab"/>
+				   \t\t <Transition destination="1" letters="b" acceptsEmptyWord="true"/>
+				   \t </State>
+				   \t <State number="1" X="35" Y="25">
+				   \t\t <Transition destination="2" letters="a"/>
+				   \t </State>
+				   \t <State number="2" X="65" Y="25">
+				   \t\t <Transition destination="3" letters="b"/>
+				   \t </State>
+				   \t <State number="3" isFinal="true" X="95" Y="25">
+				   \t </State>
+				    </Automate>
+				   \s
+				</AutomateFile>""";
+
+		Automate automate1, automate2;
+
+		try{
+			automate1 = XMLParser.parseXML(xml);
+		} catch (ParserException e) {
+			throw new RuntimeException(e);
+		}
+
+		String to_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><AutomateFile checksum=\"57\">" + automate1.toXML() + "</AutomateFile>";
+		try{
+			automate2 = XMLParser.parseXML(to_XML);
+		} catch (ParserException e) {
+			throw new RuntimeException(e);
+		}
+
+		System.out.println("Les deux automates doivent être les mêmes:");
+		System.out.println(automate1.toDetails());
+		System.out.println(automate2.toDetails());
+	}
+
+	private static void testAutomate(){
 		Automate a = new Automate();
 
 		a.createState(0, 0, true, false); // 0
@@ -52,46 +100,17 @@ public class Launcher {
 		a.deleteTransition(0,0);
 		a.deleteTransition(4,5);
 
-//		a.deleteState(0);
-//		a.deleteState(1);
-//		a.deleteState(2);
-//		a.deleteState(3);
-//		a.deleteState(4);
-//		a.deleteState(5);
-//		a.deleteState(6);
-
 		System.out.println(a.toDetails());
 
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<>\noiuoiuoiu" +
-				"<AutomateFile checksum=\"57\">\n" +
-				"    \n" +
-				"    <Automate>\n" +
-				"   \t <State number=\"0\" isInitial=\"true\" X=\"15\" Y=\"25\">\n" +
-				"   \t\t <Transition destination=\"0\" letters=\"ab\"/>\n" +
-				"   \t\t <Transition destination=\"1\" letters=\"b\" acceptsEmptyWord=\"true\"/>\n" +
-				"   \t </State>\n" +
-				"   \t <State number=\"1\" X=\"35\" Y=\"25\">\n" +
-				"   \t\t <Transition destination=\"2\" letters=\"a\"/>\n" +
-				"   \t </State>\n" +
-				"   \t <State number=\"2\" X=\"65\" Y=\"25\">\n" +
-				"   \t\t <Transition destination=\"3\" letters=\"b\"/>\n" +
-				"   \t </State>\n" +
-				"   \t <State number=\"3\" isFinal=\"true\" X=\"95\" Y=\"25\">\n" +
-				"   \t </State>\n" +
-				"    </Automate>\n" +
-				"    \n" +
-				"</AutomateFile>";
+		a.deleteState(0);
+		a.deleteState(1);
+		a.deleteState(2);
+		a.deleteState(3);
+		a.deleteState(4);
+		a.deleteState(5);
+		a.deleteState(6);
 
-
-		Automate res;
-
-		try{
-			res = XMLParser.parseXML(xml);
-		} catch (ParserException e) {
-			throw new RuntimeException(e);
-		}
-
-		System.out.println(res.toDetails());
+		System.out.println(a.toDetails());
 	}
 
 }

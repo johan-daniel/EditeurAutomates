@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
-public class Automate {
+public class Automate implements XMLConvertible {
 	protected ArrayList<State> statesList;
 	protected ArrayList<Character> alphabet;
 	protected ArrayList<ArrayList<Destinations>> transitionMatrix;
@@ -236,6 +236,45 @@ public class Automate {
 				"\talphabet=" + alphabet + "\n" +
 				"\ttransitionMatrix=" + transitionMatrix + "\n" +
 				'}';
+	}
+
+	@Override
+	public String toXML() {
+		StringBuilder res = new StringBuilder("<Automate>");
+
+		// On ajoute tous les états
+		for(State cur_state : statesList){
+			res.append(cur_state.toXML());
+
+			// On ajoute toutes les transitions partant de cet état
+			for(State s : statesList){ // Etat de destination (transitions: cur_state -> s)
+				if(s==null) continue;
+				StringBuilder symbols = new StringBuilder();
+				boolean acceptsEmptyWord = false;
+				for(Character c : alphabet){
+					if (transitionMatrix.get(cur_state.numero).get(getIndex(c)).isInDestinations(s.numero)){ // On a une transition
+						if (c == null) {
+							acceptsEmptyWord = true;
+						}
+						else {
+							symbols.append(c);
+						}
+					}
+				}
+				res.append("<Transition destination=\"");
+				res.append(s.numero);
+				res.append("\" letters=\"");
+				res.append(symbols);
+				res.append("\" acceptsEmptyWord=\"");
+				res.append(acceptsEmptyWord);
+				res.append("\"/>");
+			}
+
+			res.append("</State>"); // State.toXML ne renvoie que la balise ouvrante (avec les attributs) et pas la balise fermante ; on l'ajoute ici
+		}
+
+		res.append("</Automate>");
+		return res.toString();
 	}
 
 	static class Destinations extends ArrayList<Integer> {
