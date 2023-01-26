@@ -20,6 +20,10 @@ Orange: 		#c54607
 
 /* MenuBar (haut) */
 
+.menu, .context-menu, .menu-item {
+	-fx-background-color: #44414e;
+}
+
 .menu-bar {
 	-fx-background-color: #44414e;
     -fx-border-width: 0px 0px 1px 0px;
@@ -27,12 +31,7 @@ Orange: 		#c54607
     -fx-border-style: solid;
 }
 
-.menu, .context-menu, .menu-item {
-	-fx-background-color: #44414e;
-	/* C'est ici qu'est "overriden" la sélection (quand on quitte mais que le menu reste ouvert, couleur bleue) */
-}
-
-.menu:hover, .menu-item:hover {
+.menu:hover, .menu-item:hover, .menu:showing, .context-menu:showing, .menu-item:showing {
 	-fx-background-color: #c54607;
 }
 
@@ -49,11 +48,15 @@ Orange: 		#c54607
 	-fx-pref-height: 60px;
 }
 
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+	-fx-border-color: yellow
+}
+
 .tab-pane:focused {	-fx-color: red; }
 .tab-pane:pressed {	-fx-color: blue; }
 .tab-pane:hover { -fx-color: green; }
-.tab-pane:selected { -fx-color: green; }
-.tab-pane:showing { -fx-color: green; }
+.tab-pane:selected { -fx-color: cyan; }
+.tab-pane:showing { -fx-color: pink; }
 
 .tab-header-background {
 	-fx-background-color: #44414e;

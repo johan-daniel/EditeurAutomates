@@ -6,5 +6,10 @@
     -fx-highlight-fill: ;
     -fx-highlight-text-fill: ;
     -fx-display-caret: ;
+
+    Classe éventuelle:
+    :showing
+    :editable
+    :armed
     */
 }
