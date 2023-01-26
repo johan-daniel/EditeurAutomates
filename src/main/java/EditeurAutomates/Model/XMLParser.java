@@ -209,16 +209,41 @@ public class XMLParser {
 		return res;
 	}
 
-	// TODO: maybe MD5 ? or sha64 (if it exists) ?
 	public static long calculateChecksum(String input){
-		return input.length() % 2;
+		// 64 bits - adapted from String.hashCode()
+		// See https://stackoverflow.com/questions/1660501/what-is-a-good-64bit-hash-function-in-java-for-textual-strings
+
+		long hash = 1125799906942597L; // prime
+		int len = input.length();
+
+		for (int i = 0; i < len; i++) {
+			hash = 31*hash + input.charAt(i);
+		}
+		return hash;
 	}
 
-	// TODO: get checksum from xml
 	public static boolean verifyChecksum(String xml){
-		long file_checksum = 0; // récupérer depuis la balise
-		long string_checksum = calculateChecksum(xml);
-		return (file_checksum == string_checksum);
+		if (!xml.contains("checksum=\"")) return false;
+
+		String str_checksum;
+		long checksum;
+
+		// On récupère le string de la checksum (le contenu entre les guillemets du string "checksum=\"57\"" ; => on doit obtenir "57")
+		int debut = 0; // Début du sous-string checksum="5742"
+		int fin;
+		while(!xml.startsWith("checksum=\"", debut)) debut++;
+		debut += 10; // taille du string checksum="
+		fin = debut + 1;
+		while(!xml.startsWith("\"", fin)) fin++; // On va jusqu'au guillemet suivant
+
+		try {
+			str_checksum = xml.substring(debut, fin);
+			checksum = Long.parseLong(str_checksum);
+			System.out.println(checksum);
+			return (checksum == calculateChecksum(xml));
+		} catch (IndexOutOfBoundsException | SecurityException | NullPointerException ignored){
+			return false;
+		}
 	}
 
 	record Transition(int from, int to, String symbols, boolean acceptsEmptyWord) {	}
