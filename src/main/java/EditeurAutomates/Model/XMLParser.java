@@ -169,8 +169,8 @@ public class XMLParser {
 				symboles = token;
 			}
 			// AcceptsEmptyWord
-			if (token.startsWith("acceptsEmptyWord=\"") && token.endsWith("\"")){
-				token = token.replace("acceptsEmptyWord=\"", "");
+			if (token.startsWith("acceptsemptyword=\"") && token.endsWith("\"")){
+				token = token.replace("acceptsemptyword=\"", "");
 				token = token.substring(0, token.length()-1);
 				acceptsEmptyWord = Boolean.parseBoolean(token);
 			}
