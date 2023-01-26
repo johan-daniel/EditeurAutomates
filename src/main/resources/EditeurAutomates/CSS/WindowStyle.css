@@ -10,30 +10,41 @@ Orange: 		#c54607
     -fx-pref-width: 1080px;
     -fx-pref-height: 720px;
 
-	-fx-background-color: #44414e;
+    -fx-dark: #44414e;
+	-fx-orange: #c54607;
+	-fx-lighter: derive(-fx-dark, 25%);
 
 	-fx-text-base-color: #f8f4f1; 			/* Menu bar (si non sélectionnée) */
     -fx-text-background-color: #f8f4f1; 	/* Principal (dans les composants) */
     -fx-text-inner-color: #f8f4f1; 			/* A l'intérieur de l'inputbox pour le XML */
     -fx-selection-bar-text: #f8f4f1; 		/* Jsp */
+
+    -fx-background-color: derive(-fx-lighter, 0%);
 }
 
 /* MenuBar (haut) */
 
 .menu, .context-menu, .menu-item {
-	-fx-background-color: #44414e;
+	-fx-background-color: derive(-fx-dark, 0%);
 }
 
 .menu-bar {
-	-fx-background-color: #44414e;
+	-fx-background-color: derive(-fx-dark, 0%);
     -fx-border-width: 0px 0px 1px 0px;
-    -fx-border-color: #c54607;
+    -fx-border-color: derive(-fx-orange, 0%);
     -fx-border-style: solid;
 }
 
 .menu:hover, .menu-item:hover, .menu:showing, .context-menu:showing, .menu-item:showing {
-	-fx-background-color: #c54607;
+	-fx-background-color: derive(-fx-orange, 0%);
 }
+
+.menu-item {
+    -fx-border-width: 1px 0px 0px 0px;
+    -fx-border-color: derive(-fx-lighter, 0%);
+    -fx-border-style: solid;
+}
+
 
 /* TabPane (onglets des vues, à droite) */
 
@@ -43,23 +54,33 @@ Orange: 		#c54607
 
 .tab {
 	-fx-tab-min-width: 60px;
-	-fx-tab-min-height: 60px;
+	-fx-tab-min-height: 55px;
 	-fx-pref-width: 60px;
-	-fx-pref-height: 60px;
+	-fx-pref-height: 55px;
+	-fx-padding: -1 -1 -1 -1;
+	-fx-background-color: derive(-fx-dark, 15%);
+	-fx-color: white;
 }
 
-.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
-	-fx-border-color: yellow
+.tab:selected {
+    -fx-background-color: derive(-fx-lighter, 0%);
+    -fx-pref-height: 60px;
+}
+.tab-label {
+    -fx-content-display: graphic-only;
+    -fx-padding: 0px 0px 0px 10px;
 }
 
+/*
 .tab-pane:focused {	-fx-color: red; }
 .tab-pane:pressed {	-fx-color: blue; }
 .tab-pane:hover { -fx-color: green; }
-.tab-pane:selected { -fx-color: cyan; }
+.tab-pane:selected { -fx-color: derive(-fx-lighter, 0%); }
 .tab-pane:showing { -fx-color: pink; }
+*/
 
 .tab-header-background {
-	-fx-background-color: #44414e;
+	-fx-background-color: derive(-fx-dark, 0%);
 	-fx-border-width: 0px 0px 1px 0px;
 	-fx-border-color: #c54607;
 	-fx-border-style: solid;

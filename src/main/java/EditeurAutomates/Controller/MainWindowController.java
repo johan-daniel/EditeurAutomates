@@ -1,23 +1,23 @@
 package EditeurAutomates.Controller;
 
 import EditeurAutomates.AutomatesLab;
-
 import EditeurAutomates.Model.Automate;
 import EditeurAutomates.Model.ParserException;
 import EditeurAutomates.Model.XMLParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
 import javafx.scene.control.MenuBar;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 
 import java.awt.*;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.Objects;
 
 public class MainWindowController {
 	// Paramètres
@@ -45,19 +45,6 @@ public class MainWindowController {
 			// Use macOS menu bar
 			mainMenuBar.setUseSystemMenuBar(true);
 		}
-
-		// Load tabs icons
-		String graphicView_icon_location = Objects.requireNonNull(AutomatesLab.class.getResource("Images/Graphic_Icon.png")).toString();
-			// A voir si on le fait pas en CSS
-			ImageView graphic_icon = new ImageView(graphicView_icon_location);
-			graphic_icon.setFitWidth(40);
-			graphic_icon.setFitHeight(40);
-		graphicViewTab.setGraphic(graphic_icon);
-		String XMLView_icon_location = Objects.requireNonNull(AutomatesLab.class.getResource("Images/XML_Icon.png")).toString();
-			ImageView xml_icon = new ImageView(XMLView_icon_location);
-			xml_icon.setFitWidth(40);
-			xml_icon.setFitHeight(40);
-		xmlViewTab.setGraphic(xml_icon);
 	}
 
 	// Fichier

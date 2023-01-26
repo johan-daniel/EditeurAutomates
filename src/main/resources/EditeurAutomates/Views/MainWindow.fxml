@@ -3,6 +3,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="EditeurAutomates.Controller.MainWindowController" stylesheets="@../CSS/WindowStyle.css">
 
 	<MenuBar fx:id="mainMenuBar">
@@ -24,10 +26,20 @@
 	</MenuBar>
 
 	<TabPane fx:id="viewsTabpane" side="RIGHT">
-		<Tab fx:id="graphicViewTab" closable="false">
+		<Tab fx:id="graphicViewTab" closable="false" text="Yo">
+			<graphic>
+				<ImageView>
+					<Image url="@../Images/Graphic_Icon.png" requestedHeight="40" requestedWidth="40"/>
+				</ImageView>
+			</graphic>
 			<fx:include source="GraphicView.fxml"/> <!-- Fichier FXML de la vue graphique -->
 		</Tab>
 		<Tab fx:id="xmlViewTab" closable="false">
+			<graphic>
+				<ImageView>
+					<Image url="@../Images/XML_Icon.png" requestedHeight="40" requestedWidth="40"/>
+				</ImageView>
+			</graphic>
 			<fx:include source="XMLView.fxml"/> <!-- Fichier FXML de la vue XML -->
 		</Tab>
 	</TabPane>
