@@ -209,6 +209,7 @@ public class XMLParser {
 		return res;
 	}
 
+	// TODO: calculateChecksum doit supprimer la valeur de la checksum du string avant de le hasher
 	public static long calculateChecksum(String input){
 		// 64 bits - adapted from String.hashCode()
 		// See https://stackoverflow.com/questions/1660501/what-is-a-good-64bit-hash-function-in-java-for-textual-strings
