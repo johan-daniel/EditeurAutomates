@@ -58,11 +58,11 @@ Orange: 		#c54607
 	-fx-pref-width: 60px;
 	-fx-pref-height: 55px;
 	-fx-background-color: derive(-fx-dark, 0%);
-	-fx-border-width: 2px 2px 0px 2px;
-	-fx-border-color: derive(-fx-lighter, 20%);
+	-fx-border-width: 2px 2px 1px 2px;
+	-fx-border-color: derive(-fx-lighter, 20%) derive(-fx-lighter, 20%) derive(-fx-orange, 0%) derive(-fx-lighter, 20%);
 	-fx-border-style: solid;
 	-fx-padding: -1 -1 -1 -1;
-	-fx-border-radius: 5px 5px 0px 0px
+	-fx-border-radius: 5px 5px 0px 0px;
 }
 
 .tab:selected {
@@ -71,7 +71,7 @@ Orange: 		#c54607
     -fx-border-width: 1px 1px 1px 1px;
     -fx-border-color: derive(-fx-orange, 0%) derive(-fx-orange, 0%) derive(-fx-lighter, 0%) derive(-fx-orange, 0%);
     -fx-border-style: solid solid solid solid;
-    -fx-border-radius: 5px 5px 0px 0px
+    -fx-border-radius: 5px 5px 0px 0px;
 }
 .tab-label {
     -fx-content-display: graphic-only;
