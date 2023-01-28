@@ -242,7 +242,7 @@ public class XMLParser {
 
 		// On récupère le string de la checksum (le contenu entre les guillemets du string "checksum=\"57\"" ; => on doit obtenir "57")
 		int debut = xml.indexOf("checksum=\"") + 10; // Indice du sous-string checksum="5742" + 10 (pour commencer au premier chiffre)
-		int fin = xml.substring(debut).indexOf("\"");
+		int fin = debut + xml.substring(debut).indexOf("\"");
 
 		try {
 			str_checksum = xml.substring(debut, fin);
