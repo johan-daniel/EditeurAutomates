@@ -50,7 +50,7 @@ public class MainWindowController {
 	// Fichier
 
 	// TODO: Fichier corrompu & Le fichier ne correspond pas à un automate
-	protected void loadFile(String filePath){
+	private void loadFile(String filePath){
 		try {
 			String content = Files.readString(Path.of(filePath));
 			if (!XMLParser.verifyChecksum(content)) throw new ParserException("Invalid checksum");
@@ -67,56 +67,63 @@ public class MainWindowController {
 		}
 	}
 
+	// TODO
 	protected void loadDefaultFile(){
 
 	}
 
+	// TODO
 	protected void saveCurrentFile(){
 		// String xml = curAutomate.toXML();
 	}
 
 	// Handler de boutons
 
+	// TODO
 	public void newButton(ActionEvent ignored) {
 		System.out.println("New not implemented yet");
 	}
 
+	// TODO Afficher la fenêtre d'ouverture qui récupère le path
 	public void openButton(ActionEvent ignored) {
 		System.out.println("Open not implemented yet");
 
-		// TODO Afficher la fenêtre d'ouverture qui récupère le path
 		String path = "C:\\Users\\Alex\\Desktop\\AutomateDefault.xml";
 
 		loadFile(path);
-
 	}
 
+	// TODO
 	public void saveButton(ActionEvent ignored) {
 		System.out.println("Save not implemented yet");
 	}
 
+	// TODO
 	public void saveAsButton(ActionEvent ignored) {
 		System.out.println("Save As not implemented yet");
 	}
 
+	// TODO pullModel/updateModel
 	public void setActiveGraphicalView(ActionEvent ignored) {
 		viewsTabpane.getSelectionModel().select(graphicViewTab);
 	}
 
+	// TODO pullModel/updateModel
 	public void setActiveXMLView(ActionEvent ignored) {
 		viewsTabpane.getSelectionModel().select(xmlViewTab);
 	}
 
+	// TODO
 	public void openKeyboardShortcutsWindow(ActionEvent ignored) {
 		System.out.println("KeyboardShortcuts window not implemented yet");
 	}
 
+	// TODO
 	public void openHelpWindow(ActionEvent ignored) {
 		System.out.println("Help window not implemented yet");
 	}
 
 	public void openXMLDoc(ActionEvent ignored) {
-
 		if (!Desktop.isDesktopSupported()) {
 			System.err.println("Couldn't open PDF help file because Desktop class is not supported :(");
 			return;
@@ -139,7 +146,7 @@ public class MainWindowController {
 		catch (IOException e) {
 			System.err.println("Couldn't copy or open PDF help file");
 		}
-		catch (InterruptedException ignored1) { }
+		catch (InterruptedException ignored0) { }
 	}
 
 }
