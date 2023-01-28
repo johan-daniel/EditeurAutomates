@@ -105,34 +105,53 @@ public class Automate implements XMLConvertible {
 		ArrayList<Destinations> temp;
 		Character[] symbols_array = getCharacterArray(symbols, acceptsEmptyWord);
 
-		// Ajout des NOUVEAUX symboles à l'alphabet, et à l'automate
-		for(Character cur_symbol : symbols_array){
-			if (getIndex(cur_symbol)==-1) {
-				alphabet.add(cur_symbol); 								// On ajoute le symbole à fin de l'alphabet
-				for(int i=0 ; i<statesList.size() ; i++ ){ 				// Pour tout les états
-					temp = transitionMatrix.get(i); 					// On ajoute une liste de destinations, lisant le nouveau symbole
-					if (temp != null) temp.add(new Destinations()); 	// (à la fin, comme pour l'alphabet)
-				}
-			}
-		}
+		// On ajoute les nouveaux symboles, si il y en a
+		updateAlphabet(symbols_array);
 
 		// Ajout de la destination
 		temp = transitionMatrix.get(from_state);
 		Destinations d_temp;
 		int char_index;
-		for(Character c : symbols_array){ 								// Pour chaque symbole à ajouter
-			char_index = getIndex(c);									// On récupère son indice
-			d_temp = temp.get(char_index); 								// en transitionMatrix[from_state, char]
-			d_temp.add(to_state); 										// on ajoute la destination to_state aux Destinations
+		for(Character c : symbols_array){ 	// Pour chaque symbole à ajouter
+			char_index = getIndex(c);		// On récupère son indice
+			d_temp = temp.get(char_index); 	// en transitionMatrix[from_state, char]
+			d_temp.add(to_state); 			// on ajoute la destination to_state aux Destinations
 		}
 
 		return 0; // Success
 	}
 
-	// TODO
 	public void editTransition(int from_state, int to_state, String new_symbols, boolean acceptsEmptyWord) {
 		if (isInvalidState(from_state) || isInvalidState(to_state)) return;
-		System.out.println(new_symbols + acceptsEmptyWord);
+
+		if ((Objects.equals(new_symbols, "") || new_symbols==null) && !acceptsEmptyWord){
+			deleteTransition(from_state, to_state);
+			return;
+		}
+
+		ArrayList<Destinations> destinations = transitionMatrix.get(from_state);
+		Character[] symbols_array = getCharacterArray(new_symbols, acceptsEmptyWord);
+
+		// On ajoute les nouveaux symboles, si il y en a
+		updateAlphabet(symbols_array);
+
+		// Les symboles sont concernés par la transition à éditer
+		for(Character c : symbols_array){
+			destinations.get(getIndex(c)).add(to_state);
+		}
+
+		// Les symboles ne sont pas/plus concernés par la transition à éditer
+		for(Character c : alphabet){
+			if (c==null) { // On traite null à part (car on ne peut pas appeler contains(null))
+				if (!acceptsEmptyWord) destinations.get(getIndex(null)).removeDestination(to_state);
+				continue;
+			}
+			if (!new_symbols.contains(c.toString())){
+				destinations.get(getIndex(c)).removeDestination(to_state);
+			}
+		}
+
+		clearAlphabet();
 	}
 
 	public void deleteTransition(int from_state, int to_state) {
@@ -162,6 +181,20 @@ public class Automate implements XMLConvertible {
 		int i = 0;
 		while (i<statesList.size() && statesList.get(i) != null) i++;
 		return i;
+	}
+
+	/**Met à jour l'alphabet et la matrice des nouvelles lettres (si il y en a) contenues dans le tableau symbols.*/
+	private void updateAlphabet(Character[] symbols){
+		ArrayList<Destinations> temp;
+		for(Character cur_symbol : symbols){
+			if (getIndex(cur_symbol)==-1) {
+				alphabet.add(cur_symbol); 								// On ajoute le symbole à fin de l'alphabet
+				for(int i=0 ; i<statesList.size() ; i++ ){ 				// Pour tout les états
+					temp = transitionMatrix.get(i); 					// On ajoute une liste de destinations, lisant le nouveau symbole
+					if (temp != null) temp.add(new Destinations()); 	// (à la fin, comme pour l'alphabet)
+				}
+			}
+		}
 	}
 
 	/**Nettoie l'alphabet et la matrice des lettres qui ne sont plus utilisées.*/
@@ -277,29 +310,30 @@ public class Automate implements XMLConvertible {
 		return res.toString();
 	}
 
-	static class Destinations extends ArrayList<Integer> {
 
-		@Override
-		public boolean add(Integer to){
-			if (isInDestinations(to)) return false;
+}
 
-			super.add(to);
-			return true;
+class Destinations extends ArrayList<Integer> {
+
+	@Override
+	public boolean add(Integer to){
+		if (isInDestinations(to)) return false;
+
+		super.add(to);
+		return true;
+	}
+
+	public void removeDestination(Integer to){
+		Integer temp;
+		for (Iterator<Integer> it = this.iterator(); it.hasNext(); ) {
+			temp = it.next();
+			if (Objects.equals(temp, to)) it.remove();
 		}
+	}
 
-		public void removeDestination(Integer to){
-			Integer temp;
-			for (Iterator<Integer> it = this.iterator(); it.hasNext(); ) {
-				temp = it.next();
-				if (Objects.equals(temp, to)) it.remove();
-			}
-		}
-
-		private boolean isInDestinations(Integer i){
-			for(Integer each_i : this) if (Objects.equals(each_i, i)) return true;
-			return false;
-		}
-
+	public boolean isInDestinations(Integer i){
+		for(Integer each_i : this) if (Objects.equals(each_i, i)) return true;
+		return false;
 	}
 
 }
