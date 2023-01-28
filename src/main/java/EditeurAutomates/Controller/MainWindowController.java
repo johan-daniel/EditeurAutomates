@@ -49,15 +49,16 @@ public class MainWindowController {
 
 	// Fichier
 
+	// TODO: Fichier corrompu & Le fichier ne correspond pas à un automate
 	protected void loadFile(String filePath){
 		try {
 			String content = Files.readString(Path.of(filePath));
 			if (!XMLParser.verifyChecksum(content)) throw new ParserException("Invalid checksum");
 			this.curAutomate = XMLParser.parseXML(content);
-		} catch (IOException e) { // TODO Fichier corrompu
+		} catch (IOException e) { // Fichier corrompu
 			// Afficher pop-up d'erreur fichier corrompu
 			throw new RuntimeException(e);
-		} catch (ParserException | RuntimeException e) { // TODO Le fichier ne correspond pas à un automate
+		} catch (ParserException | RuntimeException e) { // Le fichier ne correspond pas à un automate
 			// Si on catch une ParserException, c'est une erreur connue du parser
 			// Si on catch une RuntimeException, l'erreur est inconnue (nous n'avons pas prévu cette erreur)
 			// Dans les deux cas, on dit si l'erreur est connue ou non puis on affiche le message de l'erreur e.getMessage()
