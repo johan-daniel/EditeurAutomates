@@ -24,6 +24,9 @@ public class Launcher {
 	}
 
 	private static void debugModel(){
+		System.out.println("================ Test Automate ================ ");
+		testAutomate();
+		System.out.println("================ Test XML Parser ================ ");
 		testXMLParser();
 	}
 
@@ -32,7 +35,7 @@ public class Launcher {
 				<?xml version="1.0" encoding="UTF-8"?>
 				<>
 				oiuiuoiu
-				<AutomateFile checksum="57">
+				<AutomateFile checksum="-3025718055245860624">
 				   \s
 				    <Automate>
 				   \t <State number="0" isInitial="true" X="15" Y="25">
@@ -51,24 +54,23 @@ public class Launcher {
 				   \s
 				</AutomateFile>""";
 
+		System.out.println("La checksum est correcte: " + XMLParser.verifyChecksum(xml));
+
 		Automate automate1, automate2;
 
 		try{
 			automate1 = XMLParser.parseXML(xml);
-		} catch (ParserException e) {
-			throw new RuntimeException(e);
-		}
-
-		String to_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><AutomateFile checksum=\"57\">" + automate1.toXML() + "</AutomateFile>";
-		try{
+			String to_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><AutomateFile checksum=\"57\">" + automate1.toXML() + "</AutomateFile>";
 			automate2 = XMLParser.parseXML(to_XML);
+
+			System.out.println("Les deux automates doivent être les mêmes:");
+			System.out.println(automate1.toDetails());
+			System.out.println(automate2.toDetails());
+
 		} catch (ParserException e) {
 			throw new RuntimeException(e);
 		}
 
-		System.out.println("Les deux automates doivent être les mêmes:");
-		System.out.println(automate1.toDetails());
-		System.out.println(automate2.toDetails());
 	}
 
 	private static void testAutomate(){

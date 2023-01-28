@@ -210,8 +210,12 @@ public class XMLParser {
 		return res;
 	}
 
-	// TODO: calculateChecksum doit supprimer la valeur de la checksum du string avant de le hasher
 	public static long calculateChecksum(String input){
+		long checksum = getChecksum(input);
+		if (checksum != -1) {
+			input = input.replace("checksum=\"" + checksum + "\"", ""); // On supprime l'ancienne valeur de la checksum du string avant de le hasher
+		}
+
 		// 64 bits - adapted from String.hashCode()
 		// See https://stackoverflow.com/questions/1660501/what-is-a-good-64bit-hash-function-in-java-for-textual-strings
 
@@ -221,11 +225,17 @@ public class XMLParser {
 		for (int i = 0; i < len; i++) {
 			hash = 31*hash + input.charAt(i);
 		}
+
+		if (hash==-1) hash++; // hash ne doit pas valoir -1, c'est la valeur d'erreur
 		return hash;
 	}
 
 	public static boolean verifyChecksum(String xml){
-		if (!xml.contains("checksum=\"")) return false;
+		return (calculateChecksum(xml) == getChecksum(xml));
+	}
+
+	private static long getChecksum(String xml){
+		if (!xml.contains("checksum=\"")) return -1;
 
 		String str_checksum;
 		long checksum;
@@ -241,10 +251,9 @@ public class XMLParser {
 		try {
 			str_checksum = xml.substring(debut, fin);
 			checksum = Long.parseLong(str_checksum);
-			System.out.println(checksum);
-			return (checksum == calculateChecksum(xml));
+			return(checksum);
 		} catch (IndexOutOfBoundsException | SecurityException | NullPointerException ignored){
-			return false;
+			return -1;
 		}
 	}
 
