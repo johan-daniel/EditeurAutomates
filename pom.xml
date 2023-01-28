@@ -143,7 +143,7 @@
 						</goals>
 						<configuration>
 							<headerType>gui</headerType>
-							<jar>target/${artifactId}-${project.version}-jar-with-dependencies.jar</jar>
+							<jar>target/${project.artifactId}-${project.version}-jar-with-dependencies.jar</jar>
 							<outfile>target/${project.name}.exe</outfile>
 							<downloadUrl>http://java.com/download</downloadUrl>
 							<classPath>
