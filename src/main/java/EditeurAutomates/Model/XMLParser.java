@@ -220,9 +220,7 @@ public class XMLParser {
 		// See https://stackoverflow.com/questions/1660501/what-is-a-good-64bit-hash-function-in-java-for-textual-strings
 
 		long hash = 1125899906842597L; // prime
-		System.out.println("len (with CR): " + input.length()); // debug
-		input = input.replace("\r", "");
-		System.out.println("len (without CR): " + input.length()); // debug
+		input = input.replace("\r", ""); // Windows compatiblity (fuck you Windows)
 		int len = input.length();
 
 		for (int i = 0; i < len; i++) {
@@ -231,7 +229,6 @@ public class XMLParser {
 
 		if (hash==-1) hash++; // hash ne doit pas valoir -1, c'est la valeur d'erreur
 
-		System.out.println("hash: " + hash); // debug
 		return hash;
 	}
 

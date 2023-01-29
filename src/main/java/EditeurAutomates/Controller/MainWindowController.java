@@ -86,7 +86,7 @@ public class MainWindowController {
 			Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
 
 			// Load default file (parse... etc)
-			loadFile("temp.xml"); // c'est ici que ça plante ; dans loadFile, on attrape une InvalidPathException ignorée
+			loadFile(String.valueOf(path));
 			System.out.println(curAutomate);
 
 			// Delete temp file (after letting time at the reader to open it)
