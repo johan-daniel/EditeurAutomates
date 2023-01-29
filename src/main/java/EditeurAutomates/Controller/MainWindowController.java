@@ -25,6 +25,7 @@ public class MainWindowController {
 
 	protected Automate curAutomate = null;
 	private File curFile = null;
+	protected final boolean fileIsUpToDate = true;
 
 	// Objets du FXML
 	@FXML private MenuBar mainMenuBar;
@@ -73,30 +74,26 @@ public class MainWindowController {
 		}
 	}
 
-	// TODO: débugger (coder de manière compatible avec l'empaquetage en .jar)
 	protected void loadDefaultFile(){
+		final String PATH = "./temp.xml";
 		try {
-			File myFile = new File("./temp.xml"); // Buffer file
-			Path path = FileSystems.getDefault().getPath("./temp.xml");
-			System.out.println(path);
+			File myFile = new File(PATH); // Buffer file
+			Path path = FileSystems.getDefault().getPath(PATH);
+
 			InputStream inputStream = AutomatesLab.class.getResourceAsStream(DEFAULT_AUTOMATE); // Reading original data (using stream for .jar compatibility)
-			assert inputStream != null;
+			if (inputStream==null) throw new RuntimeException("Could not create input stream");
 
-			// Copy stream to temporary file
-			Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
-
-			// Load default file (parse... etc)
-			loadFile(String.valueOf(path));
-			System.out.println(curAutomate);
+			Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING); 	// Copy stream to temporary file
+			loadFile(String.valueOf(path)); 										// Load default file (parse... etc)
 
 			// Delete temp file (after letting time at the reader to open it)
 			Thread.sleep(300);
-			if (!myFile.delete()) System.err.println("Le fichier temporaire \"" + "temp.xml" + "\" n'a pas pu être supprimé");
+			if (!myFile.delete()) System.err.println("Le fichier temporaire \"" + PATH + "\" n'a pas pu être supprimé");
 		}
-		catch (IOException e) {
-			System.err.println("Couldn't load default automate because of an unexpected IOException");
-		}
-		catch (InterruptedException ignored0) { }
+
+		catch (IOException e) { System.err.println("Couldn't load default automate because of an unexpected IOException"); }
+		catch (RuntimeException e){ System.err.println("Couldn't load default automate because of an unexpected RuntimeException");	}
+		catch (InterruptedException ignored0) { } // Awaken during wait (we don't care)
 	}
 
 	// TODO
