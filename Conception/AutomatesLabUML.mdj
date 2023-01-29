@@ -35523,9 +35523,9 @@
 														"$ref": "AAAAAAGF/X8mFHnJ1K8="
 													},
 													"font": "Arial;13;0",
-													"left": 136,
+													"left": 120,
 													"top": 81,
-													"width": 104.03173828125,
+													"width": 137.10302734375,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
@@ -35533,7 +35533,7 @@
 														"$ref": "AAAAAAGF/X8mFHnKShM="
 													},
 													"edgePosition": 1,
-													"text": "1 : File menu click"
+													"text": "1 : Ouvrir menu \"fichier\""
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -35635,9 +35635,9 @@
 														"$ref": "AAAAAAGF/X9WJnnexjU="
 													},
 													"font": "Arial;13;0",
-													"left": 136,
+													"left": 127,
 													"top": 121,
-													"width": 103.34619140625,
+													"width": 121.37353515625,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
@@ -35645,7 +35645,7 @@
 														"$ref": "AAAAAAGF/X9WJnnf+/Q="
 													},
 													"edgePosition": 1,
-													"text": "2 : open file menu"
+													"text": "2 : Ouvrir sous-menu"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -35748,9 +35748,9 @@
 														"$ref": "AAAAAAGF/X/E23n1t3c="
 													},
 													"font": "Arial;13;0",
-													"left": 131,
+													"left": 115,
 													"top": 160,
-													"width": 115.62890625,
+													"width": 147.97021484375,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
@@ -35758,7 +35758,7 @@
 														"$ref": "AAAAAAGF/X/E23n2nl4="
 													},
 													"edgePosition": 1,
-													"text": "3 : open button click"
+													"text": "3 : Cliquer bouton \"ouvrir\""
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -35860,9 +35860,9 @@
 														"$ref": "AAAAAAGF/X/o1XoKE1Y="
 													},
 													"font": "Arial;13;0",
-													"left": 119,
+													"left": 74,
 													"top": 204,
-													"width": 136.56982421875,
+													"width": 226.890625,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
@@ -35870,7 +35870,7 @@
 														"$ref": "AAAAAAGF/X/o1noLCLY="
 													},
 													"edgePosition": 1,
-													"text": "4 : file selection window"
+													"text": "4 : Ouvrir fenêtre de selection de fichier"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -37661,7 +37661,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGF/XmEEnkAW4g="
 									},
-									"name": "File menu click",
+									"name": "Ouvrir menu \"fichier\"",
 									"source": {
 										"$ref": "AAAAAAGF/XowE3lBxZ0="
 									},
@@ -37675,7 +37675,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGF/XmEEnkAW4g="
 									},
-									"name": "open file menu",
+									"name": "Ouvrir sous-menu",
 									"source": {
 										"$ref": "AAAAAAGF/X3w03mosTc="
 									},
@@ -37690,7 +37690,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGF/XmEEnkAW4g="
 									},
-									"name": "open button click",
+									"name": "Cliquer bouton \"ouvrir\"",
 									"source": {
 										"$ref": "AAAAAAGF/XowE3lBxZ0="
 									},
@@ -37704,7 +37704,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGF/XmEEnkAW4g="
 									},
-									"name": "file selection window",
+									"name": "Ouvrir fenêtre de selection de fichier",
 									"source": {
 										"$ref": "AAAAAAGF/X3w03mosTc="
 									},
