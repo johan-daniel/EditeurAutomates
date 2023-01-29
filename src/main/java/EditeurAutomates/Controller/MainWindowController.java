@@ -6,9 +6,8 @@ import EditeurAutomates.Model.ParserException;
 import EditeurAutomates.Model.XMLParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.stage.FileChooser;
 
 import java.awt.*;
@@ -25,7 +24,7 @@ public class MainWindowController {
 
 	protected Automate curAutomate = null;
 	private File curFile = null;
-	protected final boolean fileIsUpToDate = true;
+	protected boolean fileIsUpToDate = true;
 
 	// Objets du FXML
 	@FXML private MenuBar mainMenuBar;
@@ -49,28 +48,41 @@ public class MainWindowController {
 
 	// Fichier
 
-	// TODO: Fichier corrompu & Le fichier ne correspond pas à un automate
+	// TODO: Charger vues & vérifier erreur de parsing
 	private void loadFile(String filePath){
 		try {
 			String content = Files.readString(Path.of(filePath));
-			if (!XMLParser.verifyChecksum(content)) throw new ParserException("Couldn't verify checksum for file: " + filePath);
+
+			// Si checksum invalide, pop-up + chargement vue XML
+			if (!XMLParser.verifyChecksum(content)) throw new ParserException("Couldn't verify checksum for file \"" + filePath + "\"");
+
 			this.curAutomate = XMLParser.parseXML(content);
-			// charger vue graphique
+			curFile = new File(filePath);
+			fileIsUpToDate = true;
+
+			System.out.println("Chargement de la vue graphique"); // charger vue graphique
 		}
 
-		catch (IOException | OutOfMemoryError | SecurityException e) { // Fichier corrompu ou droits insuffisants
-			// Afficher pop-up d'erreur fichier corrompu
-			throw new RuntimeException(e);
+		// Fichier corrompu ou droits insuffisants
+		catch (IOException | OutOfMemoryError | SecurityException e) {
+			Alert alert = new Alert(Alert.AlertType.INFORMATION, "Ce fichier ne peut pas être chargé: le fichier est corrompu, ou l'encodage est incompatible, ou l'application n'a pas suffisament de droits pour y accéder.\n\n" + e.getMessage(), ButtonType.OK);
+			alert.showAndWait();
 		}
 
-		catch (InvalidPathException ignored){ } // Ne devrait jamais être thrown ; on la catch par sécurité
+		// Ne devrait jamais être thrown ; on la catch par sécurité
+		catch (InvalidPathException ignored){ }
 
-		catch (ParserException | RuntimeException e) { // Le fichier ne correspond pas à un automate
+		// La checksum est invalide, ou le fichier ne correspond pas à un automate
+		catch (ParserException | RuntimeException e) {
+
 			// Si on catch une ParserException, c'est une erreur connue du parser
 			// Si on catch une RuntimeException, l'erreur est inconnue (nous n'avons pas prévu cette erreur)
+
 			// Dans les deux cas, on dit si l'erreur est connue ou non puis on affiche le message de l'erreur e.getMessage()
+			Alert alert = new Alert(Alert.AlertType.ERROR, "Erreur attrapée lors du parsing\n\n" + e.getMessage(), ButtonType.OK);
+			alert.showAndWait();
+
 			// Puis on charge la vue XML
-			System.err.println(e.getMessage());
 		}
 	}
 
@@ -85,6 +97,7 @@ public class MainWindowController {
 
 			Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING); 	// Copy stream to temporary file
 			loadFile(String.valueOf(path)); 										// Load default file (parse... etc)
+			fileIsUpToDate = true;
 
 			// Delete temp file (after letting time at the reader to open it)
 			Thread.sleep(300);
