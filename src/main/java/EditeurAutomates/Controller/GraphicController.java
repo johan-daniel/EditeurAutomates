@@ -1,14 +1,6 @@
 package EditeurAutomates.Controller;
 
-public class GraphicController implements IViewController {
-
-	public void createState(){
-
-	}
-
-	public void createTransition(){
-
-	}
+public class GraphicController extends ViewController {
 
 	@Override
 	public void updateModel() {

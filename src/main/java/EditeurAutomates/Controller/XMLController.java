@@ -1,6 +1,6 @@
 package EditeurAutomates.Controller;
 
-public class XMLController implements IViewController {
+public class XMLController extends ViewController {
 
 	@Override
 	public void updateModel() {

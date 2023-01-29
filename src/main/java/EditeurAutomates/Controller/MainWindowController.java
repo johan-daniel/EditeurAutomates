@@ -1,7 +1,6 @@
 package EditeurAutomates.Controller;
 
 import EditeurAutomates.AutomatesLab;
-import EditeurAutomates.Model.Automate;
 import EditeurAutomates.Model.ParserException;
 import EditeurAutomates.Model.XMLParser;
 import javafx.event.ActionEvent;
@@ -16,13 +15,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.*;
 
-public class MainWindowController {
+public class MainWindowController extends Controller {
 	// Paramètres
 	private final boolean isMacos;
 	private static final String TEMP_SPEC_FILE_NAME = "./Specifications XML des Automates.pdf";
 	private static final String DEFAULT_AUTOMATE = "AutomateDefault.xml";
 
-	protected Automate curAutomate = null;
 	private File curFile = null;
 	protected boolean fileIsUpToDate = true;
 
@@ -56,7 +54,7 @@ public class MainWindowController {
 			// Si checksum invalide, pop-up + chargement vue XML
 			if (!XMLParser.verifyChecksum(content)) throw new ParserException("Couldn't verify checksum for file \"" + filePath + "\"");
 
-			this.curAutomate = XMLParser.parseXML(content);
+			curAutomate = XMLParser.parseXML(content);
 			curFile = new File(filePath);
 			fileIsUpToDate = true;
 
