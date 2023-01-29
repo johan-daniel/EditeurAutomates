@@ -2,6 +2,8 @@ package EditeurAutomates.Controller;
 
 public class GraphicController extends ViewController {
 
+	// TODO mettre à jour la variable fileIsUpToDate à false lors d'un changement
+
 	// TODO
 	@Override
 	public void updateModel() {
