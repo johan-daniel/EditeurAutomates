@@ -1,24 +1,24 @@
+/*
+ -- Couleurs --
+Sombre (fond):	#44414e
+Plus sombre:	#383843
+Clair: 			#f8f4f1
+Orange: 		#c54607
+*/
+
 .text-area {
-	/*
-	-fx-font: ;
-    -fx-text-fill: ;
-    -fx-prompt-text-fill: ;
-    -fx-highlight-fill: ;
-    -fx-highlight-text-fill: ;
-    -fx-display-caret: ;
 
-    Classe éventuelle:
-    :showing
-    :editable
-    :armed
-    */
-
-    -fx-text-fill: white;
-    -fx-background-color: white; /* black ne marche pas (ça met que le padding en noir) */
+    -fx-text-fill: #f8f4f1;
+    -fx-text-area-background: #44414e;
+    -fx-background-color: #44414e; /* Fond de la marge et du padding */
 
     -fx-margin: 10px;
     -fx-padding: 10px;
 	-fx-pref-width: 900px;
     -fx-pref-height: 600px;
 
+}
+
+.text-area .content { /* Principal (zone de texte) */
+    -fx-background-color: #44414e;
 }
