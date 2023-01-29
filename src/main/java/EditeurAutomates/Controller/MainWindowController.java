@@ -4,18 +4,18 @@ import EditeurAutomates.AutomatesLab;
 import EditeurAutomates.Model.ParserException;
 import EditeurAutomates.Model.XMLParser;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 
-import javax.swing.text.View;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.*;
 
 public class MainWindowController extends Controller {
@@ -28,7 +28,7 @@ public class MainWindowController extends Controller {
 	protected boolean fileIsUpToDate = true;
 
 	XMLController xmlController;
-	GraphicController viewController;
+	GraphicController graphicController;
 
 	// Objets du FXML
 	@FXML private MenuBar mainMenuBar;
@@ -43,35 +43,37 @@ public class MainWindowController extends Controller {
 	}
 
 	@FXML
-	public void initialize() {
-		if (isMacos){
+	public void initialize() throws IOException {
+		if (isMacos) {
 			// Use macOS menu bar
 			mainMenuBar.setUseSystemMenuBar(true);
 		}
 
-		FXMLLoader xmlLoader = new FXMLLoader(getClass().getResource("Views/XMLView.fxml"));
-		xmlController = new XMLController();
+		FXMLLoader xmlLoader = new FXMLLoader(getClass().getResource("/EditeurAutomates/Views/XMLView.fxml"));
+		XMLController xmlController = new XMLController();
 		xmlLoader.setController(xmlController);
+		xmlViewTab.setContent(xmlLoader.load());
 
-		FXMLLoader viewLoader = new FXMLLoader(getClass().getResource("Views/GraphicView.fxml"));
-		viewController = new GraphicController();
-		viewLoader.setController(viewController);
+		FXMLLoader graphicLoader = new FXMLLoader(getClass().getResource("/EditeurAutomates/Views/GraphicView.fxml"));
+		GraphicController graphicController = new GraphicController();
+		graphicLoader.setController(graphicController);
+		graphicViewTab.setContent(graphicLoader.load());
 
-		graphicViewTab.setOnSelectionChanged(this::loadGraphicView);
-		xmlViewTab.setOnSelectionChanged(this::loadXMLView);
+		viewsTabpane.getSelectionModel().selectedItemProperty().addListener((ov, fromTab , toTab) -> {
+			switch(toTab.getId()) {
+				case "xmlViewTab" -> {
+					graphicController.updateModel();
+					xmlController.pullModel();
+				}
+				case "graphicViewTab" -> {
+					xmlController.updateModel();
+					graphicController.pullModel();
+				}
+			}
+		});
+
 	}
 
-	public void loadGraphicView(Event ignored){
-		if (graphicViewTab.isSelected()) xmlController.updateModel();
-		else viewController.pullModel();
-	}
-
-	public void loadXMLView(Event ignored){
-		if (xmlViewTab.isSelected()) viewController.updateModel();
-		else xmlController.pullModel();
-	}
-
-	// Fichier
 
 	// TODO: Charger vues & vérifier erreur de parsing
 	private void loadFile(String filePath){

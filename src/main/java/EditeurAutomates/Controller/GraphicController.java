@@ -4,11 +4,11 @@ public class GraphicController extends ViewController {
 
 	@Override
 	public void updateModel() {
-		System.out.println("Updating model");
+		System.out.println("Graphics Updating model");
 	}
 
 	@Override
 	public void pullModel() {
-		System.out.println("Pulling model");
+		System.out.println("Graphics Pulling model");
 	}
 }

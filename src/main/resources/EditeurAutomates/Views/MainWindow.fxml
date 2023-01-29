@@ -32,7 +32,6 @@
 					<Image url="@../Images/Graphic_Icon.png" requestedHeight="40" requestedWidth="40"/>
 				</ImageView>
 			</graphic>
-			<fx:include source="GraphicView.fxml"/> <!-- Fichier FXML de la vue graphique -->
 		</Tab>
 		<Tab fx:id="xmlViewTab" closable="false">
 			<graphic>
@@ -40,7 +39,6 @@
 					<Image url="@../Images/XML_Icon.png" requestedHeight="40" requestedWidth="40"/>
 				</ImageView>
 			</graphic>
-			<fx:include source="XMLView.fxml"/> <!-- Fichier FXML de la vue XML -->
 		</Tab>
 	</TabPane>
 
