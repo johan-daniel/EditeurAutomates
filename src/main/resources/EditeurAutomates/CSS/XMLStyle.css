@@ -12,5 +12,13 @@
     :editable
     :armed
     */
-    -fx-text-fill: black;
+
+    -fx-text-fill: white;
+    -fx-background-color: white; /* black ne marche pas (ça met que le padding en noir) */
+
+    -fx-margin: 10px;
+    -fx-padding: 10px;
+	-fx-pref-width: 900px;
+    -fx-pref-height: 600px;
+
 }
