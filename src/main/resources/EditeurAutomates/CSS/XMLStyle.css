@@ -14,9 +14,8 @@ Orange: 		#c54607
 
     -fx-margin: 10px;
     -fx-padding: 10px;
-	-fx-pref-width: 900px;
-    -fx-pref-height: 600px;
-
+	-fx-pref-width: 1000px;
+    -fx-pref-height: 650px;
 }
 
 .text-area .content { /* Principal (zone de texte) */
