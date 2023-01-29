@@ -273,7 +273,7 @@ public class Automate implements XMLConvertible {
 
 	@Override
 	public String toXML() {
-		StringBuilder res = new StringBuilder("<Automate>");
+		StringBuilder res = new StringBuilder("\t<Automate>\n");
 
 		// On ajoute tous les états
 		for(State cur_state : statesList){
@@ -294,19 +294,19 @@ public class Automate implements XMLConvertible {
 						}
 					}
 				}
-				res.append("<Transition destination=\"");
+				res.append("\t\t\t<Transition destination=\"");
 				res.append(s.numero);
 				res.append("\" letters=\"");
 				res.append(symbols);
 				res.append("\" acceptsEmptyWord=\"");
 				res.append(acceptsEmptyWord);
-				res.append("\"/>");
+				res.append("\"/>\n");
 			}
 
-			res.append("</State>"); // State.toXML ne renvoie que la balise ouvrante (avec les attributs) et pas la balise fermante ; on l'ajoute ici
+			res.append("\t\t</State>"); // State.toXML ne renvoie que la balise ouvrante (avec les attributs) et pas la balise fermante ; on l'ajoute ici
 		}
 
-		res.append("</Automate>");
+		res.append("\t</Automate>");
 		return res.toString();
 	}
 

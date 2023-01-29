@@ -10,27 +10,27 @@ public class XMLController extends ViewController {
 	@FXML
 	public TextArea editor;
 
-	@FXML
-	public void initialize() {}
-
 	@Override
 	public void updateModel() {
-		System.out.println("XML updating model");
-
-		String new_xml = editor.getText();
+		String edited_xml = editor.getText();
 
 		try {
-			curAutomate = XMLParser.parseXML(new_xml);
+			curAutomate = XMLParser.parseXML(edited_xml);
 		} catch(ParserException e){
-		System.out.println("Caught parser exception. Cannot load graphical view.");
+			System.err.println("Caught parser exception: " + e.getMessage() + " ; Cannot load graphical view.");
 		}
 
 	}
 
 	@Override
 	public void pullModel() {
-		System.out.println("XML pulling model");
-		//		editor.replaceText(0, 0, "Salut"); // a tester
+		String replacement;
+		if (curAutomate==null) replacement = "";
+		else {
+			replacement = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<AutomateFile checksum=\"\">\n" + curAutomate.toXML() + "\n</AutomateFile>";
+		}
+
+		editor.replaceText(0, editor.getText().length(), replacement);
 	}
 
 }

@@ -73,8 +73,7 @@ public class MainWindowController extends Controller {
 		}
 	}
 
-
-	// TODO: Charger vues & vérifier erreur de parsing
+	// TODO: Charger vues & tester le cas où une erreur de parsing est levée
 	private void loadFile(String filePath){
 		try {
 			String content = Files.readString(Path.of(filePath));
@@ -86,7 +85,7 @@ public class MainWindowController extends Controller {
 			curFile = new File(filePath);
 			fileIsUpToDate = true;
 
-			System.out.println("Chargement de la vue graphique"); // charger vue graphique
+			// charger vue graphique
 		}
 
 		// Fichier corrompu ou droits insuffisants
