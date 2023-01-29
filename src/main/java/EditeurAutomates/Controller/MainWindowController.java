@@ -4,12 +4,15 @@ import EditeurAutomates.AutomatesLab;
 import EditeurAutomates.Model.ParserException;
 import EditeurAutomates.Model.XMLParser;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 
-import java.awt.*;
+import javax.swing.text.View;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,11 +27,15 @@ public class MainWindowController extends Controller {
 	private File curFile = null;
 	protected boolean fileIsUpToDate = true;
 
+	XMLController xmlController;
+	GraphicController viewController;
+
 	// Objets du FXML
 	@FXML private MenuBar mainMenuBar;
 	@FXML private TabPane viewsTabpane;
 	@FXML private Tab graphicViewTab;
 	@FXML private Tab xmlViewTab;
+
 
 	public MainWindowController() {
 		final String os = System.getProperty("os.name");
@@ -37,11 +44,31 @@ public class MainWindowController extends Controller {
 
 	@FXML
 	public void initialize() {
-
 		if (isMacos){
 			// Use macOS menu bar
 			mainMenuBar.setUseSystemMenuBar(true);
 		}
+
+		FXMLLoader xmlLoader = new FXMLLoader(getClass().getResource("Views/XMLView.fxml"));
+		xmlController = new XMLController();
+		xmlLoader.setController(xmlController);
+
+		FXMLLoader viewLoader = new FXMLLoader(getClass().getResource("Views/GraphicView.fxml"));
+		viewController = new GraphicController();
+		viewLoader.setController(viewController);
+
+		graphicViewTab.setOnSelectionChanged(this::loadGraphicView);
+		xmlViewTab.setOnSelectionChanged(this::loadXMLView);
+	}
+
+	public void loadGraphicView(Event ignored){
+		if (graphicViewTab.isSelected()) xmlController.updateModel();
+		else viewController.pullModel();
+	}
+
+	public void loadXMLView(Event ignored){
+		if (xmlViewTab.isSelected()) viewController.updateModel();
+		else xmlController.pullModel();
 	}
 
 	// Fichier

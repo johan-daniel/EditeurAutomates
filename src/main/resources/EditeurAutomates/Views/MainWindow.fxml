@@ -26,7 +26,7 @@
 	</MenuBar>
 
 	<TabPane fx:id="viewsTabpane" side="RIGHT">
-		<Tab fx:id="graphicViewTab" closable="false" text="Yo">
+		<Tab fx:id="graphicViewTab" closable="false">
 			<graphic>
 				<ImageView>
 					<Image url="@../Images/Graphic_Icon.png" requestedHeight="40" requestedWidth="40"/>
