@@ -216,19 +216,18 @@ public class XMLParser {
 			input = input.replace("checksum=\"" + checksum + "\"", ""); // On supprime l'ancienne valeur de la checksum du string avant de le hasher
 		}
 
-		// 64 bits - adapted from String.hashCode()
+		// 64 bits - adapted from String.hashCode() and edited for files compatibility between Windows and Unix-OS
 		// See https://stackoverflow.com/questions/1660501/what-is-a-good-64bit-hash-function-in-java-for-textual-strings
 
-		long hash = 1125899906842597L; // prime
 		input = input.replace("\r", ""); // Windows compatiblity (fuck you Windows)
 		int len = input.length();
 
+		long hash = 1125899906842597L; // prime
 		for (int i = 0; i < len; i++) {
 			hash = 31*hash + input.charAt(i);
 		}
 
 		if (hash==-1) hash++; // hash ne doit pas valoir -1, c'est la valeur d'erreur
-
 		return hash;
 	}
 
