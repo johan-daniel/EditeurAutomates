@@ -9,20 +9,19 @@ import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.stage.FileChooser;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 
 public class MainWindowController {
 	// Paramètres
 	private final boolean isMacos;
-	private static final String spec_temp_file_name = "./Specifications XML des Automates.pdf";
+	private static final String TEMP_SPEC_FILE_NAME = "./Specifications XML des Automates.pdf";
+	private static final String DEFAULT_AUTOMATE = "AutomateDefault.xml";
 
 	protected Automate curAutomate = null;
 	private File curFile = null;
@@ -53,12 +52,19 @@ public class MainWindowController {
 	private void loadFile(String filePath){
 		try {
 			String content = Files.readString(Path.of(filePath));
-			if (!XMLParser.verifyChecksum(content)) throw new ParserException("Invalid checksum");
+			if (!XMLParser.verifyChecksum(content)) throw new ParserException("Couldn't verify checksum for file: " + filePath);
 			this.curAutomate = XMLParser.parseXML(content);
-		} catch (IOException e) { // Fichier corrompu
+			// charger vue graphique
+		}
+
+		catch (IOException | OutOfMemoryError | SecurityException e) { // Fichier corrompu ou droits insuffisants
 			// Afficher pop-up d'erreur fichier corrompu
 			throw new RuntimeException(e);
-		} catch (ParserException | RuntimeException e) { // Le fichier ne correspond pas à un automate
+		}
+
+		catch (InvalidPathException ignored){ } // Ne devrait jamais être thrown ; on la catch par sécurité
+
+		catch (ParserException | RuntimeException e) { // Le fichier ne correspond pas à un automate
 			// Si on catch une ParserException, c'est une erreur connue du parser
 			// Si on catch une RuntimeException, l'erreur est inconnue (nous n'avons pas prévu cette erreur)
 			// Dans les deux cas, on dit si l'erreur est connue ou non puis on affiche le message de l'erreur e.getMessage()
@@ -67,9 +73,30 @@ public class MainWindowController {
 		}
 	}
 
-	// TODO
+	// TODO: débugger (coder de manière compatible avec l'empaquetage en .jar)
 	protected void loadDefaultFile(){
+		try {
+			File myFile = new File("./temp.xml"); // Buffer file
+			Path path = FileSystems.getDefault().getPath("./temp.xml");
+			System.out.println(path);
+			InputStream inputStream = AutomatesLab.class.getResourceAsStream(DEFAULT_AUTOMATE); // Reading original data (using stream for .jar compatibility)
+			assert inputStream != null;
 
+			// Copy stream to temporary file
+			Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
+
+			// Load default file (parse... etc)
+			loadFile("temp.xml"); // c'est ici que ça plante ; dans loadFile, on attrape une InvalidPathException ignorée
+			System.out.println(curAutomate);
+
+			// Delete temp file (after letting time at the reader to open it)
+			Thread.sleep(300);
+			if (!myFile.delete()) System.err.println("Le fichier temporaire \"" + "temp.xml" + "\" n'a pas pu être supprimé");
+		}
+		catch (IOException e) {
+			System.err.println("Couldn't load default automate because of an unexpected IOException");
+		}
+		catch (InterruptedException ignored0) { }
 	}
 
 	// TODO
@@ -79,18 +106,20 @@ public class MainWindowController {
 
 	// Handler de boutons
 
-	// TODO
+	// TODO vérifier si le fichier a changé => oui, mettre une pop-up de confirmation avant de quitter
 	public void newButton(ActionEvent ignored) {
-		System.out.println("New not implemented yet");
+		if (curFile != null) return; // à faire: vérifier si le fichier a changé => oui, mettre une pop-up de confirmation avant de quitter
+		loadDefaultFile();
 	}
 
-	// TODO Afficher la fenêtre d'ouverture qui récupère le path
 	public void openButton(ActionEvent ignored) {
-		System.out.println("Open not implemented yet");
+		FileChooser fc = new FileChooser();
+		fc.setTitle("AutomatesLab - Ouvrir un automate XML");
 
-		String path = "C:\\Users\\Alex\\Desktop\\AutomateDefault.xml";
+		File res = fc.showOpenDialog(null);
+		if (res == null) return; // canceled by user
 
-		loadFile(path);
+		loadFile(res.getAbsolutePath());
 	}
 
 	// TODO
@@ -98,9 +127,17 @@ public class MainWindowController {
 		System.out.println("Save not implemented yet");
 	}
 
-	// TODO
+	// TODO Sauvegarder le fichier
 	public void saveAsButton(ActionEvent ignored) {
 		System.out.println("Save As not implemented yet");
+
+		FileChooser fc = new FileChooser();
+		fc.setTitle("AutomatesLab - Ouvrir un automate XML");
+		fc.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("XML Files", "*.xml"));
+		if (curFile!=null) fc.setInitialDirectory(new File(curFile.getAbsolutePath()));
+
+		File res = fc.showSaveDialog(null);
+		if (res != null) System.out.println(res.getAbsolutePath()); // change
 	}
 
 	// TODO pullModel/updateModel
@@ -130,8 +167,8 @@ public class MainWindowController {
 		}
 
 		try {
-			File myFile = new File(spec_temp_file_name); // Buffer file
-			Path path = FileSystems.getDefault().getPath(spec_temp_file_name);
+			File myFile = new File(TEMP_SPEC_FILE_NAME); // Buffer file
+			Path path = FileSystems.getDefault().getPath(TEMP_SPEC_FILE_NAME);
 			InputStream inputStream = AutomatesLab.class.getResourceAsStream("HelpResources/XML_representation_specifications.pdf"); // Reading original data (using stream for .jar compatibility)
 			assert inputStream != null;
 
@@ -141,7 +178,7 @@ public class MainWindowController {
 			Desktop.getDesktop().open(myFile);
 			// Delete temp file (after letting time at the reader to open it)
 			Thread.sleep(300);
-			if (!myFile.delete()) System.err.println("Le fichier temporaire \"" + spec_temp_file_name + "\" n'a pas pu être supprimé");
+			if (!myFile.delete()) System.err.println("Le fichier temporaire \"" + TEMP_SPEC_FILE_NAME + "\" n'a pas pu être supprimé");
 		}
 		catch (IOException e) {
 			System.err.println("Couldn't copy or open PDF help file");
