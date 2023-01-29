@@ -87,7 +87,12 @@ public class MainWindowController extends Controller {
 		tabChangeHandler(null, to);
 	}
 
-	// TODO: Charger vues & tester le cas où une erreur de parsing est levée
+	private void fetchCurrentViewChanges(){
+		Tab cur_tab = viewsTabpane.getSelectionModel().getSelectedItem();
+		tabChangeHandler(cur_tab, null);
+	}
+
+	// TODO: Tester le cas où une erreur de parsing est levée & Ajouter message "chargement vue XML" au dernier catch
 	private void loadFile(String filePath){
 		try {
 			String content = Files.readString(Path.of(filePath));
@@ -98,11 +103,6 @@ public class MainWindowController extends Controller {
 			curAutomate = XMLParser.parseXML(content);
 			curFile = new File(filePath);
 			fileIsUpToDate = true;
-
-			// FAIRE ICI: charger vue graphique
-
-			// On raffraichîs la vue active
-			updateCurrentView();
 		}
 
 		// Fichier corrompu ou droits insuffisants
@@ -115,23 +115,15 @@ public class MainWindowController extends Controller {
 		catch (InvalidPathException ignored){ }
 
 		// La checksum est invalide, ou le fichier ne correspond pas à un automate
-		catch (ParserException | RuntimeException e) {
-
-			// Si on catch une ParserException, c'est une erreur connue du parser
-			// Si on catch une RuntimeException, l'erreur est inconnue (nous n'avons pas prévu cette erreur)
-
-			// Dans les deux cas, on dit si l'erreur est connue ou non puis on affiche le message de l'erreur e.getMessage()
+		catch (ParserException | RuntimeException e) { // Affichage de l'erreur de parsing et chargement de la vue XML
 			Alert alert = new Alert(Alert.AlertType.ERROR, "Erreur attrapée lors du parsing\n\n" + e.getMessage(), ButtonType.OK);
 			alert.showAndWait();
-
-			// Puis on charge la vue XML
+			viewsTabpane.getSelectionModel().select(xmlViewTab);
 		}
 	}
 
 	protected void loadDefaultFile(){
 		final String PATH = "./temp.xml";
-
-		if (userSaidWeCannotContinue()) return; // On annule
 
 		try {
 			File myFile = new File(PATH); // Buffer file
@@ -143,7 +135,7 @@ public class MainWindowController extends Controller {
 			Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING); 	// Copy stream to temporary file
 			loadFile(String.valueOf(path)); 										// Load default file (parse... etc)
 			curFile = null;
-			fileIsUpToDate = false; // File is sync to model but not saved on disk
+			fileIsUpToDate = true;
 
 			// Delete temp file (after letting time at the reader to open it)
 			Thread.sleep(300);
@@ -157,10 +149,13 @@ public class MainWindowController extends Controller {
 
 	// TODO
 	protected void saveCurrentFile(){
+		if (curFile==null) return; // Cannot save file to disk (no destination set)
+
+		fetchCurrentViewChanges();
 		// String xml = curAutomate.toXML();
 	}
 
-	protected boolean userSaidWeCannotContinue(){
+	protected boolean isSafeToContinue(){
 		if (fileIsUpToDate) return true;
 
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -187,8 +182,10 @@ public class MainWindowController extends Controller {
 	// Handler de boutons
 
 	public void newButton(ActionEvent ignored) {
-		if (userSaidWeCannotContinue()) return; // On annule
-		loadDefaultFile();
+		if (isSafeToContinue()) {
+			loadDefaultFile();
+			updateCurrentView();
+		}
 	}
 
 	public void openButton(ActionEvent ignored) {
@@ -197,8 +194,8 @@ public class MainWindowController extends Controller {
 
 		File res = fc.showOpenDialog(null);
 		if (res == null) return; // canceled by user
+		if (!isSafeToContinue()) return; // Le fichier n'est pas à jour et l'utilisateur annule
 
-		if (userSaidWeCannotContinue()) return; // On annule
 		loadFile(res.getAbsolutePath());
 	}
 
