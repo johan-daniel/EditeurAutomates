@@ -219,7 +219,7 @@ public class XMLParser {
 		// 64 bits - adapted from String.hashCode()
 		// See https://stackoverflow.com/questions/1660501/what-is-a-good-64bit-hash-function-in-java-for-textual-strings
 
-		long hash = 1125799906942597L; // prime
+		long hash = 1125899906842597L; // prime
 		int len = input.length();
 
 		for (int i = 0; i < len; i++) {
