@@ -277,7 +277,11 @@ public class Automate implements XMLConvertible {
 
 		// On ajoute tous les états
 		for(State cur_state : statesList){
+			if(cur_state==null) continue;
+
+			res.append("\t\t");
 			res.append(cur_state.toXML());
+			res.append("\n");
 
 			// On ajoute toutes les transitions partant de cet état
 			for(State s : statesList){ // Etat de destination (transitions: cur_state -> s)
@@ -303,7 +307,7 @@ public class Automate implements XMLConvertible {
 				res.append("\"/>\n");
 			}
 
-			res.append("\t\t</State>"); // State.toXML ne renvoie que la balise ouvrante (avec les attributs) et pas la balise fermante ; on l'ajoute ici
+			res.append("\t\t</State>\n"); // State.toXML ne renvoie que la balise ouvrante (avec les attributs) et pas la balise fermante ; on l'ajoute ici
 		}
 
 		res.append("\t</Automate>");

@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.*;
+import java.util.Optional;
 
 public class MainWindowController extends Controller {
 	// Paramètres
@@ -58,19 +59,32 @@ public class MainWindowController extends Controller {
 
 		// Add listener that updates view models
 		viewsTabpane.getSelectionModel().selectedItemProperty().addListener((ov, fromTab , toTab) -> tabChangeHandler(fromTab, toTab));
+
+		loadDefaultFile();
 	}
 
 	private void tabChangeHandler(Tab fromTab, Tab toTab){
 		// Previous loaded model pushes its changes to global curAutomate
-		switch(fromTab.getId()){
-			case "xmlViewTab" -> xmlController.updateModel();
-			case "graphicViewTab" -> graphicController.updateModel();
+		if(fromTab!=null){
+			switch(fromTab.getId()){
+				case "xmlViewTab" -> xmlController.updateModel();
+				case "graphicViewTab" -> graphicController.updateModel();
+			}
 		}
+
 		// New loaded model fetches the changes from global curAutomate
-		switch(toTab.getId()) {
-			case "xmlViewTab" -> xmlController.pullModel();
-			case "graphicViewTab" -> graphicController.pullModel();
+		if (toTab!=null){
+			switch(toTab.getId()) {
+				case "xmlViewTab" -> xmlController.pullModel();
+				case "graphicViewTab" -> graphicController.pullModel();
+			}
 		}
+
+	}
+
+	private void updateCurrentView(){
+		Tab to = viewsTabpane.getSelectionModel().getSelectedItem();
+		tabChangeHandler(null, to);
 	}
 
 	// TODO: Charger vues & tester le cas où une erreur de parsing est levée
@@ -85,7 +99,10 @@ public class MainWindowController extends Controller {
 			curFile = new File(filePath);
 			fileIsUpToDate = true;
 
-			// charger vue graphique
+			// FAIRE ICI: charger vue graphique
+
+			// On raffraichîs la vue active
+			updateCurrentView();
 		}
 
 		// Fichier corrompu ou droits insuffisants
@@ -113,6 +130,9 @@ public class MainWindowController extends Controller {
 
 	protected void loadDefaultFile(){
 		final String PATH = "./temp.xml";
+
+		if (userSaidWeCannotContinue()) return; // On annule
+
 		try {
 			File myFile = new File(PATH); // Buffer file
 			Path path = FileSystems.getDefault().getPath(PATH);
@@ -122,7 +142,8 @@ public class MainWindowController extends Controller {
 
 			Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING); 	// Copy stream to temporary file
 			loadFile(String.valueOf(path)); 										// Load default file (parse... etc)
-			fileIsUpToDate = true;
+			curFile = null;
+			fileIsUpToDate = false; // File is sync to model but not saved on disk
 
 			// Delete temp file (after letting time at the reader to open it)
 			Thread.sleep(300);
@@ -139,11 +160,34 @@ public class MainWindowController extends Controller {
 		// String xml = curAutomate.toXML();
 	}
 
+	protected boolean userSaidWeCannotContinue(){
+		if (fileIsUpToDate) return true;
+
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Alerte");
+		alert.setHeaderText("Il y a des changements non enregistrés. Continuer ?");
+
+		ButtonType cancel = ButtonType.CANCEL;
+		ButtonType go_on = new ButtonType("Continuer sans sauvegarder");
+		ButtonType save = new ButtonType("Sauvegarder et continuer");
+		alert.getButtonTypes().clear();
+		alert.getButtonTypes().addAll(cancel, go_on, save);
+
+		Optional<ButtonType> res = alert.showAndWait();
+
+		if (res.isEmpty()) return false;
+		if (res.get() == cancel) return false;
+		if (res.get() == go_on) return true;
+
+		// Here res.get() == save
+		saveCurrentFile();
+		return true;
+	}
+
 	// Handler de boutons
 
-	// TODO vérifier si le fichier a changé => oui, mettre une pop-up de confirmation avant de quitter
 	public void newButton(ActionEvent ignored) {
-		if (curFile != null) return; // à faire: vérifier si le fichier a changé => oui, mettre une pop-up de confirmation avant de quitter
+		if (userSaidWeCannotContinue()) return; // On annule
 		loadDefaultFile();
 	}
 
@@ -154,6 +198,7 @@ public class MainWindowController extends Controller {
 		File res = fc.showOpenDialog(null);
 		if (res == null) return; // canceled by user
 
+		if (userSaidWeCannotContinue()) return; // On annule
 		loadFile(res.getAbsolutePath());
 	}
 
@@ -175,12 +220,10 @@ public class MainWindowController extends Controller {
 		if (res != null) System.out.println(res.getAbsolutePath()); // change
 	}
 
-	// TODO pullModel/updateModel
 	public void setActiveGraphicalView(ActionEvent ignored) {
 		viewsTabpane.getSelectionModel().select(graphicViewTab);
 	}
 
-	// TODO pullModel/updateModel
 	public void setActiveXMLView(ActionEvent ignored) {
 		viewsTabpane.getSelectionModel().select(xmlViewTab);
 	}
