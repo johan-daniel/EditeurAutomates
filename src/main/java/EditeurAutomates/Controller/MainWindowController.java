@@ -5,11 +5,12 @@ import EditeurAutomates.Model.ParserException;
 import EditeurAutomates.Model.XMLParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,21 +31,48 @@ public class MainWindowController extends Controller {
 	@FXML private Tab graphicViewTab;
 	@FXML private Tab xmlViewTab;
 
+	XMLController xmlController;
+	GraphicController graphicController;
+
 	public MainWindowController() {
 		final String os = System.getProperty("os.name");
 		this.isMacos = (os != null && os.startsWith("Mac"));
 	}
 
 	@FXML
-	public void initialize() {
-
-		if (isMacos){
+	public void initialize() throws IOException {
+		if (isMacos) {
 			// Use macOS menu bar
 			mainMenuBar.setUseSystemMenuBar(true);
 		}
+
+		// Load the views controllers and FXML
+		FXMLLoader xmlLoader = new FXMLLoader(getClass().getResource("/EditeurAutomates/Views/XMLView.fxml"));
+		xmlController = new XMLController();
+		xmlLoader.setController(xmlController);
+		xmlViewTab.setContent(xmlLoader.load());
+		FXMLLoader graphicLoader = new FXMLLoader(getClass().getResource("/EditeurAutomates/Views/GraphicView.fxml"));
+		graphicController = new GraphicController();
+		graphicLoader.setController(graphicController);
+		graphicViewTab.setContent(graphicLoader.load());
+
+		// Add listener that updates view models
+		viewsTabpane.getSelectionModel().selectedItemProperty().addListener((ov, fromTab , toTab) -> tabChangeHandler(fromTab, toTab));
 	}
 
-	// Fichier
+	private void tabChangeHandler(Tab fromTab, Tab toTab){
+		// Previous loaded model pushes its changes to global curAutomate
+		switch(fromTab.getId()){
+			case "xmlViewTab" -> xmlController.updateModel();
+			case "graphicViewTab" -> graphicController.updateModel();
+		}
+		// New loaded model fetches the changes from global curAutomate
+		switch(toTab.getId()) {
+			case "xmlViewTab" -> xmlController.pullModel();
+			case "graphicViewTab" -> graphicController.pullModel();
+		}
+	}
+
 
 	// TODO: Charger vues & vérifier erreur de parsing
 	private void loadFile(String filePath){
