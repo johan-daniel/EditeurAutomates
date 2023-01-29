@@ -6,7 +6,6 @@ import EditeurAutomates.Model.XMLParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
@@ -15,7 +14,6 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.*;
 
 public class MainWindowController extends Controller {
@@ -27,15 +25,14 @@ public class MainWindowController extends Controller {
 	private File curFile = null;
 	protected boolean fileIsUpToDate = true;
 
-	XMLController xmlController;
-	GraphicController graphicController;
-
 	// Objets du FXML
 	@FXML private MenuBar mainMenuBar;
 	@FXML private TabPane viewsTabpane;
 	@FXML private Tab graphicViewTab;
 	@FXML private Tab xmlViewTab;
 
+	XMLController xmlController;
+	GraphicController graphicController;
 
 	public MainWindowController() {
 		final String os = System.getProperty("os.name");
@@ -49,29 +46,31 @@ public class MainWindowController extends Controller {
 			mainMenuBar.setUseSystemMenuBar(true);
 		}
 
+		// Load the views controllers and FXML
 		FXMLLoader xmlLoader = new FXMLLoader(getClass().getResource("/EditeurAutomates/Views/XMLView.fxml"));
-		XMLController xmlController = new XMLController();
+		xmlController = new XMLController();
 		xmlLoader.setController(xmlController);
 		xmlViewTab.setContent(xmlLoader.load());
-
 		FXMLLoader graphicLoader = new FXMLLoader(getClass().getResource("/EditeurAutomates/Views/GraphicView.fxml"));
-		GraphicController graphicController = new GraphicController();
+		graphicController = new GraphicController();
 		graphicLoader.setController(graphicController);
 		graphicViewTab.setContent(graphicLoader.load());
 
-		viewsTabpane.getSelectionModel().selectedItemProperty().addListener((ov, fromTab , toTab) -> {
-			switch(toTab.getId()) {
-				case "xmlViewTab" -> {
-					graphicController.updateModel();
-					xmlController.pullModel();
-				}
-				case "graphicViewTab" -> {
-					xmlController.updateModel();
-					graphicController.pullModel();
-				}
-			}
-		});
+		// Add listener that updates view models
+		viewsTabpane.getSelectionModel().selectedItemProperty().addListener((ov, fromTab , toTab) -> tabChangeHandler(fromTab, toTab));
+	}
 
+	private void tabChangeHandler(Tab fromTab, Tab toTab){
+		// Previous loaded model pushes its changes to global curAutomate
+		switch(fromTab.getId()){
+			case "xmlViewTab" -> xmlController.updateModel();
+			case "graphicViewTab" -> graphicController.updateModel();
+		}
+		// New loaded model fetches the changes from global curAutomate
+		switch(toTab.getId()) {
+			case "xmlViewTab" -> xmlController.pullModel();
+			case "graphicViewTab" -> graphicController.pullModel();
+		}
 	}
 
 
