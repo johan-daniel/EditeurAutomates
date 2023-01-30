@@ -67,7 +67,13 @@ public class MainWindowController extends Controller {
 		// Previous loaded model pushes its changes to global curAutomate
 		if(fromTab!=null){
 			switch(fromTab.getId()){
-				case "xmlViewTab" -> xmlController.updateModel();
+				case "xmlViewTab" -> {
+					try { xmlController.updateModel(); }
+					catch (RuntimeException e) {
+						viewsTabpane.getSelectionModel().select(xmlViewTab);
+						showAlert("Parsing error", "Impossible de charger la vue graphique: erreur attrapée lors du parsing", e.getMessage());
+					}
+				}
 				case "graphicViewTab" -> graphicController.updateModel();
 			}
 		}
@@ -92,11 +98,21 @@ public class MainWindowController extends Controller {
 		tabChangeHandler(cur_tab, null);
 	}
 
-	// TODO: Tester le cas où une erreur de parsing est levée & Ajouter message "chargement vue XML" au dernier catch
+	// TODO: Tester le cas où une erreur de parsing est levée & dernier commentaire (dernier catch)
 	private void loadFile(String filePath){
-		try {
-			String content = Files.readString(Path.of(filePath));
+		String content;
 
+		// On récupère le contenu
+		try {
+			content = Files.readString(Path.of(filePath));
+		}
+		// Fichier corrompu ou droits insuffisants
+		catch (IOException | OutOfMemoryError | SecurityException e) {
+			showAlert("Loading error", "Ce fichier ne peut pas être chargé: le fichier est corrompu, ou l'encodage est incompatible, ou l'application n'a pas suffisament de droits pour y accéder.", e.getMessage());
+			return;
+		}
+
+		try {
 			// Si checksum invalide, pop-up + chargement vue XML
 			if (!XMLParser.verifyChecksum(content)) throw new ParserException("Couldn't verify checksum for file \"" + filePath + "\"");
 
@@ -105,26 +121,26 @@ public class MainWindowController extends Controller {
 			fileIsUpToDate = true;
 		}
 
-		// Fichier corrompu ou droits insuffisants
-		catch (IOException | OutOfMemoryError | SecurityException e) {
-			Alert alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.setTitle("Ce fichier ne peut pas être chargé: le fichier est corrompu, ou l'encodage est incompatible, ou l'application n'a pas suffisament de droits pour y accéder.\\n\\n\"");
-			alert.setHeaderText(e.getMessage());
-			alert.showAndWait();
-		}
-
 		// Ne devrait jamais être thrown ; on la catch par sécurité
 		catch (InvalidPathException ignored){ }
 
 		// La checksum est invalide, ou le fichier ne correspond pas à un automate
 		catch (ParserException | RuntimeException e) { // Affichage de l'erreur de parsing et chargement de la vue XML
-			Alert alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.setTitle("Parsing error");
-			alert.setHeaderText("Erreur attrapée lors du parsing");
-			alert.setContentText(e.getMessage());
-			alert.showAndWait();
+			showAlert("Parsing error", "Erreur attrapée lors du parsing", e.getMessage());
+
+			// [ICI] Ajouter le chargement du fichier dans l'onglet XML
+
+			xmlController.loadContentToXMLView(content);
 			viewsTabpane.getSelectionModel().select(xmlViewTab);
 		}
+	}
+
+	private static void showAlert(String title, String header, String content){
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(content);
+		alert.showAndWait();
 	}
 
 	protected void loadDefaultFile(){

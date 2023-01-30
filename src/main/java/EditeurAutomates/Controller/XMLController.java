@@ -21,13 +21,11 @@ public class XMLController extends ViewController {
 		String edited_xml = editor.getText();
 
 		if (Objects.equals(edited_xml, initial_xml)) return; // Pas besoin d'update le modèle
-
-		try {
+		try	{
 			curAutomate = XMLParser.parseXML(edited_xml);
 		} catch(ParserException e){
-			System.err.println("Caught parser exception: " + e.getMessage() + " ; Cannot load graphical view.");
+			throw new RuntimeException(e);
 		}
-
 	}
 
 	@Override
@@ -38,6 +36,11 @@ public class XMLController extends ViewController {
 
 		editor.replaceText(0, editor.getText().length(), replacement);
 		initial_xml = replacement;
+	}
+
+	public void loadContentToXMLView(String content){
+		editor.replaceText(0, editor.getText().length(), content);
+		initial_xml = content;
 	}
 
 }
