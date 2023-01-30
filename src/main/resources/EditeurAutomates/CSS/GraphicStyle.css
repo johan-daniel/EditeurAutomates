@@ -1,0 +1,19 @@
+#toolbox {
+    -fx-border-width: 0px 1px 0px 0px;
+    -fx-border-style: solid;
+    -fx-border-color: -fx-orange;
+    -fx-pref-width: 100px;
+    -fx-pref-height: -fx-HEIGHT;
+    -fx-background-color: -fx-dark;
+    -fx-alignment: center;
+}
+
+.toggle-button {
+    -fx-background-color: -fx-lighter;
+    -fx-pref-width: 75px;
+    -fx-pref-height: 50px;
+}
+
+.toggle-button:selected {
+    -fx-background-color: -fx-orange;
+}

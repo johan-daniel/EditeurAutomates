@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" stylesheets="@../CSS/GraphicStyle.css">
+<AnchorPane stylesheets="@../CSS/GraphicStyle.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
 
-	<HBox fx:id="toolbox" spacing="5" prefHeight="35565" prefWidth="200">
-		<Label text="Boîte à outils"/>
-	</HBox>
+	<VBox fx:id="toolbox" prefHeight="35565" prefWidth="200" spacing="5">
+         <ToggleButton fx:id="stateTool" mnemonicParsing="false" text="Etat" />
+         <ToggleButton fx:id="transitionTool" mnemonicParsing="false" text="Transition" />
+	</VBox>
 
-	<HBox fx:id="drawArea" spacing="5" prefHeight="35565" prefWidth="Infinity" layoutX="200">
-		<Label text="Vue graphique"/>
-	</HBox>
+	<Pane fx:id="drawArea" layoutX="200" prefHeight="35565" prefWidth="Infinity">
+		<Label text="Vue graphique" />
+	</Pane>
 
 </AnchorPane>
