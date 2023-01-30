@@ -1,6 +1,12 @@
 package EditeurAutomates.Controller;
 
+import javafx.fxml.FXML;
+import javafx.scene.layout.HBox;
+
 public class GraphicController extends ViewController {
+
+	@FXML public HBox toolbox;
+	@FXML public HBox drawArea;
 
 	// TODO mettre à jour la variable fileIsUpToDate à false lors d'un changement
 
