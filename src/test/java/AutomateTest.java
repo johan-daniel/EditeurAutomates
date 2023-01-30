@@ -2,8 +2,6 @@ import EditeurAutomates.Model.Automate;
 import EditeurAutomates.Model.State;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 public class AutomateTest {
 
 	private Automate automate;
