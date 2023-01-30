@@ -9,8 +9,8 @@ Orange: 		#c54607
 .text-area {
 
     -fx-text-fill: #f8f4f1;
-    -fx-text-area-background: #44414e;
-    -fx-background-color: #44414e; /* Fond de la marge et du padding */
+    -fx-text-area-background: -fx-lighter;
+    -fx-background-color: -fx-lighter; /* Fond de la marge et du padding */
 
     -fx-margin: 10px;
     -fx-padding: 10px;
@@ -19,5 +19,10 @@ Orange: 		#c54607
 }
 
 .text-area .content { /* Principal (zone de texte) */
-    -fx-background-color: #44414e;
+    -fx-background-color: -fx-lighter;
+    -fx-padding: 10px;
+    -fx-border-width: 2px;
+    -fx-border-color: -fx-dark;
+    -fx-border-style: solid;
+    -fx-border-radius: 5px;
 }
