@@ -3,13 +3,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx">
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" stylesheets="@../CSS/GraphicStyle.css">
 
-	<HBox spacing="5" prefHeight="35565" prefWidth="200">
+	<HBox fx:id="toolbox" spacing="5" prefHeight="35565" prefWidth="200">
 		<Label text="Boîte à outils"/>
 	</HBox>
 
-	<HBox spacing="5" prefHeight="35565" prefWidth="Infinity" layoutX="200">
+	<HBox fx:id="drawArea" spacing="5" prefHeight="35565" prefWidth="Infinity" layoutX="200">
 		<Label text="Vue graphique"/>
 	</HBox>
 
