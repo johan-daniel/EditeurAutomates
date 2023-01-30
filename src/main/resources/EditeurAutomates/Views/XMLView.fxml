@@ -7,7 +7,7 @@
 
 	<VBox>
 		<TextArea fx:id="editor">
-			Insérer le XML de l'automate ici
+
 		</TextArea>
 	</VBox>
 

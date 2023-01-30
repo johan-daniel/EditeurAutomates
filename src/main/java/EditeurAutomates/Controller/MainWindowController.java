@@ -26,7 +26,6 @@ public class MainWindowController extends Controller {
 	// Attributs
 	private boolean canPullXmlModel = true;
 	private File curFile = null;
-	private boolean fileIsUpToDate = true;
 
 	// Contrôleurs
 	private XMLController xmlController;
@@ -62,8 +61,6 @@ public class MainWindowController extends Controller {
 
 		// Add listener that updates view models
 		viewsTabpane.getSelectionModel().selectedItemProperty().addListener((ov, fromTab , toTab) -> tabChangeHandler(fromTab, toTab));
-
-		loadDefaultFile();
 	}
 
 	private void tabChangeHandler(Tab fromTab, Tab toTab){

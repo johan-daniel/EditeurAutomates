@@ -8,20 +8,21 @@ import javafx.scene.control.TextArea;
 import java.util.Objects;
 
 public class XMLController extends ViewController {
-	private String initial_xml;
+	private String initial_xml = ""; // Valeur par défaut du TextArea au chargement de l'application
+
+	@FXML public TextArea editor;
 
 	@FXML
-	public TextArea editor;
+	public void initialize() {
+		editor.textProperty().addListener((ov, fromTab , toTab) -> textChangeHandler());
+	}
 
-	// TODO mettre à jour la variable fileIsUpToDate à false lors d'un changement
-
-	// TODO rester sur la vue XML si erreur. Comment faire ? dans tabChangeHandler (avec un throw) ?
 	@Override
 	public void updateModel() {
-		String edited_xml = editor.getText();
+		if (!xmlChanged()) return; // Pas besoin d'update le modèle
 
-		if (Objects.equals(edited_xml, initial_xml)) return; // Pas besoin d'update le modèle
 		try	{
+			String edited_xml = editor.getText();
 			curAutomate = XMLParser.parseXML(edited_xml);
 		} catch(ParserException e){
 			throw new RuntimeException(e);
@@ -41,6 +42,17 @@ public class XMLController extends ViewController {
 	public void loadContentToXMLView(String content){
 		editor.replaceText(0, editor.getText().length(), content);
 		initial_xml = content;
+	}
+
+	private boolean xmlChanged(){
+		String field_content = editor.getText();
+		return (!Objects.equals(field_content, initial_xml));
+	}
+
+	private void textChangeHandler(){
+		if (xmlChanged()){
+			fileIsUpToDate = false;
+		}
 	}
 
 }
