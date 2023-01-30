@@ -107,7 +107,9 @@ public class MainWindowController extends Controller {
 
 		// Fichier corrompu ou droits insuffisants
 		catch (IOException | OutOfMemoryError | SecurityException e) {
-			Alert alert = new Alert(Alert.AlertType.INFORMATION, "Ce fichier ne peut pas être chargé: le fichier est corrompu, ou l'encodage est incompatible, ou l'application n'a pas suffisament de droits pour y accéder.\n\n" + e.getMessage(), ButtonType.OK);
+			Alert alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setTitle("Ce fichier ne peut pas être chargé: le fichier est corrompu, ou l'encodage est incompatible, ou l'application n'a pas suffisament de droits pour y accéder.\\n\\n\"");
+			alert.setHeaderText(e.getMessage());
 			alert.showAndWait();
 		}
 
@@ -116,7 +118,10 @@ public class MainWindowController extends Controller {
 
 		// La checksum est invalide, ou le fichier ne correspond pas à un automate
 		catch (ParserException | RuntimeException e) { // Affichage de l'erreur de parsing et chargement de la vue XML
-			Alert alert = new Alert(Alert.AlertType.ERROR, "Erreur attrapée lors du parsing\n\n" + e.getMessage(), ButtonType.OK);
+			Alert alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setTitle("Parsing error");
+			alert.setHeaderText("Erreur attrapée lors du parsing");
+			alert.setContentText(e.getMessage());
 			alert.showAndWait();
 			viewsTabpane.getSelectionModel().select(xmlViewTab);
 		}
