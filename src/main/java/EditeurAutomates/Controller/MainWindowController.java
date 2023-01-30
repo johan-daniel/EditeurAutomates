@@ -18,26 +18,25 @@ import java.nio.file.*;
 import java.util.Optional;
 
 public class MainWindowController extends Controller {
-	// Paramètres
+	// Constantes
 	private final boolean isMacos;
 	private static final String TEMP_SPEC_FILE_NAME = "./Specifications XML des Automates.pdf";
 	private static final String DEFAULT_AUTOMATE = "AutomateDefault.xml";
 
+	// Attributs
 	private boolean canPullXmlModel = true;
-
 	private File curFile = null;
-	protected boolean fileIsUpToDate = true;
+	private boolean fileIsUpToDate = true;
+
+	// Contrôleurs
+	private XMLController xmlController;
+	private GraphicController graphicController;
 
 	// Objets du FXML
 	@FXML private MenuBar mainMenuBar;
 	@FXML private TabPane viewsTabpane;
 	@FXML private Tab graphicViewTab;
 	@FXML private Tab xmlViewTab;
-
-	XMLController xmlController;
-	GraphicController graphicController;
-
-
 
 	public MainWindowController() {
 		final String os = System.getProperty("os.name");
