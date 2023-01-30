@@ -23,6 +23,8 @@ public class MainWindowController extends Controller {
 	private static final String TEMP_SPEC_FILE_NAME = "./Specifications XML des Automates.pdf";
 	private static final String DEFAULT_AUTOMATE = "AutomateDefault.xml";
 
+	private boolean canPullXmlModel = true;
+
 	private File curFile = null;
 	protected boolean fileIsUpToDate = true;
 
@@ -34,6 +36,8 @@ public class MainWindowController extends Controller {
 
 	XMLController xmlController;
 	GraphicController graphicController;
+
+
 
 	public MainWindowController() {
 		final String os = System.getProperty("os.name");
@@ -65,18 +69,27 @@ public class MainWindowController extends Controller {
 
 	private void tabChangeHandler(Tab fromTab, Tab toTab){
 		// Previous loaded model pushes its changes to global curAutomate
+		if (!canPullXmlModel){ // On vient d'une erreur de parsing (*)
+			canPullXmlModel = true;
+			return;
+		}
+
 		if(fromTab!=null){
 			switch(fromTab.getId()){
 				case "xmlViewTab" -> {
-					try { xmlController.updateModel(); }
-					catch (RuntimeException e) {
+					try {
+						xmlController.updateModel();
+					} catch (RuntimeException e) {
+						canPullXmlModel = false;
 						viewsTabpane.getSelectionModel().select(xmlViewTab);
-						showAlert("Parsing error", "Impossible de charger la vue graphique: erreur attrapée lors du parsing", e.getMessage());
+						showAlert("Parsing error", "Impossible de charger la vue graphique: erreur attrapée lors du parsing", e.getMessage()); // (*)
 					}
 				}
 				case "graphicViewTab" -> graphicController.updateModel();
 			}
 		}
+
+		if (!canPullXmlModel) return;
 
 		// New loaded model fetches the changes from global curAutomate
 		if (toTab!=null){
