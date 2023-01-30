@@ -39,9 +39,14 @@ public class XMLController extends ViewController {
 		initial_xml = replacement;
 	}
 
-	public void loadContentToXMLView(String content){
+	protected void loadContentToXMLView(String content){
 		editor.replaceText(0, editor.getText().length(), content);
 		initial_xml = content;
+		fileIsUpToDate = true;
+	}
+
+	protected String getEditorText(){
+		return editor.getText();
 	}
 
 	private boolean xmlChanged(){

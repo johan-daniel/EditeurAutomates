@@ -12,9 +12,11 @@ import javafx.stage.FileChooser;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.*;
+import java.util.Objects;
 import java.util.Optional;
 
 public class MainWindowController extends Controller {
@@ -107,6 +109,10 @@ public class MainWindowController extends Controller {
 		tabChangeHandler(cur_tab, null);
 	}
 
+	// TODO: comportement bizarre au chargement d'un fichier
+	// - Une fois sur deux lorsqu'on charge un fichier et qu'il y a une parserException into vue XML, le xml ne charge pas dans la vue
+	// - La mise à jour de la variable fileIsUpToDate par le contrôleur XML a l'air d'être erronée lorsqu'on charge un fichier (probablement lié au point précédent)
+
 	// TODO: Tester le cas où une erreur de parsing est levée
 	private void loadFile(String filePath){
 		String content;
@@ -120,6 +126,9 @@ public class MainWindowController extends Controller {
 			showAlert("Loading error", "Ce fichier ne peut pas être chargé: le fichier est corrompu, ou l'encodage est incompatible, ou l'application n'a pas suffisament de droits pour y accéder.", e.getMessage());
 			return;
 		}
+
+		System.out.println("Chargement du fichier " + filePath + "\nIl contient:");
+		System.out.println(content);
 
 		try {
 			// Si checksum invalide, pop-up + chargement vue XML
@@ -136,20 +145,14 @@ public class MainWindowController extends Controller {
 		// La checksum est invalide, ou le fichier ne correspond pas à un automate
 		catch (ParserException | RuntimeException e) { // Affichage de l'erreur de parsing et chargement de la vue XML
 			showAlert("Parsing error", "Erreur attrapée lors du parsing", e.getMessage());
+			curFile = new File(filePath);
+			fileIsUpToDate = true;
 			xmlController.loadContentToXMLView(content);
 			viewsTabpane.getSelectionModel().select(xmlViewTab);
 		}
 	}
 
-	private static void showAlert(String title, String header, String content){
-		Alert alert = new Alert(Alert.AlertType.INFORMATION);
-		alert.setTitle(title);
-		alert.setHeaderText(header);
-		alert.setContentText(content);
-		alert.showAndWait();
-	}
-
-	protected void loadDefaultFile(){
+	private void loadDefaultFile(){
 		final String PATH = "./temp.xml";
 
 		try {
@@ -174,15 +177,31 @@ public class MainWindowController extends Controller {
 		catch (InterruptedException ignored0) { } // Awaken during wait (we don't care)
 	}
 
-	// TODO
-	protected void saveCurrentFile(){
-		if (curFile==null) return; // Cannot save file to disk (no destination set)
+	private void saveCurrentFile(){
+		if (curFile==null) return; // Cannot save file to disk (no destination set) (this should not happen since only saveButton calls this function)
 
-		fetchCurrentViewChanges();
-		// String xml = curAutomate.toXML();
+		String cur_view = viewsTabpane.getSelectionModel().getSelectedItem().getId();
+		String contenu_du_fichier;
+
+		// On update l'automate selon la vue courante, sauf pour la vue XML (que l'on autorise à enregistrer sans être un automate valide)
+		if (Objects.equals(cur_view, "xmlViewTab")){
+			contenu_du_fichier = xmlController.getEditorText();
+		}
+		else {
+			fetchCurrentViewChanges();
+			contenu_du_fichier = XMLParser.getFileXML(curAutomate);
+		}
+
+		try (FileWriter f = new FileWriter(curFile)) {
+			f.write(contenu_du_fichier);
+			f.flush();
+			fileIsUpToDate = true;
+		} catch(IOException e){
+			showError("Couldn't save file", "Le fichier n'a pas pu être sauvegardé en raison d'une erreur inattendue", e.getMessage());
+		}
 	}
 
-	protected boolean isSafeToContinue(){
+	private boolean isSafeToContinue(){
 		if (fileIsUpToDate) return true;
 
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -204,6 +223,22 @@ public class MainWindowController extends Controller {
 		// Here res.get() == save
 		saveCurrentFile();
 		return true;
+	}
+
+	private static void showAlert(String title, String header, String content){
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(content);
+		alert.showAndWait();
+	}
+
+	private static void showError(String title, String header, String content){
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(content);
+		alert.showAndWait();
 	}
 
 	// Handler de boutons
