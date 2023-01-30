@@ -34,7 +34,7 @@ public class XMLController extends ViewController {
 	public void pullModel() {
 		String replacement;
 		if (curAutomate==null) replacement = "";
-		else replacement = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<AutomateFile checksum=\"\">\n" + curAutomate.toXML() + "\n</AutomateFile>";
+		else replacement = XMLParser.getViewXML(curAutomate);
 
 		editor.replaceText(0, editor.getText().length(), replacement);
 		initial_xml = replacement;

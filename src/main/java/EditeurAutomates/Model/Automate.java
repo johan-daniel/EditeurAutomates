@@ -298,13 +298,16 @@ public class Automate implements XMLConvertible {
 						}
 					}
 				}
-				res.append("\t\t\t<Transition destination=\"");
-				res.append(s.numero);
-				res.append("\" letters=\"");
-				res.append(symbols);
-				res.append("\" acceptsEmptyWord=\"");
-				res.append(acceptsEmptyWord);
-				res.append("\"/>\n");
+
+				if (symbols.length()>0 || acceptsEmptyWord) {
+						res.append("\t\t\t<Transition destination=\"");
+						res.append(s.numero);
+						res.append("\" letters=\"");
+						res.append(symbols);
+						res.append("\" acceptsEmptyWord=\"");
+						res.append(acceptsEmptyWord);
+						res.append("\"/>\n");
+					}
 			}
 
 			res.append("\t\t</State>\n"); // State.toXML ne renvoie que la balise ouvrante (avec les attributs) et pas la balise fermante ; on l'ajoute ici

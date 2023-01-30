@@ -6,6 +6,15 @@ import java.util.Objects;
 public class XMLParser {
 	private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
+	public static String getViewXML(Automate a){
+		return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<AutomateFile checksum=\"\">\n" + a.toXML() + "\n</AutomateFile>\n";
+	}
+
+	public static String getFileXML(Automate a){
+		long checksum = calculateChecksum(getViewXML(a));
+		return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<AutomateFile checksum=\"" + checksum + "\">\n" + a.toXML() + "\n</AutomateFile>\n";
+	}
+
 	public static Automate parseXML(String xml) throws ParserException, RuntimeException {
 		Automate cur_automate = null;
 		State cur_state = null;

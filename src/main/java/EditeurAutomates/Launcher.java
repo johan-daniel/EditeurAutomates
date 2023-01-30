@@ -60,7 +60,7 @@ public class Launcher {
 
 		try{
 			automate1 = XMLParser.parseXML(xml);
-			String to_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><AutomateFile checksum=\"57\">" + automate1.toXML() + "</AutomateFile>";
+			String to_XML = XMLParser.getViewXML(automate1);
 			automate2 = XMLParser.parseXML(to_XML);
 
 			System.out.println("Les deux automates doivent être les mêmes:");
