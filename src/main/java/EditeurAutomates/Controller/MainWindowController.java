@@ -107,7 +107,7 @@ public class MainWindowController extends Controller {
 		tabChangeHandler(cur_tab, null);
 	}
 
-	// TODO: Tester le cas où une erreur de parsing est levée & dernier commentaire (dernier catch)
+	// TODO: Tester le cas où une erreur de parsing est levée
 	private void loadFile(String filePath){
 		String content;
 
@@ -136,9 +136,6 @@ public class MainWindowController extends Controller {
 		// La checksum est invalide, ou le fichier ne correspond pas à un automate
 		catch (ParserException | RuntimeException e) { // Affichage de l'erreur de parsing et chargement de la vue XML
 			showAlert("Parsing error", "Erreur attrapée lors du parsing", e.getMessage());
-
-			// [ICI] Ajouter le chargement du fichier dans l'onglet XML
-
 			xmlController.loadContentToXMLView(content);
 			viewsTabpane.getSelectionModel().select(xmlViewTab);
 		}
