@@ -108,7 +108,7 @@ public class GraphicController extends ViewController {
 
 		drawArea.getChildren().add(c);
 		states.add(state);
-		//curAutomate.createState((int) x, (int) y);
+		curAutomate.createState((int) x, (int) y);
 	}
 }
 
