@@ -17,3 +17,7 @@
 .toggle-button:selected {
     -fx-background-color: -fx-orange;
 }
+
+#drawArea {
+    -fx-pref-height: -fx-HEIGHT;
+}

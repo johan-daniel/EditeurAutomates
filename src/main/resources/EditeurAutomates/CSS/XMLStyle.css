@@ -7,15 +7,10 @@ Orange: 		#c54607
 */
 
 .text-area {
-
     -fx-text-fill: #f8f4f1;
     -fx-text-area-background: -fx-lighter;
     -fx-background-color: -fx-lighter; /* Fond de la marge et du padding */
-
-    -fx-margin: 10px;
     -fx-padding: 10px;
-	-fx-pref-width: 1000px;
-    -fx-pref-height: 650px;
 }
 
 .text-area .content { /* Principal (zone de texte) */

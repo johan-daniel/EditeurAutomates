@@ -4,16 +4,19 @@ import EditeurAutomates.Model.ParserException;
 import EditeurAutomates.Model.XMLParser;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 import java.util.Objects;
 
 public class XMLController extends ViewController {
 	private String initial_xml = ""; // Valeur par défaut du TextArea au chargement de l'application
 
-	@FXML public TextArea editor;
+	@FXML private TextArea editor;
 
 	@FXML
 	public void initialize() {
+		HBox.setHgrow(editor, Priority.ALWAYS);
 		editor.textProperty().addListener((ov, fromTab , toTab) -> textChangeHandler());
 	}
 

@@ -3,15 +3,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane stylesheets="@../CSS/GraphicStyle.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<HBox stylesheets="@../CSS/GraphicStyle.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
 
-	<VBox fx:id="toolbox" prefHeight="35565" prefWidth="200" spacing="5">
+	<VBox fx:id="toolbox" spacing="10">
          <ToggleButton fx:id="stateTool" mnemonicParsing="false" text="Etat" />
          <ToggleButton fx:id="transitionTool" mnemonicParsing="false" text="Transition" />
 	</VBox>
 
-	<Pane fx:id="drawArea" layoutX="200" prefHeight="35565" prefWidth="Infinity">
-		<Label text="Vue graphique" />
+	<Pane fx:id="drawArea">
 	</Pane>
 
-</AnchorPane>
+</HBox>

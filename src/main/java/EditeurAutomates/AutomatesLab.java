@@ -47,6 +47,8 @@ public class AutomatesLab extends Application {
 		// Icône de la fenêtre
 		setAppIcon(stage, Icon);
 
+		stage.setMinHeight(480);
+		stage.setMinWidth(640);
 		stage.setScene(scene);
 		stage.show();
 	}
