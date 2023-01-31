@@ -177,7 +177,6 @@ public class MainWindowController extends Controller {
 		catch (InterruptedException ignored0) { } // Awaken during wait (we don't care)
 	}
 
-	// TODO tester si le contenu n'est pas écrit plusieurs fois dans le fichier si on enregistre plusieurs fois consécutivement
 	private void saveCurrentFile(){
 		if (curFile==null) return; // Cannot save file to disk (no destination set) (this should not happen since only saveButton calls this function)
 
@@ -253,7 +252,8 @@ public class MainWindowController extends Controller {
 
 	public void openButton() {
 		FileChooser fc = new FileChooser();
-		fc.setTitle("AutomatesLab - Ouvrir un automate XML");
+		fc.setTitle("AutomatesLab - Ouvrir...");
+		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Files (*.xml)", "*.xml"));
 
 		File res = fc.showOpenDialog(null);
 		if (res == null) return; // canceled by user
@@ -270,12 +270,10 @@ public class MainWindowController extends Controller {
 	public void saveAsButton() {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("AutomatesLab - Enregistrer sous...");
-		fc.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("XML Files", "*.xml"));
+		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Files (*.xml)", "*.xml"));
 		if (curFile!=null) fc.setInitialDirectory(new File(curFile.getAbsolutePath()));
 
 		File res = fc.showSaveDialog(null);
-
-		if (res!=null) System.out.println(res.getAbsolutePath()); else System.out.println("null"); // DEBUG printf
 
 		if (res == null) return; // Cancel by user
 
