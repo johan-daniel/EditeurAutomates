@@ -19,7 +19,7 @@
 			<MenuItem text="Affichage XML" onAction="#setActiveXMLView" accelerator="Ctrl+2"/> <!-- Le raccourcis ne fonctionne pas sous Linux mais fonctionne sous macOS pour une raison encore plus obscure -->
 		</Menu>
 		<Menu text="Aide">
-			<MenuItem text="À propos..." onAction="#openHelpWindow"/>
+			<MenuItem text="À propos..." onAction="#openAboutWindow"/>
 			<MenuItem text="Raccourcis clavier" onAction="#openKeyboardShortcutsWindow"/>
 			<MenuItem text="Représentation XML" onAction="#openXMLDoc" accelerator="F1"/>
 		</Menu>

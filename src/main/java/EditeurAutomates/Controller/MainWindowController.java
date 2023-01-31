@@ -296,14 +296,41 @@ public class MainWindowController extends Controller {
 		viewsTabpane.getSelectionModel().select(xmlViewTab);
 	}
 
-	// TODO
 	public void openKeyboardShortcutsWindow() {
-		System.out.println("KeyboardShortcuts window not implemented yet");
+		Alert about_window = new Alert(Alert.AlertType.INFORMATION);
+		about_window.setTitle("Raccourcis clavier");
+		about_window.setHeaderText(null);
+		about_window.setGraphic(null);
+		about_window.setContentText("""
+				Sur Windows et Linux, le raccourcis "Shortcut" est la touche "Ctrl", sur macOS il s'agit de la touche "Command".
+				
+				Shortcut+N\t\tNouveau fichier
+				Shortcut+S\t\tEnregistrer
+				Shortcut+Shift+S\tEnregistrer sous
+				F1\t\t\t\tDocumentation XML
+				Ctrl+1\t\t\tVue graphique
+				Ctrl+2\t\t\tVue XML
+				
+				""");
+		about_window.showAndWait();
 	}
 
-	// TODO
-	public void openHelpWindow() {
-		System.out.println("Help window not implemented yet");
+	public void openAboutWindow() {
+		Alert about_window = new Alert(Alert.AlertType.INFORMATION);
+		about_window.setTitle("À propos");
+		about_window.setHeaderText(null);
+		about_window.setGraphic(null);
+		about_window.setContentText("""
+				AutomatesLab v1.0
+				02/02/2023
+				
+				Auteurs:
+				Lola ALBIN
+				Alexandre BROCHART
+				Johan DANIEL
+				Victor ELOY
+				""");
+		about_window.showAndWait();
 	}
 
 	public void openXMLDoc() {
