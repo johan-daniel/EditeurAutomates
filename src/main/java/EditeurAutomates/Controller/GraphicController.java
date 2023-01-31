@@ -1,5 +1,6 @@
 package EditeurAutomates.Controller;
 
+import EditeurAutomates.Model.Automate;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.ToggleButton;
@@ -13,15 +14,17 @@ import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 
 public class GraphicController extends ViewController {
+	private Outils selectedTool;
+	private Point2D fromCoords;
+	private final ArrayList<GraphicalState> states;
 
 	@FXML private Pane drawArea;
-
 	@FXML private ToggleButton stateTool;
 	@FXML private ToggleButton transitionTool;
 
-	private Outils selectedTool;
-	private Point2D fromCoords;
-	private final ArrayList<GraphicalState> states = new ArrayList<>();
+	public GraphicController(){
+		states = new ArrayList<>();
+	}
 
 	@FXML
 	public void initialize() {
@@ -58,13 +61,13 @@ public class GraphicController extends ViewController {
 		});
 	}
 
+	// TODO @JoJ rajouter les outils setInitial et setFinal (et graphismes associés)
+	// TODO Mettre les ronds vide et afficher leur numéro au centre
 
-	// TODO mettre à jour la variable fileIsUpToDate à false lors d'un changement
-
-	// TODO
 	public void updateModel(MouseEvent click) {
 		if(selectedTool == null || click == null) return;
-		Controller.fileIsUpToDate = false;
+
+		if (curAutomate==null) curAutomate = new Automate();
 
 		switch (selectedTool) {
 			case STATE -> {
@@ -78,6 +81,8 @@ public class GraphicController extends ViewController {
 				);
 			}
 		}
+
+		fileIsUpToDate = false;
 	}
 
 	@Override
@@ -91,7 +96,7 @@ public class GraphicController extends ViewController {
 	// TODO
 	@Override
 	public void pullModel() {
-		System.out.println("Vue graphique fetch le modèle [A IMPLEMENTER]");
+//		System.out.println("Vue graphique fetch le modèle [A IMPLEMENTER]"); // azy tg tu me saoules
 	}
 
 	private void addState(double x, double y) {
