@@ -1,9 +1,9 @@
 package EditeurAutomates.Controller;
 
 import EditeurAutomates.AutomatesLab;
+import EditeurAutomates.Model.Automate;
 import EditeurAutomates.Model.ParserException;
 import EditeurAutomates.Model.XMLParser;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -109,7 +109,7 @@ public class MainWindowController extends Controller {
 		tabChangeHandler(cur_tab, null);
 	}
 
-	// TODO ajouter la checksum quand on enregistre un fichier (depuis la vue XML) !!
+	// TODO Débugger la checksum (aled)
 
 	// TODO: Tester le cas où une erreur de parsing est levée (donc que la checksum a été validée au préalable)
 	private void loadFile(String filePath){
@@ -183,9 +183,16 @@ public class MainWindowController extends Controller {
 		String cur_view = viewsTabpane.getSelectionModel().getSelectedItem().getId();
 		String contenu_du_fichier;
 
-		// On update l'automate selon la vue courante, sauf pour la vue XML (que l'on autorise à enregistrer sans être un automate valide)
+		// Dans le cas général, on fetch les changements de la vue courrante, puis on enregistre l'automate.
+		// Pour la vue XML, on supporte en plus le cas ou le XML ne donnerait pas un automate valide ; on autorise à enregistrer quand même dans ce cas
 		if (Objects.equals(cur_view, "xmlViewTab")){
-			contenu_du_fichier = xmlController.getEditorText();
+			String xml = xmlController.getEditorText();
+			try {
+				Automate a = XMLParser.parseXML(xml);
+				contenu_du_fichier = XMLParser.getFileXML(a);
+			} catch (ParserException e){
+				contenu_du_fichier = xml;
+			}
 		}
 		else {
 			fetchCurrentViewChanges();
