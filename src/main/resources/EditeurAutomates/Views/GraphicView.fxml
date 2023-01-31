@@ -5,9 +5,13 @@
 
 <HBox stylesheets="@../CSS/GraphicStyle.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
 
-	<VBox fx:id="toolbox" spacing="10">
-         <ToggleButton fx:id="stateTool" mnemonicParsing="false" text="Etat" />
-         <ToggleButton fx:id="transitionTool" mnemonicParsing="false" text="Transition" />
+	<VBox fx:id="toolbox">
+		<VBox fx:id="tools">
+			 <ToggleButton fx:id="stateTool" mnemonicParsing="false" text="Etat" />
+			 <ToggleButton fx:id="transitionTool" mnemonicParsing="false" text="Transition" />
+		</VBox>
+		<VBox fx:id="objAttr">
+		</VBox>
 	</VBox>
 
 	<Pane fx:id="drawArea">
