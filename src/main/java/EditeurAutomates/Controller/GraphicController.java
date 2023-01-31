@@ -73,7 +73,7 @@ public class GraphicController extends ViewController {
 
 	// TODO ajouter transitions
 	public void updateModel(MouseEvent click) {
-		if(selectedTool == null || click == null) return;
+		if(selectedTool == null) return;
 
 		if (curAutomate==null) curAutomate = new Automate();
 
@@ -88,7 +88,7 @@ public class GraphicController extends ViewController {
 	@Override
 	protected void updateModel() {
 		deselectTools();
-		updateModel(null);
+		deselectState();
 	}
 
 	// TODO
@@ -100,6 +100,7 @@ public class GraphicController extends ViewController {
 				GraphicalState gs = new GraphicalState(state.x, state.y, state.numero);
 				gs.setInitial(state.isInitial);
 				gs.setFinal(state.isFinal);
+				gs.setOnMouseClicked(me -> displayStateParams(gs));
 				drawArea.getChildren().add(gs);
 			}
 		}
@@ -111,13 +112,17 @@ public class GraphicController extends ViewController {
 		drawArea.getChildren().add(state);
 		states.add(state);
 		state.setOnMouseClicked(me -> displayStateParams(state));
-		curAutomate.createState((int) x, (int) y);
+		curAutomate.createState((int) x, (int) y, state.isInitial, state.isFinal);
 	}
 
 	private void deselectTools() {
 		stateTool.setSelected(false);
 		transitionTool.setSelected(false);
 		selectedTool = null;
+	}
+	private void deselectState() {
+		selectedState = null;
+		objAttr.getChildren().clear();
 	}
 
 	private void displayStateParams(GraphicalState state) {
@@ -129,11 +134,17 @@ public class GraphicController extends ViewController {
 
 		CheckBox isInitial = new CheckBox("Etat initial");
 		isInitial.setSelected(state.isInitial);
-		isInitial.selectedProperty().addListener((obs, oldVal, newVal) -> state.setInitial(newVal));
+		isInitial.selectedProperty().addListener((obs, oldVal, newVal) -> {
+			state.setInitial(newVal);
+			curAutomate.getStatesList().get(Integer.parseInt(state.numero.getText())).isInitial = state.isInitial;
+		});
 
 		CheckBox isFinal = new CheckBox("Etat final");
 		isFinal.setSelected(state.isFinal);
-		isFinal.selectedProperty().addListener((obs, oldVal, newVal) -> state.setFinal(newVal));
+		isFinal.selectedProperty().addListener((obs, oldVal, newVal) -> {
+			state.setFinal(newVal);
+			curAutomate.getStatesList().get(Integer.parseInt(state.numero.getText())).isFinal = state.isFinal;
+		});
 
 		objAttr.getChildren().add(label);
 		objAttr.getChildren().add(isInitial);
