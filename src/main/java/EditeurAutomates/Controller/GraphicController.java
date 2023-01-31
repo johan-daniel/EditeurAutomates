@@ -70,11 +70,9 @@ public class GraphicController extends ViewController {
 		});
 	}
 
-
 	// TODO ajouter transitions
 	public void updateModel(MouseEvent click) {
 		if(selectedTool == null) return;
-
 		if (curAutomate==null) curAutomate = new Automate();
 
 		switch (selectedTool) {
@@ -91,9 +89,10 @@ public class GraphicController extends ViewController {
 		deselectState();
 	}
 
-	// TODO
 	@Override
 	public void pullModel() {
+		if (curAutomate==null) curAutomate = new Automate();
+
 		drawArea.getChildren().clear();
 		for(State state : curAutomate.getStatesList()) {
 			if(state != null) {
@@ -120,6 +119,7 @@ public class GraphicController extends ViewController {
 		transitionTool.setSelected(false);
 		selectedTool = null;
 	}
+
 	private void deselectState() {
 		selectedState = null;
 		objAttr.getChildren().clear();
