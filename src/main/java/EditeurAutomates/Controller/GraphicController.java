@@ -83,6 +83,7 @@ public class GraphicController extends ViewController {
 		}
 
 		fileIsUpToDate = false;
+		justLoaded = false;
 	}
 
 	@Override
