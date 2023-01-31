@@ -109,7 +109,7 @@ public class MainWindowController extends Controller {
 		tabChangeHandler(cur_tab, null);
 	}
 
-	// TODO ajouter la checksum quand on enregistre un fichier !!!!
+	// TODO ajouter la checksum quand on enregistre un fichier (depuis la vue XML) !!
 
 	// TODO: Tester le cas où une erreur de parsing est levée (donc que la checksum a été validée au préalable)
 	private void loadFile(String filePath){
@@ -177,6 +177,7 @@ public class MainWindowController extends Controller {
 		catch (InterruptedException ignored0) { } // Awaken during wait (we don't care)
 	}
 
+	// TODO tester si le contenu n'est pas écrit plusieurs fois dans le fichier si on enregistre plusieurs fois consécutivement
 	private void saveCurrentFile(){
 		if (curFile==null) return; // Cannot save file to disk (no destination set) (this should not happen since only saveButton calls this function)
 
@@ -243,14 +244,14 @@ public class MainWindowController extends Controller {
 
 	// Handler de boutons
 
-	public void newButton(ActionEvent ignored) {
+	public void newButton() {
 		if (isSafeToContinue()) {
 			loadDefaultFile();
 			updateCurrentView();
 		}
 	}
 
-	public void openButton(ActionEvent ignored) {
+	public void openButton() {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("AutomatesLab - Ouvrir un automate XML");
 
@@ -261,44 +262,46 @@ public class MainWindowController extends Controller {
 		loadFile(res.getAbsolutePath());
 	}
 
-	// TODO
-	public void saveButton(ActionEvent ignored) {
-		System.out.println("Save not implemented yet");
-//		fileIsUpToDate = true;
+	public void saveButton() {
+		if (curFile==null) saveAsButton();
+		saveCurrentFile();
 	}
 
-	// TODO Sauvegarder le fichier
-	public void saveAsButton(ActionEvent ignored) {
-		System.out.println("Save As not implemented yet");
-
+	public void saveAsButton() {
 		FileChooser fc = new FileChooser();
-		fc.setTitle("AutomatesLab - Ouvrir un automate XML");
+		fc.setTitle("AutomatesLab - Enregistrer sous...");
 		fc.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("XML Files", "*.xml"));
 		if (curFile!=null) fc.setInitialDirectory(new File(curFile.getAbsolutePath()));
 
 		File res = fc.showSaveDialog(null);
-		if (res != null) System.out.println(res.getAbsolutePath()); // change
+
+		if (res!=null) System.out.println(res.getAbsolutePath()); else System.out.println("null"); // DEBUG printf
+
+		if (res == null) return; // Cancel by user
+
+		curFile = res;
+		saveButton();
 	}
 
-	public void setActiveGraphicalView(ActionEvent ignored) {
+	public void setActiveGraphicalView() {
 		viewsTabpane.getSelectionModel().select(graphicViewTab);
 	}
 
-	public void setActiveXMLView(ActionEvent ignored) {
+	public void setActiveXMLView() {
 		viewsTabpane.getSelectionModel().select(xmlViewTab);
 	}
 
 	// TODO
-	public void openKeyboardShortcutsWindow(ActionEvent ignored) {
+	public void openKeyboardShortcutsWindow() {
 		System.out.println("KeyboardShortcuts window not implemented yet");
 	}
 
 	// TODO
-	public void openHelpWindow(ActionEvent ignored) {
+	public void openHelpWindow() {
 		System.out.println("Help window not implemented yet");
 	}
 
-	public void openXMLDoc(ActionEvent ignored) {
+	public void openXMLDoc() {
 		if (!Desktop.isDesktopSupported()) {
 			System.err.println("Couldn't open PDF help file because Desktop class is not supported :(");
 			return;
