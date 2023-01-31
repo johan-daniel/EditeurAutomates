@@ -22,11 +22,12 @@ public class XMLController extends ViewController {
 
 	@Override
 	public void updateModel() {
-		if (!xmlChanged()) return; // Pas besoin d'update le modèle
+		String xml = editor.getText();
+
+		if (xml == null || xml.equals("")) return; // On autorise à changer de vue lorsqu'elle est vide
 
 		try	{
-			String edited_xml = editor.getText();
-			curAutomate = XMLParser.parseXML(edited_xml);
+			curAutomate = XMLParser.parseXML(xml);
 		} catch(ParserException e){
 			throw new RuntimeException(e);
 		}
@@ -52,18 +53,13 @@ public class XMLController extends ViewController {
 		return editor.getText();
 	}
 
-	private boolean xmlChanged(){
-		String field_content = editor.getText();
-		return (!Objects.equals(field_content, initial_xml));
-	}
-
 	private void textChangeHandler(){
 		if (justLoaded){
 			justLoaded = false;
 			return;
 		}
 
-		if (xmlChanged()){
+		if (!Objects.equals(editor.getText(), initial_xml)){
 			fileIsUpToDate = false;
 		}
 	}

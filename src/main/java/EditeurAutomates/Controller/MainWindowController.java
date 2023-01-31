@@ -1,7 +1,6 @@
 package EditeurAutomates.Controller;
 
 import EditeurAutomates.AutomatesLab;
-import EditeurAutomates.Model.Automate;
 import EditeurAutomates.Model.ParserException;
 import EditeurAutomates.Model.XMLParser;
 import javafx.event.ActionEvent;
@@ -67,7 +66,7 @@ public class MainWindowController extends Controller {
 	}
 
 	private void tabChangeHandler(Tab fromTab, Tab toTab){
-		// Previous loaded model pushes its changes to global curAutomate
+		// La vue précédemment chargée push ses changements vers le curAutomate
 		if (!canPullXmlModel){ // On vient d'une erreur de parsing (*)
 			canPullXmlModel = true;
 			return;
@@ -90,7 +89,7 @@ public class MainWindowController extends Controller {
 
 		if (!canPullXmlModel) return;
 
-		// New loaded model fetches the changes from global curAutomate
+		// La vue nouvellement chargée récupère les changements du curAutomate
 		if (toTab!=null){
 			switch(toTab.getId()) {
 				case "xmlViewTab" -> xmlController.pullModel();
@@ -130,7 +129,7 @@ public class MainWindowController extends Controller {
 			// Si checksum invalide, pop-up + chargement vue XML
 			if (!XMLParser.verifyChecksum(content)) throw new ParserException("Couldn't verify checksum for file \"" + filePath + "\"");
 
-			// Sinon, on charge l'automate
+			// Si tout vas bien, on charge l'automate
 			curAutomate = XMLParser.parseXML(content);
 			curFile = new File(filePath);
 			fileIsUpToDate = true;
@@ -147,8 +146,10 @@ public class MainWindowController extends Controller {
 			curFile = new File(filePath);
 			fileIsUpToDate = true;
 			justLoaded = true;
+
+			canPullXmlModel = false;
+			viewsTabpane.getSelectionModel().select(xmlViewTab); // Load XML View without updating it
 			xmlController.loadContentToXMLView(content);
-			viewsTabpane.getSelectionModel().select(xmlViewTab);
 		}
 	}
 
