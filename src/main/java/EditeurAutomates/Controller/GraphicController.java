@@ -70,6 +70,10 @@ public class GraphicController extends ViewController {
 		});
 	}
 
+	// TODO Etat finaux : doubles ronds
+	// TODO Etats initiaux : petite flèche
+	// TODO Etat sélectionné : fond de couleur ou jsp quoi trouve un truc jsuis pas ta daronne là oh
+
 	// TODO ajouter transitions
 	public void updateModel(MouseEvent click) {
 		if(selectedTool == null) return;
@@ -91,7 +95,7 @@ public class GraphicController extends ViewController {
 
 	@Override
 	public void pullModel() {
-		if (curAutomate==null) curAutomate = new Automate();
+		if (curAutomate==null) return;
 
 		drawArea.getChildren().clear();
 		for(State state : curAutomate.getStatesList()) {
