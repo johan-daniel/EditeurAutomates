@@ -10,9 +10,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.shape.Circle;
 
-public class GraphicController extends ViewController {
+import java.util.ArrayList;
 
-	private final double STATE_WIDTH = 10;
+public class GraphicController extends ViewController {
 
 	@FXML private Pane drawArea;
 
@@ -21,6 +21,7 @@ public class GraphicController extends ViewController {
 
 	private Outils selectedTool;
 	private Point2D fromCoords;
+	private final ArrayList<GraphicalState> states = new ArrayList<>();
 
 	@FXML
 	public void initialize() {
@@ -34,6 +35,27 @@ public class GraphicController extends ViewController {
 		transitionTool.setOnAction(e -> selectedTool = Outils.TRANSITION);
 
 		drawArea.setOnMouseClicked(this::updateModel);
+
+		drawArea.widthProperty().addListener((obs, oldVal, newVal) -> {
+			drawArea.getChildren().clear();		// Supprime tous les états affichés
+			double change = newVal.doubleValue() / oldVal.doubleValue();	// Calcule le changement dans la largeur
+
+			for(GraphicalState state : states) {	// Pour tous les états
+				state.circle.setCenterX(change * state.circle.getCenterX());	// Applique le changement à la coordonnée du cercle
+				drawArea.getChildren().add(state.circle);		// L'ajoute à l'affichage
+			}
+		});
+
+		// Pareil avec l'autre coordonnée
+		drawArea.heightProperty().addListener((obs, oldVal, newVal) -> {
+			drawArea.getChildren().clear();
+			double change = newVal.doubleValue() / oldVal.doubleValue();
+
+			for(GraphicalState state : states) {
+				state.circle.setCenterY(change * state.circle.getCenterY());
+				drawArea.getChildren().add(state.circle);
+			}
+		});
 	}
 
 
@@ -73,16 +95,19 @@ public class GraphicController extends ViewController {
 	}
 
 	private void addState(double x, double y) {
-		GraphicalState state = new GraphicalState(x,y,false, false);
+		GraphicalState state = new GraphicalState();
+		state.isFinal = false;
+		state.isInitial = false;
+
+		double STATE_WIDTH = 10;
 		Circle c = new Circle(STATE_WIDTH);
 
-		double tX = state.posX * drawArea.getWidth();
-		double tY = state.posY * drawArea.getHeight();
-
-		c.setTranslateX(tX);
-		c.setTranslateY(tY);
+		c.setCenterX(x);
+		c.setCenterY(y);
+		state.circle = c;
 
 		drawArea.getChildren().add(c);
+		states.add(state);
 		//curAutomate.createState((int) x, (int) y);
 	}
 }
@@ -93,13 +118,7 @@ enum Outils {
 }
 
 class GraphicalState {
-	public double posX, posY;
 	public boolean isInitial, isFinal;
-
-	public GraphicalState(double x, double y, boolean init, boolean fin) {
-		isFinal = fin;
-		isInitial = init;
-		posX = x / 1080;
-		posY = y / 720;
-	}
+	public Circle circle;
+	public GraphicalState() {}
 }
