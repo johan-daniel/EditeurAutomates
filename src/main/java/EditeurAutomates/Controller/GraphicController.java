@@ -72,7 +72,6 @@ public class GraphicController extends ViewController {
 	}
 
 	// TODO @JoJ rajouter les outils setInitial et setFinal (et graphismes associés)
-	// TODO afficher leur numéro au centre
 	// TODO ajouter transitions
 
 	public void updateModel(MouseEvent click) {
@@ -108,39 +107,10 @@ public class GraphicController extends ViewController {
 
 	private void addState(double x, double y) {
 		deselectTools();
-
-		double STATE_WIDTH = 15;
-
-		GraphicalState state = new GraphicalState();
-		state.isFinal = true;
-		state.isInitial = true;
-
-		state.numero = new Label(Integer.toString(states.size()));
-		Color txtCol = state.isFinal ? Color.WHITE : Color.BLACK;
-		state.numero.setTextFill(txtCol);
-		state.numero.setLayoutX(-state.numero.getWidth()/2);
-		state.numero.setLayoutY(-state.numero.getHeight()/2);
-
-
-		state.circle = new Circle(STATE_WIDTH);
-		Color cirCol = state.isFinal ? Color.BLACK : Color.WHITE;
-		state.circle.setFill(cirCol);
-		state.circle.setStroke(txtCol);
-
-		state.getChildren().add(state.circle);
-		if(state.isInitial) {
-			Circle smallCircle = new Circle(0.8 * STATE_WIDTH);
-			smallCircle.setFill(cirCol);
-			smallCircle.setStroke(txtCol);
-			state.getChildren().add(smallCircle);
-		}
-		state.getChildren().add(state.numero);
-
-		state.setTranslateX(x - STATE_WIDTH/2);
-		state.setTranslateY(y - STATE_WIDTH/2);
-
+		GraphicalState state = new GraphicalState(x, y, states.size());
 		drawArea.getChildren().add(state);
 		states.add(state);
+		state.setOnMouseClicked(me -> displayStateParams(state));
 		curAutomate.createState((int) x, (int) y);
 	}
 
@@ -148,6 +118,10 @@ public class GraphicController extends ViewController {
 		stateTool.setSelected(false);
 		transitionTool.setSelected(false);
 		selectedTool = null;
+	}
+
+	private void displayStateParams(GraphicalState state) {
+		System.out.println(state);
 	}
 }
 
@@ -157,9 +131,48 @@ enum Outils {
 }
 
 class GraphicalState extends StackPane {
+	private static final double STATE_WIDTH = 15;
+	private Color cirCol, txtCol;
 	public boolean isInitial, isFinal;
 	public Circle circle;
 	public Label numero;
-	public GraphicalState() {}
+	public GraphicalState(double x, double y, int nb) {
+		cirCol = Color.WHITE;
+		txtCol = Color.BLACK;
 
+		circle = new Circle(STATE_WIDTH);
+		circle.setFill(cirCol);
+		circle.setStroke(txtCol);
+
+		numero = new Label(Integer.toString(nb));
+		numero.setTextFill(txtCol);
+		numero.setLayoutX(-numero.getWidth()/2);
+		numero.setLayoutY(-numero.getHeight()/2);
+
+		setTranslateX(x - STATE_WIDTH/2);
+		setTranslateY(y - STATE_WIDTH/2);
+
+		getChildren().add(circle);
+		getChildren().add(numero);
+	}
+
+	public void setInitial(boolean init) {
+		isInitial = init;
+		if(isInitial) {
+			Circle smallCircle = new Circle(0.8 * STATE_WIDTH);
+			smallCircle.setFill(Color.TRANSPARENT);
+			smallCircle.setStroke(txtCol);
+			getChildren().add(smallCircle);
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "GraphicalState{" +
+				"isInitial=" + isInitial +
+				", isFinal=" + isFinal +
+				", circle=" + circle +
+				", numero=" + numero +
+				'}';
+	}
 }
