@@ -3,9 +3,6 @@ package EditeurAutomates.Controller;
 import EditeurAutomates.Model.Automate;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -14,7 +11,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 public class GraphicController extends ViewController {
@@ -132,20 +128,17 @@ enum Outils {
 
 class GraphicalState extends StackPane {
 	private static final double STATE_WIDTH = 15;
-	private Color cirCol, txtCol;
 	public boolean isInitial, isFinal;
-	public Circle circle;
+	public Circle circle, smallCircle;
 	public Label numero;
 	public GraphicalState(double x, double y, int nb) {
-		cirCol = Color.WHITE;
-		txtCol = Color.BLACK;
 
 		circle = new Circle(STATE_WIDTH);
-		circle.setFill(cirCol);
-		circle.setStroke(txtCol);
+		circle.setFill(Color.WHITE);
+		circle.setStroke(Color.BLACK);
 
 		numero = new Label(Integer.toString(nb));
-		numero.setTextFill(txtCol);
+		numero.setTextFill(Color.BLACK);
 		numero.setLayoutX(-numero.getWidth()/2);
 		numero.setLayoutY(-numero.getHeight()/2);
 
@@ -154,15 +147,40 @@ class GraphicalState extends StackPane {
 
 		getChildren().add(circle);
 		getChildren().add(numero);
+
+		if(nb == 0) setInitial(true);
 	}
 
 	public void setInitial(boolean init) {
+		if(isInitial && init) return;
+
 		isInitial = init;
 		if(isInitial) {
-			Circle smallCircle = new Circle(0.8 * STATE_WIDTH);
+			smallCircle = new Circle(0.8 * STATE_WIDTH);
 			smallCircle.setFill(Color.TRANSPARENT);
-			smallCircle.setStroke(txtCol);
+			smallCircle.setStroke(Color.BLACK);
 			getChildren().add(smallCircle);
+		}
+		else if(getChildren().size() == 3){
+			getChildren().remove(getChildren().size() - 1);
+		}
+	}
+
+	public void setFinal(boolean fin) {
+		if(isFinal && fin) return;
+
+		isFinal = fin;
+		if(isFinal) {
+			circle.setFill(Color.BLACK);
+			circle.setStroke(Color.WHITE);
+			numero.setTextFill(Color.WHITE);
+			if(isInitial) smallCircle.setStroke(Color.WHITE);
+		}
+		else {
+			circle.setFill(Color.WHITE);
+			circle.setStroke(Color.BLACK);
+			numero.setTextFill(Color.BLACK);
+			if(isInitial) smallCircle.setStroke(Color.BLACK);
 		}
 	}
 
