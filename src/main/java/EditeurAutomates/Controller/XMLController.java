@@ -58,6 +58,11 @@ public class XMLController extends ViewController {
 	}
 
 	private void textChangeHandler(){
+		if (justLoaded){
+			justLoaded = false;
+			return;
+		}
+
 		if (xmlChanged()){
 			fileIsUpToDate = false;
 		}

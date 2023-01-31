@@ -1,6 +1,7 @@
 package EditeurAutomates.Controller;
 
 import EditeurAutomates.AutomatesLab;
+import EditeurAutomates.Model.Automate;
 import EditeurAutomates.Model.ParserException;
 import EditeurAutomates.Model.XMLParser;
 import javafx.event.ActionEvent;
@@ -109,11 +110,9 @@ public class MainWindowController extends Controller {
 		tabChangeHandler(cur_tab, null);
 	}
 
-	// TODO: comportement bizarre au chargement d'un fichier
-	// - Une fois sur deux lorsqu'on charge un fichier et qu'il y a une parserException into vue XML, le xml ne charge pas dans la vue
-	// - La mise à jour de la variable fileIsUpToDate par le contrôleur XML a l'air d'être erronée lorsqu'on charge un fichier (probablement lié au point précédent)
+	// TODO ajouter la checksum quand on enregistre un fichier !!!!
 
-	// TODO: Tester le cas où une erreur de parsing est levée
+	// TODO: Tester le cas où une erreur de parsing est levée (donc que la checksum a été validée au préalable)
 	private void loadFile(String filePath){
 		String content;
 
@@ -127,26 +126,27 @@ public class MainWindowController extends Controller {
 			return;
 		}
 
-		System.out.println("Chargement du fichier " + filePath + "\nIl contient:");
-		System.out.println(content);
-
 		try {
 			// Si checksum invalide, pop-up + chargement vue XML
 			if (!XMLParser.verifyChecksum(content)) throw new ParserException("Couldn't verify checksum for file \"" + filePath + "\"");
 
+			// Sinon, on charge l'automate
 			curAutomate = XMLParser.parseXML(content);
 			curFile = new File(filePath);
 			fileIsUpToDate = true;
+			justLoaded = true;
 		}
 
 		// Ne devrait jamais être thrown ; on la catch par sécurité
 		catch (InvalidPathException ignored){ }
 
 		// La checksum est invalide, ou le fichier ne correspond pas à un automate
-		catch (ParserException | RuntimeException e) { // Affichage de l'erreur de parsing et chargement de la vue XML
+		catch (ParserException | RuntimeException e) {
+			// Affichage de l'erreur de parsing et chargement de la vue XML
 			showAlert("Parsing error", "Erreur attrapée lors du parsing", e.getMessage());
 			curFile = new File(filePath);
 			fileIsUpToDate = true;
+			justLoaded = true;
 			xmlController.loadContentToXMLView(content);
 			viewsTabpane.getSelectionModel().select(xmlViewTab);
 		}
@@ -165,7 +165,6 @@ public class MainWindowController extends Controller {
 			Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING); 	// Copy stream to temporary file
 			loadFile(String.valueOf(path)); 										// Load default file (parse... etc)
 			curFile = null;
-			fileIsUpToDate = true;
 
 			// Delete temp file (after letting time at the reader to open it)
 			Thread.sleep(300);
@@ -264,6 +263,7 @@ public class MainWindowController extends Controller {
 	// TODO
 	public void saveButton(ActionEvent ignored) {
 		System.out.println("Save not implemented yet");
+//		fileIsUpToDate = true;
 	}
 
 	// TODO Sauvegarder le fichier
