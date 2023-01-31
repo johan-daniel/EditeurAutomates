@@ -3,14 +3,18 @@ package EditeurAutomates.Controller;
 import EditeurAutomates.Model.Automate;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class GraphicController extends ViewController {
@@ -21,6 +25,7 @@ public class GraphicController extends ViewController {
 	@FXML private Pane drawArea;
 	@FXML private ToggleButton stateTool;
 	@FXML private ToggleButton transitionTool;
+	@FXML private VBox tools, objAttr;
 
 	public GraphicController(){
 		states = new ArrayList<>();
@@ -29,13 +34,18 @@ public class GraphicController extends ViewController {
 	@FXML
 	public void initialize() {
 		HBox.setHgrow(drawArea, Priority.ALWAYS);
+		VBox.setVgrow(tools, Priority.ALWAYS);
+		VBox.setVgrow(objAttr, Priority.ALWAYS);
 
 		ToggleGroup tGroup = new ToggleGroup();
 		stateTool.setToggleGroup(tGroup);
 		transitionTool.setToggleGroup(tGroup);
 
-		stateTool.setOnAction(e -> { selectedTool = Outils.STATE; fromCoords = null; });
-		transitionTool.setOnAction(e -> selectedTool = Outils.TRANSITION);
+		stateTool.setOnAction(e -> {
+			selectedTool = stateTool.isSelected() ? Outils.STATE : null;
+			fromCoords = null;
+		});
+		transitionTool.setOnAction(e -> selectedTool = transitionTool.isSelected() ? Outils.TRANSITION : null);
 
 		drawArea.setOnMouseClicked(this::updateModel);
 
@@ -44,8 +54,8 @@ public class GraphicController extends ViewController {
 			double change = newVal.doubleValue() / oldVal.doubleValue();	// Calcule le changement dans la largeur
 
 			for(GraphicalState state : states) {	// Pour tous les états
-				state.circle.setCenterX(change * state.circle.getCenterX());	// Applique le changement à la coordonnée du cercle
-				drawArea.getChildren().add(state.circle);		// L'ajoute à l'affichage
+				state.setTranslateX(change * state.getTranslateX());	// Applique le changement à la coordonnée du cercle
+				drawArea.getChildren().add(state);		// L'ajoute à l'affichage
 			}
 		});
 
@@ -55,14 +65,15 @@ public class GraphicController extends ViewController {
 			double change = newVal.doubleValue() / oldVal.doubleValue();
 
 			for(GraphicalState state : states) {
-				state.circle.setCenterY(change * state.circle.getCenterY());
-				drawArea.getChildren().add(state.circle);
+				state.setTranslateY(change * state.getTranslateY());
+				drawArea.getChildren().add(state);
 			}
 		});
 	}
 
 	// TODO @JoJ rajouter les outils setInitial et setFinal (et graphismes associés)
-	// TODO Mettre les ronds vide et afficher leur numéro au centre
+	// TODO afficher leur numéro au centre
+	// TODO ajouter transitions
 
 	public void updateModel(MouseEvent click) {
 		if(selectedTool == null || click == null) return;
@@ -70,9 +81,7 @@ public class GraphicController extends ViewController {
 		if (curAutomate==null) curAutomate = new Automate();
 
 		switch (selectedTool) {
-			case STATE -> {
-				addState(click.getX(), click.getY());
-			}
+			case STATE -> addState(click.getX(), click.getY());
 			case TRANSITION -> {
 				if (fromCoords == null) fromCoords = new Point2D(click.getX(), click.getY());
 				else System.out.println("" +
@@ -81,16 +90,13 @@ public class GraphicController extends ViewController {
 				);
 			}
 		}
-
 		fileIsUpToDate = false;
 		justLoaded = false;
 	}
 
 	@Override
 	protected void updateModel() {
-		if(stateTool.isSelected()) stateTool.setSelected(false);
-		if(transitionTool.isSelected()) transitionTool.setSelected(false);
-		selectedTool = null;
+		deselectTools();
 		updateModel(null);
 	}
 
@@ -101,20 +107,47 @@ public class GraphicController extends ViewController {
 	}
 
 	private void addState(double x, double y) {
+		deselectTools();
+
+		double STATE_WIDTH = 15;
+
 		GraphicalState state = new GraphicalState();
-		state.isFinal = false;
-		state.isInitial = false;
+		state.isFinal = true;
+		state.isInitial = true;
 
-		double STATE_WIDTH = 10;
-		Circle c = new Circle(STATE_WIDTH);
+		state.numero = new Label(Integer.toString(states.size()));
+		Color txtCol = state.isFinal ? Color.WHITE : Color.BLACK;
+		state.numero.setTextFill(txtCol);
+		state.numero.setLayoutX(-state.numero.getWidth()/2);
+		state.numero.setLayoutY(-state.numero.getHeight()/2);
 
-		c.setCenterX(x);
-		c.setCenterY(y);
-		state.circle = c;
 
-		drawArea.getChildren().add(c);
+		state.circle = new Circle(STATE_WIDTH);
+		Color cirCol = state.isFinal ? Color.BLACK : Color.WHITE;
+		state.circle.setFill(cirCol);
+		state.circle.setStroke(txtCol);
+
+		state.getChildren().add(state.circle);
+		if(state.isInitial) {
+			Circle smallCircle = new Circle(0.8 * STATE_WIDTH);
+			smallCircle.setFill(cirCol);
+			smallCircle.setStroke(txtCol);
+			state.getChildren().add(smallCircle);
+		}
+		state.getChildren().add(state.numero);
+
+		state.setTranslateX(x - STATE_WIDTH/2);
+		state.setTranslateY(y - STATE_WIDTH/2);
+
+		drawArea.getChildren().add(state);
 		states.add(state);
 		curAutomate.createState((int) x, (int) y);
+	}
+
+	private void deselectTools() {
+		stateTool.setSelected(false);
+		transitionTool.setSelected(false);
+		selectedTool = null;
 	}
 }
 
@@ -123,8 +156,10 @@ enum Outils {
 	TRANSITION
 }
 
-class GraphicalState {
+class GraphicalState extends StackPane {
 	public boolean isInitial, isFinal;
 	public Circle circle;
+	public Label numero;
 	public GraphicalState() {}
+
 }
