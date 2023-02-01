@@ -247,7 +247,7 @@ public class XMLParser {
 		return (calculateChecksum(xml) == getChecksum(xml));
 	}
 
-	private static long getChecksum(String xml){
+	public static long getChecksum(String xml){
 		if (!xml.contains("checksum=\"")) return -1;
 
 		String str_checksum;

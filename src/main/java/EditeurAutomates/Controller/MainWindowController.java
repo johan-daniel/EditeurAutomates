@@ -109,9 +109,9 @@ public class MainWindowController extends Controller {
 		tabChangeHandler(cur_tab, null);
 	}
 
-	// TODO Vérifier le chargmeent de fichier
+	// TODO Open file est buggé: si on charge un fichier dont la checksum est invalide, charge la vue xml vide
+	// TODO débugger checksum (ce n'est pas la même à l'enregistrement et à la sauvegarde)
 
-	// TODO: Tester le cas où une erreur de parsing est levée (donc que la checksum a été validée au préalable)
 	private void loadFile(String filePath){
 		String content;
 
@@ -191,7 +191,16 @@ public class MainWindowController extends Controller {
 				Automate a = XMLParser.parseXML(xml);
 				contenu_du_fichier = XMLParser.getFileXML(a);
 			} catch (ParserException e){
-				contenu_du_fichier = xml;
+				long old_checksum = XMLParser.getChecksum(xml);
+				long checksum = XMLParser.calculateChecksum(xml);
+				if (old_checksum!=-1){ // On remplace l'ancienne checksum par la nouvelle
+					int debut = xml.indexOf("checksum=\"") + 10;
+					int nb_char_old_checksum = String.valueOf(old_checksum).length();
+					contenu_du_fichier = xml.substring(0, debut) + checksum + xml.substring(debut + nb_char_old_checksum, xml.length()-1);
+				}
+				else { // On ajoute la nouvelle checksum
+					contenu_du_fichier = "checksum=\"" + checksum + "\"" + xml;
+				}
 			}
 		}
 		else {
