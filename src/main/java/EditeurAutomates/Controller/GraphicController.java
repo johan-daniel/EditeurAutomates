@@ -344,7 +344,9 @@ public class GraphicController extends ViewController {
 		Label transitionLabel = new Label("Transition de " + transition.from.numero + " vers " + transition.to.numero);
 		transitionLabel.setWrapText(true);
 		TextField chars = new TextField();
-		chars.textProperty().bind(transition.chars.textProperty());
+		chars.textProperty().addListener((obv, oldValue, newValue) -> {
+			transition.chars.setText(newValue);
+		});
 		chars.setStyle("-fx-text-fill: black;");
 		CheckBox acceptsEmptyWord = new CheckBox("acceptsEmptyWord");
 		acceptsEmptyWord.setSelected(transition.acceptsEmptyWord);
