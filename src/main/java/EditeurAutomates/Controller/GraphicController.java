@@ -12,21 +12,26 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class GraphicController extends ViewController {
 	private Outils selectedTool;
 	private GraphicalState selectedState;
 	private final ArrayList<GraphicalState> states;
+	private final ArrayList<GraphicalTransition> transitions;
 
 	@FXML private Pane drawArea;
 	@FXML private ToggleButton stateTool;
 	@FXML private ToggleButton transitionTool;
 	@FXML private VBox tools, objAttr;
+	private double fromX;
 
 	public GraphicController(){
 		states = new ArrayList<>();
+		transitions = new ArrayList<>();
 	}
 
 	@FXML
@@ -55,6 +60,11 @@ public class GraphicController extends ViewController {
 				state.setTranslateX(change * state.getTranslateX());	// Applique le changement à la coordonnée du cercle
 				drawArea.getChildren().add(state);		// L'ajoute à l'affichage
 			}
+
+			ListIterator<GraphicalTransition> li = transitions.listIterator();
+			ArrayList<GraphicalTransition> buffer = new ArrayList<>(transitions);
+			transitions.clear();
+			buffer.forEach(transition -> addTransition(transition.from, transition.to));
 		});
 
 		// Pareil avec l'autre coordonnée
@@ -66,6 +76,11 @@ public class GraphicController extends ViewController {
 				state.setTranslateY(change * state.getTranslateY());
 				drawArea.getChildren().add(state);
 			}
+
+			ListIterator<GraphicalTransition> li = transitions.listIterator();
+			ArrayList<GraphicalTransition> buffer = new ArrayList<>(transitions);
+			transitions.clear();
+			buffer.forEach(transition -> addTransition(transition.from, transition.to));
 		});
 	}
 
@@ -132,27 +147,63 @@ public class GraphicController extends ViewController {
 	private void addTransition(GraphicalState from, GraphicalState to) {
 		deselectTools();
 		deselectState();
-		GraphicalTransition trans = new GraphicalTransition();
 
-		double alpha = 1.5;
 		double r = GraphicalState.STATE_RADIUS;
 		double x_A = from.getTranslateX() + r;
 		double y_A = from.getTranslateY() + r;
-		double x_B = to.getTranslateX() + r;
-		double y_B = to.getTranslateY() + r;
 
-		double coefDirecteurDroite = (y_B - y_A) / (x_B - x_A);
-		double theta = Math.atan(coefDirecteurDroite);
-		double dx = alpha * r * Math.cos(theta);
-		double dy = alpha * r * Math.sin(theta);
+		GraphicalTransition trans = new GraphicalTransition();
+		trans.from = from;
+		trans.to = to;
 
-		trans.setStartX(x_A + dx);
-		trans.setStartY(y_A + dy);
-		trans.setEndX(x_B - dx);
-		trans.setEndY(y_B - dy);
+		if(from != to)
+		{
+			double alpha = 1.5;
+			double x_B = to.getTranslateX() + r;
+			double y_B = to.getTranslateY() + r;
 
-		curAutomate.createTransition(from.numero, to.numero, "a", false);
+			double coefDirecteurDroite = (y_B - y_A) / (x_B - x_A);
+			double theta = Math.atan(coefDirecteurDroite);
+			double dx = alpha * r * Math.cos(theta);
+			double dy = alpha * r * Math.sin(theta);
+
+			trans.setStartX(x_A + dx);
+			trans.setStartY(y_A + dy);
+			trans.setEndX(x_B - dx);
+			trans.setEndY(y_B - dy);
+
+			trans.line.setControlX1(x_A + dx); trans.line.setControlY1(y_A + dy);
+			trans.line.setControlX2(x_B - dx); trans.line.setControlY2(y_B - dy);
+		}
+		else
+		{
+			double theta1 = 3 * Math.PI / 4;
+			double theta2 = Math.PI / 4;
+
+			double x1 = r * Math.cos(theta1) + x_A;
+			double y1 = r * Math.sin(theta1) + y_A;
+
+			double x2 = r * Math.cos(theta2) + x_A;
+			double y2 = r * Math.cos(theta2) + y_A;
+
+			trans.line.setStartX(x1); trans.line.setStartY(y1);
+			trans.line.setEndX(x2); trans.line.setEndY(y2);
+			trans.line.setControlX1(x1-0.5*r); trans.line.setControlY1(y1 + 1.5*r);
+			trans.line.setControlX2(x2+0.5*r); trans.line.setControlY2(y2 + 1.5*r);
+			trans.getChildren().remove(1, 3);
+		}
+		trans.chars.setText("ε");
+		double x = (from.getTranslateX() + to.getTranslateX()) / 2;
+		double y = (from.getTranslateY() + to.getTranslateY()) / 2 ;
+		trans.chars.setTranslateX(x);
+		trans.chars.setTranslateY(y);
+		curAutomate.createTransition(from.numero, to.numero, "", true);
 		drawArea.getChildren().add(trans);
+		transitions.add(trans);
+
+		trans.setOnMouseClicked(click -> {
+			trans.line.setStroke(Color.web("#c54607"));
+		});
 	}
 
 	private void deselectTools() {
@@ -203,12 +254,15 @@ class GraphicalState extends StackPane {
 	protected boolean isInitial, isFinal;
 	protected Circle circle, smallCircle;
 	protected int numero;
+	protected Arrow arrow;
 	protected Label numero_label;
 
 	public GraphicalState(double x, double y, int nb) {
 		circle = new Circle(STATE_RADIUS);
 		circle.setFill(Color.WHITE);
 		circle.setStroke(Color.BLACK);
+
+		setBackground(Background.fill(Color.RED));
 
 		numero = nb;
 		numero_label = new Label(Integer.toString(nb));
@@ -229,6 +283,22 @@ class GraphicalState extends StackPane {
 		if(isInitial && init) return;
 		isInitial = init;
 
+		if(isInitial) {
+			arrow = new Arrow();
+
+			double xEnd = 1.5 * STATE_RADIUS * Math.cos(Math.PI);
+			double yEnd = 1.5 * STATE_RADIUS * Math.sin(Math.PI);
+			double xStart = xEnd - 50;
+			double yStart = yEnd;
+
+			arrow.line.setEndX(xEnd); arrow.line.setEndY(yEnd);
+			arrow.line.setStartX(xStart); arrow.line.setStartY(yStart);
+			arrow.line.setControlX1(xStart); arrow.line.setControlY1(yStart);
+			arrow.line.setControlX2(xEnd); arrow.line.setControlY2(yEnd);
+
+			arrow.setTranslateX(-STATE_RADIUS*2);
+			getChildren().add(arrow);
+		}
 	}
 
 	public void setFinal(boolean fin) {
@@ -258,6 +328,10 @@ class GraphicalState extends StackPane {
 }
 
 class GraphicalTransition extends Arrow {
-	String chars;
-	public GraphicalTransition() { super(); }
+	protected Label chars = new Label();
+	protected GraphicalState from, to;
+	public GraphicalTransition() {
+		super();
+		getChildren().add(chars);
+	}
 }

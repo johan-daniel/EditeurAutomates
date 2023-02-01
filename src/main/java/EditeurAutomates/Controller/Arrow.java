@@ -3,22 +3,28 @@ package EditeurAutomates.Controller;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.Line;
 
 public class Arrow extends Group {
 
-	public final Line line;
+	public final CubicCurve line;
 
 	public Arrow() {
-		this(new Line(), new Line(), new Line());
+		this(new CubicCurve(), new Line(), new Line());
 	}
 
 	private static final double arrowLength = 20;
 	private static final double arrowWidth = 7;
 
-	private Arrow(Line line, Line arrow1, Line arrow2) {
+	private Arrow(CubicCurve line, Line arrow1, Line arrow2) {
 		super(line, arrow1, arrow2);
 		this.line = line;
+
+		line.setStroke(Color.BLACK);
+		line.setFill(Color.TRANSPARENT);
+
 		InvalidationListener updater = o -> {
 			double ex = getEndX();
 			double ey = getEndY();
