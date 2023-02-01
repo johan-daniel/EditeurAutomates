@@ -267,6 +267,7 @@ public class MainWindowController extends Controller {
 		if (!isSafeToContinue()) return; // Le fichier n'est pas à jour et l'utilisateur annule
 
 		loadFile(res.getAbsolutePath());
+		updateCurrentView();
 	}
 
 	public void saveButton() {
