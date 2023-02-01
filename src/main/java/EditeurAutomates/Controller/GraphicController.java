@@ -91,7 +91,7 @@ public class GraphicController extends ViewController {
 	// TODO Débugger: quand on switch puis revient, les états initiaux et finaux disparaissent
 	// TODO Débugger: quand on ajoute des transitions, les couleurs des textes changent
 
-	// TODO Bouton supprimer lorsque transition/état sélectionné(e)
+	// TODO Bouton supprimer lorsque transition sélectionné(e)
 
 	public void updateModel(MouseEvent click) {
 		if(selectedTool == null) {
@@ -109,14 +109,12 @@ public class GraphicController extends ViewController {
 		fileIsUpToDate = false;
 		justLoaded = false;
 	}
-
 	@Override
 	protected void updateModel() {
 		deselectTools();
 		deselectState();
 		deselectTransition();
 	}
-
 	@Override
 	public void pullModel() {
 		if (curAutomate==null) return;
@@ -136,7 +134,6 @@ public class GraphicController extends ViewController {
 			}
 		}
 	}
-
 	private void addState(double x, double y) {
 		deselectTools();
 		GraphicalState state = new GraphicalState(x, y, states.size());
@@ -145,15 +142,6 @@ public class GraphicController extends ViewController {
 		state.setOnMouseClicked(me -> onStateClicked(state));
 		curAutomate.createState((int) x, (int) y, state.isInitial, state.isFinal);
 	}
-
-	private void onStateClicked(GraphicalState state) {
-		if(selectedTool == null) displayStateParams(state);
-		else if(selectedTool == Outils.TRANSITION) {
-			if(selectedState == null) selectedState = state;
-			else addTransition(selectedState, state);
-		}
-	}
-
 	private void addTransition(GraphicalState from, GraphicalState to) {
 		deselectTools();
 		deselectState();
@@ -238,6 +226,13 @@ public class GraphicController extends ViewController {
 
 		trans.setOnMouseClicked(click -> displayTransitionParams(trans));
 	}
+	private void onStateClicked(GraphicalState state) {
+		if(selectedTool == null) displayStateParams(state);
+		else if(selectedTool == Outils.TRANSITION) {
+			if(selectedState == null) selectedState = state;
+			else addTransition(selectedState, state);
+		}
+	}
 
 	private void deselectTools() {
 		if(selectedTool == null) return;
@@ -290,13 +285,6 @@ public class GraphicController extends ViewController {
 
 		objAttr.getChildren().addAll(label, isInitial, isFinal, deleteBtn);
 	}
-
-	private void deleteState(GraphicalState state) {
-		drawArea.getChildren().remove(state);
-		curAutomate.deleteState(state.numero);
-		deselectState();
-	}
-
 	private void displayTransitionParams(GraphicalTransition transition) {
 		objAttr.getChildren().clear();
 
@@ -332,7 +320,23 @@ public class GraphicController extends ViewController {
 			);
 		});
 
-		objAttr.getChildren().addAll(transitionLabel, chars, acceptsEmptyWord);
+		Button deleteBtn = new Button("Supprimer transition");
+		deleteBtn.setTextFill(Color.BLACK);
+		deleteBtn.setOnAction(e -> deleteTransition(transition));
+
+		objAttr.getChildren().addAll(transitionLabel, chars, acceptsEmptyWord, deleteBtn);
+	}
+
+	private void deleteTransition(GraphicalTransition transition) {
+		drawArea.getChildren().remove(transition);
+		curAutomate.deleteTransition(transition.from.numero, transition.to.numero);
+		deselectTransition();
+	}
+
+	private void deleteState(GraphicalState state) {
+		drawArea.getChildren().remove(state);
+		curAutomate.deleteState(state.numero);
+		deselectState();
 	}
 }
 
