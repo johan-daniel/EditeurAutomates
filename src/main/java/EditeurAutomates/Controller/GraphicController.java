@@ -153,27 +153,37 @@ public class GraphicController extends ViewController {
 		trans.from = from;
 		trans.to = to;
 
-		if(from != to)
-		{
-			double alpha = 1.5;
+		if(from != to) {
 			double x_B = to.getTranslateX() + r;
 			double y_B = to.getTranslateY() + r;
+			double alpha = 2.0;
 
 			double coefDirecteurDroite = (y_B - y_A) / (x_B - x_A);
+			if (!((x_A>x_B && y_A>y_B) || (x_A<x_B && y_A<y_B))) coefDirecteurDroite = -1.0 * coefDirecteurDroite;
 			double theta = Math.atan(coefDirecteurDroite);
 			double dx = alpha * r * Math.cos(theta);
 			double dy = alpha * r * Math.sin(theta);
 
-			trans.setStartX(x_A + dx);
-			trans.setStartY(y_A + dy);
-			trans.setEndX(x_B - dx);
-			trans.setEndY(y_B - dy);
+			double sign_X = 1, sign_Y = 1;
+			if(x_A > x_B) sign_X = -1;
+			if(y_A > y_B) sign_Y = -1;
+			double fx_A = x_A + sign_X*dx;
+			double fy_A = y_A + sign_Y*dy;
+			double fx_B = x_B - sign_X*dx;
+			double fy_B = y_B - sign_Y*dy;
 
-			trans.line.setControlX1(x_A + dx); trans.line.setControlY1(y_A + dy);
-			trans.line.setControlX2(x_B - dx); trans.line.setControlY2(y_B - dy);
+			trans.setStartX(fx_A);
+			trans.setStartY(fy_A);
+			trans.setEndX(fx_B);
+			trans.setEndY(fy_B);
+
+			// Points de contrôle des courbes de Bézier (on a besoin de droites en l'occurence
+			trans.line.setControlX1(fx_A);
+			trans.line.setControlY1(fy_A);
+			trans.line.setControlX2(fx_B);
+			trans.line.setControlY2(fy_B);
 		}
-		else
-		{
+		else {
 			double theta1 = 3 * Math.PI / 4;
 			double theta2 = Math.PI / 4;
 
@@ -189,6 +199,7 @@ public class GraphicController extends ViewController {
 			trans.line.setControlX2(x2+0.5*r); trans.line.setControlY2(y2 + 1.5*r);
 			trans.getChildren().remove(1, 3);
 		}
+
 		trans.chars.setText("ε");
 		double x = (from.getTranslateX() + to.getTranslateX()) / 2;
 		double y = (from.getTranslateY() + to.getTranslateY()) / 2 ;
