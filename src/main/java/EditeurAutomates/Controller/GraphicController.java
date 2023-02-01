@@ -94,8 +94,6 @@ public class GraphicController extends ViewController {
 
 
 	// TODO Débugger: quand on ajoute des transitions, les couleurs des textes changent
-	// TODO Débugger: quand on switch de view on ne peut plus sélectionner une transition
-	// TODO Débugger: pas de hitbox et de label pour les autotransitions
 
 	public void updateModel(MouseEvent click) {
 		if(selectedTool == null) {
@@ -469,6 +467,12 @@ class GraphicalTransition extends Arrow {
 			line.setControlY1(fy_A);
 			line.setControlX2(fx_B);
 			line.setControlY2(fy_B);
+
+			// Label des symboles de la transition
+			double x = (from.getTranslateX() + to.getTranslateX()) / 2;
+			double y = (from.getTranslateY() + to.getTranslateY()) / 2 ;
+			chars.setTranslateX(x);
+			chars.setTranslateY(y);
 		}
 		// Transition entre i et i
 		else {
@@ -485,16 +489,15 @@ class GraphicalTransition extends Arrow {
 			line.setEndX(x2); line.setEndY(y2);
 			line.setControlX1(x1-0.5*r); line.setControlY1(y1 + 1.5*r);
 			line.setControlX2(x2+0.5*r); line.setControlY2(y2 + 1.5*r);
-			getChildren().remove(getChildren().size()-3, getChildren().size());
+			getChildren().remove(l1); getChildren().remove(l2);
 
 			if(from.isInitial) line.setTranslateX(GraphicalState.STATE_RADIUS * 0.75);
-		}
 
-		// Label des symboles de la transition
-		double x = (from.getTranslateX() + to.getTranslateX()) / 2;
-		double y = (from.getTranslateY() + to.getTranslateY()) / 2 ;
-		chars.setTranslateX(x);
-		chars.setTranslateY(y);
+			double x = (x1-0.5*r + x2+0.5*r) / 2;
+			double y = (y1 + 1.5*r + y2 + 1.5*r) / 2 ;
+			chars.setTranslateX(x);
+			chars.setTranslateY(y - GraphicalState.STATE_RADIUS + 7);
+		}
 	}
 
 	public void addChar(Character c) {
