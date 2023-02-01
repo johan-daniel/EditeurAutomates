@@ -37,3 +37,4 @@ Pour compiler en .jar à l'aide de Maven, ouvrir l'onglet Maven dans l'onglet de
 
 - Si le numéro d'un état dépasse 99999999 (édité manuellement dans la vue XML), essayer de charger l'affichage graphique fait lagger l'application et le chargement échoue (le fichier courant est fermé)
 - Charger un fichier XML **invalide** depuis la vue graphique ouvre la vue XML vide plutôt qu'avec l'automate. Il faut l'ouvrir depuis la vue XML pour que cela fonctionne.
+- Les textes des Etats et transitions (numéros d'états et lettres acceptés par une transition) apparaîssent parfois de la mauvaise couleur. 
