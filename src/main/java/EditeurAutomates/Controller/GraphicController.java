@@ -281,20 +281,28 @@ public class GraphicController extends ViewController {
 
 		Label transitionLabel = new Label("Transition de " + transition.from.numero + " vers " + transition.to.numero);
 		transitionLabel.setWrapText(true);
+
 		TextField chars = new TextField();
 		chars.textProperty().addListener((obv, oldValue, newValue) -> {
 			transition.chars.setText(newValue);
 		});
 		chars.setStyle("-fx-text-fill: black;");
+		chars.setText(transition.chars.getText());
+
+		transition.chars.textProperty().addListener((obs, oldVal, newVal) -> {
+			chars.setText(newVal.replace(" ", ""));
+		});
+
 		CheckBox acceptsEmptyWord = new CheckBox("acceptsEmptyWord");
 		acceptsEmptyWord.setSelected(transition.acceptsEmptyWord);
+		acceptsEmptyWord.wrapTextProperty();
 
 		chars.textProperty().addListener((obs, oldValue, newValue) -> {
 			transition.chars.setText(newValue);
 			curAutomate.editTransition(
 					transition.from.numero,
 					transition.to.numero,
-					newValue,
+					newValue.replace("ε", ""),
 					acceptsEmptyWord.isSelected()
 			);
 		});
@@ -304,7 +312,7 @@ public class GraphicController extends ViewController {
 			curAutomate.editTransition(
 					transition.from.numero,
 					transition.to.numero,
-					chars.getText(),
+					chars.getText().replace("ε", ""),
 					newValue
 			);
 		});
@@ -412,8 +420,6 @@ class GraphicalState extends StackPane {
 }
 
 class GraphicalTransition extends Arrow {
-	protected Rectangle hitbox = new Rectangle();
-	protected static final double HITBOX_WIDTH = 20;
 	protected Label chars = new Label();
 	protected GraphicalState from, to;
 	protected boolean acceptsEmptyWord;
@@ -421,8 +427,11 @@ class GraphicalTransition extends Arrow {
 		super();
 		this.from = from;
 		this.to = to;
-		getChildren().add(0, hitbox);
 		getChildren().add(chars);
+
+		line.setStrokeWidth(2);
+		l1.setStrokeWidth(2);
+		l2.setStrokeWidth(2);
 
 		double r = GraphicalState.STATE_RADIUS;
 		double x_A = from.getTranslateX() + r;
@@ -460,33 +469,7 @@ class GraphicalTransition extends Arrow {
 			line.setControlY1(fy_A);
 			line.setControlX2(fx_B);
 			line.setControlY2(fy_B);
-
-			// Hitbox de la transition
-
-			Point2D fromPt = new Point2D.Double(fx_A, fy_A  - GraphicalTransition.HITBOX_WIDTH/2);
-			Point2D toPt = new Point2D.Double(fx_B, fy_B);
-			double hitboxLength = fromPt.distance(toPt);
-
-			hitbox.setWidth(hitboxLength);
-			hitbox.setHeight(GraphicalTransition.HITBOX_WIDTH);
-			hitbox.setX(fromPt.getX());
-			hitbox.setY(fromPt.getY());
-
-			// Rotation de la hitbox
-//			if(x_A < x_B && y_A < y_B) theta *= 1; // haut droite
-//			if(x_A < x_B && y_A > y_B) theta *= -1; // bas droite
-
-//			theta = Math.PI /2; // un quart de tour
-//			theta *= -1;
-			System.out.println("rad " + theta);
-			System.out.println("degrés " + Math.toDegrees(theta));
-
-			//if(y_A < y_B && x_A > x_B) theta -= Math.PI/2;
-			Rotate rotation = new Rotate(Math.toDegrees(theta), fromPt.getX(), fromPt.getY());
-			hitbox.getTransforms().add(rotation);
-			hitbox.setFill(Color.RED);
 		}
-
 		// Transition entre i et i
 		else {
 			double theta1 = 3 * Math.PI / 4;
@@ -504,18 +487,14 @@ class GraphicalTransition extends Arrow {
 			line.setControlX2(x2+0.5*r); line.setControlY2(y2 + 1.5*r);
 			getChildren().remove(getChildren().size()-3, getChildren().size());
 
-			if(from == to && from.isInitial)
-				line.setTranslateX(GraphicalState.STATE_RADIUS * 0.75);
+			if(from.isInitial) line.setTranslateX(GraphicalState.STATE_RADIUS * 0.75);
 		}
 
 		// Label des symboles de la transition
-
 		double x = (from.getTranslateX() + to.getTranslateX()) / 2;
 		double y = (from.getTranslateY() + to.getTranslateY()) / 2 ;
 		chars.setTranslateX(x);
 		chars.setTranslateY(y);
-
-		hitbox.setFill(Color.RED);
 	}
 
 	public void addChar(Character c) {
