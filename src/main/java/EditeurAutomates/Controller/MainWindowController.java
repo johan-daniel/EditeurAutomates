@@ -109,7 +109,7 @@ public class MainWindowController extends Controller {
 		tabChangeHandler(cur_tab, null);
 	}
 
-	// TODO Débugger la checksum (aled)
+	// TODO Vérifier le chargmeent de fichier
 
 	// TODO: Tester le cas où une erreur de parsing est levée (donc que la checksum a été validée au préalable)
 	private void loadFile(String filePath){
