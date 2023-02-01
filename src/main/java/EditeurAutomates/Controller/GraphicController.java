@@ -109,12 +109,14 @@ public class GraphicController extends ViewController {
 		fileIsUpToDate = false;
 		justLoaded = false;
 	}
+
 	@Override
 	protected void updateModel() {
 		deselectTools();
 		deselectState();
 		deselectTransition();
 	}
+
 	@Override
 	public void pullModel() {
 		if (curAutomate==null) return;
@@ -134,6 +136,7 @@ public class GraphicController extends ViewController {
 			}
 		}
 	}
+
 	private void addState(double x, double y) {
 		deselectTools();
 		GraphicalState state = new GraphicalState(x, y, states.size());
@@ -142,6 +145,7 @@ public class GraphicController extends ViewController {
 		state.setOnMouseClicked(me -> onStateClicked(state));
 		curAutomate.createState((int) x, (int) y, state.isInitial, state.isFinal);
 	}
+
 	private void addTransition(GraphicalState from, GraphicalState to) {
 		deselectTools();
 		deselectState();
@@ -229,6 +233,7 @@ public class GraphicController extends ViewController {
 
 		trans.setOnMouseClicked(click -> displayTransitionParams(trans));
 	}
+
 	private void onStateClicked(GraphicalState state) {
 		if(selectedTool == null) displayStateParams(state);
 		else if(selectedTool == Outils.TRANSITION) {
@@ -288,6 +293,7 @@ public class GraphicController extends ViewController {
 
 		objAttr.getChildren().addAll(label, isInitial, isFinal, deleteBtn);
 	}
+
 	private void displayTransitionParams(GraphicalTransition transition) {
 		objAttr.getChildren().clear();
 		selectedTransition = transition;
