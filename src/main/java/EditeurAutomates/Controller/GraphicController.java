@@ -87,17 +87,18 @@ public class GraphicController extends ViewController {
 		});
 	}
 
-	// TODO Etat sélectionné : fond de couleur ou un autre truc
 	// TODO Débugger: quand on switch puis revient, les transitions disparaissent
 	// TODO Débugger: quand on switch puis revient, les états initiaux et finaux disparaissent
-	// TODO Débugger: mettre un état comme inital le déplace légèrement
 	// TODO Débugger: quand on ajoute des transitions, les couleurs des textes changent
 
 	// TODO Bouton supprimer lorsque transition/état sélectionné(e)
 
 	public void updateModel(MouseEvent click) {
 		if(selectedTool == null) {
-			if(selectedState != null && click.getTarget() == click.getSource()) deselectState();
+			if(click.getSource() == click.getTarget()) {
+				if(selectedState != null) deselectState();
+				if(selectedTransition != null) deselectTransition();
+			}
 			return;
 		};
 		if (curAutomate==null) curAutomate = new Automate();
@@ -113,6 +114,7 @@ public class GraphicController extends ViewController {
 	protected void updateModel() {
 		deselectTools();
 		deselectState();
+		deselectTransition();
 	}
 
 	@Override
@@ -124,30 +126,13 @@ public class GraphicController extends ViewController {
 		drawArea.getChildren().clear();
 		for(int i=0; i < curAutomate.getStatesList().size(); i++) {
 			State state = curAutomate.getStatesList().get(i);
-			if(state != null) {
+			if (state != null) {
 				GraphicalState gs = new GraphicalState(state.x, state.y, state.numero);
 				gs.setInitial(state.isInitial);
 				gs.setFinal(state.isFinal);
 				gs.setOnMouseClicked(me -> onStateClicked(gs));
 				drawArea.getChildren().add(gs);
 				states.add(i, gs);
-			}
-		}
-
-		for(int i=0; i < curAutomate.getTransitionMatrix().size(); i++) {
-			for(int j=0; j < curAutomate.getTransitionMatrix().get(0).size(); j++) {
-				GraphicalState stateFrom = states.get(i);
-
-				if(curAutomate.getTransitionMatrix().get(i).get(j) == null) continue;
-
-				for(int k=0; k < curAutomate.getTransitionMatrix().get(i).get(j).size(); k++) {
-					GraphicalState stateTo = states.get(curAutomate.getTransitionMatrix().get(i).get(j).get(k));
-
-					GraphicalTransition gt = createGraphicalTransIfNotExist(stateFrom, stateTo);
-
-					if(curAutomate.getAlphabet().get(j) == null) gt.setAcceptsEmptyWord(true);
-					else gt.addChar(curAutomate.getAlphabet().get(j));
-				}
 			}
 		}
 	}
@@ -208,6 +193,18 @@ public class GraphicController extends ViewController {
 			trans.line.setControlY1(fy_A);
 			trans.line.setControlX2(fx_B);
 			trans.line.setControlY2(fy_B);
+
+			Point2D fromPt = new Point2D.Double(x_A, y_A);
+			Point2D toPt = new Point2D.Double(x_B, y_B);
+			double hitboxLength = fromPt.distance(toPt);
+
+			trans.hitbox.setWidth(hitboxLength);
+			trans.hitbox.setHeight(GraphicalTransition.HITBOX_WIDTH);
+			trans.hitbox.setX(fromPt.getX());
+			trans.hitbox.setY(fromPt.getY());
+			Rotate rotation = new Rotate(Math.toDegrees(theta), fromPt.getX(), fromPt.getY());
+			trans.hitbox.getTransforms().add(rotation);
+			trans.hitbox.setFill(Color.RED);
 		}
 		else {
 			double theta1 = 3 * Math.PI / 4;
@@ -217,16 +214,17 @@ public class GraphicController extends ViewController {
 			double y1 = r * Math.sin(theta1) + y_A;
 
 			double x2 = r * Math.cos(theta2) + x_A;
-			double y2 = r * Math.cos(theta2) + y_A;
+			double y2 = r * Math.sin(theta2) + y_A;
 
 			trans.line.setStartX(x1); trans.line.setStartY(y1);
 			trans.line.setEndX(x2); trans.line.setEndY(y2);
 			trans.line.setControlX1(x1-0.5*r); trans.line.setControlY1(y1 + 1.5*r);
 			trans.line.setControlX2(x2+0.5*r); trans.line.setControlY2(y2 + 1.5*r);
-			trans.getChildren().remove(1, 3);
-		}
+			trans.getChildren().remove(trans.getChildren().size()-3, trans.getChildren().size());
 
-		trans.chars.setText("ε");
+			if(trans.from == trans.to && trans.from.isInitial)
+				trans.line.setTranslateX(GraphicalState.STATE_RADIUS * 0.75);
+		}
 		double x = (from.getTranslateX() + to.getTranslateX()) / 2;
 		double y = (from.getTranslateY() + to.getTranslateY()) / 2 ;
 		trans.chars.setTranslateX(x);
@@ -242,14 +240,25 @@ public class GraphicController extends ViewController {
 	}
 
 	private void deselectTools() {
+		if(selectedTool == null) return;
 		stateTool.setSelected(false);
 		transitionTool.setSelected(false);
 		selectedTool = null;
 	}
 
 	private void deselectState() {
+		if(selectedState == null) return;
 		selectedState.circle.setFill(Color.WHITE);
 		selectedState = null;
+		objAttr.getChildren().clear();
+	}
+
+	private void deselectTransition() {
+		if(selectedTransition == null) return;
+		selectedTransition.line.setStroke(Color.BLACK);
+		selectedTransition.l1.setStroke(Color.BLACK);
+		selectedTransition.l2.setStroke(Color.BLACK);
+		selectedTransition = null;
 		objAttr.getChildren().clear();
 	}
 
@@ -275,12 +284,22 @@ public class GraphicController extends ViewController {
 			curAutomate.getStatesList().get(Integer.parseInt(state.numero_label.getText())).isFinal = state.isFinal;
 		});
 
-		objAttr.getChildren().add(label);
-		objAttr.getChildren().add(isInitial);
-		objAttr.getChildren().add(isFinal);
+		Button deleteBtn = new Button("Supprimer état");
+		deleteBtn.setTextFill(Color.BLACK);
+		deleteBtn.setOnAction(e -> deleteState(state));
+
+		objAttr.getChildren().addAll(label, isInitial, isFinal, deleteBtn);
+	}
+
+	private void deleteState(GraphicalState state) {
+		drawArea.getChildren().remove(state);
+		curAutomate.deleteState(state.numero);
+		deselectState();
 	}
 
 	private void displayTransitionParams(GraphicalTransition transition) {
+		objAttr.getChildren().clear();
+
 		transition.line.setStroke(Color.web("#c54607"));
 		transition.l1.setStroke(Color.web("#c54607"));
 		transition.l2.setStroke(Color.web("#c54607"));
@@ -315,14 +334,6 @@ public class GraphicController extends ViewController {
 
 		objAttr.getChildren().addAll(transitionLabel, chars, acceptsEmptyWord);
 	}
-
-	private GraphicalTransition createGraphicalTransIfNotExist(GraphicalState from, GraphicalState to) {
-		for(GraphicalTransition transition: transitions) {
-			if(transition.from == from && transition.to == to) return transition;
-		}
-		addTransition(from, to);
-		return transitions.get(transitions.size() - 1);
-	}
 }
 
 enum Outils {
@@ -332,7 +343,6 @@ enum Outils {
 
 class GraphicalState extends StackPane {
 	protected static final double STATE_RADIUS = 15;
-	protected static final double HITBOX_WIDTH = 20;
 
 	protected boolean isInitial, isFinal;
 	protected Circle circle, smallCircle;
@@ -367,17 +377,16 @@ class GraphicalState extends StackPane {
 		if(isInitial) {
 			arrow = new Arrow();
 
-			double xEnd = 1.5 * STATE_RADIUS * Math.cos(Math.PI);
-			double yEnd = 1.5 * STATE_RADIUS * Math.sin(Math.PI);
-			double xStart = xEnd - 50;
-			double yStart = yEnd;
+			Point2D end = new Point2D.Double(STATE_RADIUS * Math.cos(Math.PI), STATE_RADIUS * Math.sin(Math.PI));
+			Point2D start = new Point2D.Double(end.getX() - 50, end.getY());
 
-			arrow.line.setEndX(xEnd); arrow.line.setEndY(yEnd);
-			arrow.line.setStartX(xStart); arrow.line.setStartY(yStart);
-			arrow.line.setControlX1(xStart); arrow.line.setControlY1(yStart);
-			arrow.line.setControlX2(xEnd); arrow.line.setControlY2(yEnd);
+			arrow.line.setEndX(end.getX()); arrow.line.setEndY(end.getY());
+			arrow.line.setStartX(start.getX()); arrow.line.setStartY(start.getY());
+			arrow.line.setControlX1(start.getX()); arrow.line.setControlY1(start.getY());
+			arrow.line.setControlX2(end.getX()); arrow.line.setControlY2(end.getY());
 
-			arrow.setTranslateX(-STATE_RADIUS*2);
+			double arrowLength = start.distance(end);
+			arrow.setTranslateX(-arrowLength * 0.75);
 			getChildren().add(arrow);
 		}
 		else getChildren().remove(arrow);
@@ -411,6 +420,7 @@ class GraphicalState extends StackPane {
 
 class GraphicalTransition extends Arrow {
 	protected Rectangle hitbox = new Rectangle();
+	protected static final double HITBOX_WIDTH = 20;
 	protected Label chars = new Label();
 	protected GraphicalState from, to;
 	protected boolean acceptsEmptyWord;
