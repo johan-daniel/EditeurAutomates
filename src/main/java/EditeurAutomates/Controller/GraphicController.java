@@ -2,9 +2,8 @@ package EditeurAutomates.Controller;
 
 import EditeurAutomates.Model.Automate;
 import EditeurAutomates.Model.State;
+
 import javafx.fxml.FXML;
-import javafx.geometry.NodeOrientation;
-import javafx.geometry.Point2D;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
