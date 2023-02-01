@@ -16,15 +16,22 @@ Le programme sera conçu selon une architecture modèle – vue - contrôleur (M
 
 ## Exécution
 
-L'application nécéssite **Java 19.0.1** ou une version plus récente.
+L'application nécessite **Java 19.0.1** ou une version plus récente.
+Pour l'exécuter, télécharger les fichiers compilés de Release sur le git (ou dans le zip fourni) en fonction du système d'exploitation cible. 
+Double cliquer sur le .jar ou le lancer depuis un terminal (`java -jar AutomatesLab.jar`)
 
-**TODO** 
-Pour l'exécuter, télécharger les fichiers compilés de Release en fonction de votre plateforme.
+## Compilation et débuggage
 
-## Compilation
+Pour compiler puis exécuter notre code source:
+- Installer la JDK 19.0.1 ou supérieur
+- Cloner le git ou extraire le zip des codes sources
+- Ouvrir le dossier à l'aide d'IntelliJ IDEA 2022
+- Cliquer sur la pop-up en bas à droite "Load Maven Project"
+- Cliquer sur la configuration de débuggage (en haut à droite): "Edit configurations..."
+- Ajouter une configuration de débuggage "Application". La paraméter comme exécutant la `JDK 19.0.1`, et dans "Main class" entrer `EditeurAutomates.Launcher`.
+- Cliquer sur "Débugger" pour commencer l'exécution !
 
-**TODO** tester depuis un pc neuf
-**TODO** pour compiler et débugger les fichiers sources: intelliJ
+Pour compiler en .jar à l'aide de Maven, ouvrir l'onglet Maven dans l'onglet de droite, dossier "Lifecycle", double cliquer sur "package". Le .jar est généré à la racine du dosser target.
 
 ## Bugs connus
 
