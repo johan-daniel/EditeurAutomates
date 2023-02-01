@@ -1,20 +1,20 @@
 package EditeurAutomates.Controller;
 
 import EditeurAutomates.Model.Automate;
+import EditeurAutomates.Model.Destinations;
 import EditeurAutomates.Model.State;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Rotate;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.ListIterator;
 import java.util.Objects;
@@ -118,15 +118,36 @@ public class GraphicController extends ViewController {
 	@Override
 	public void pullModel() {
 		if (curAutomate==null) return;
+		states.clear();
+		transitions.clear();
 
 		drawArea.getChildren().clear();
-		for(State state : curAutomate.getStatesList()) {
+		for(int i=0; i < curAutomate.getStatesList().size(); i++) {
+			State state = curAutomate.getStatesList().get(i);
 			if(state != null) {
 				GraphicalState gs = new GraphicalState(state.x, state.y, state.numero);
 				gs.setInitial(state.isInitial);
 				gs.setFinal(state.isFinal);
 				gs.setOnMouseClicked(me -> onStateClicked(gs));
 				drawArea.getChildren().add(gs);
+				states.add(i, gs);
+			}
+		}
+
+		for(int i=0; i < curAutomate.getTransitionMatrix().size(); i++) {
+			for(int j=0; j < curAutomate.getTransitionMatrix().get(0).size(); j++) {
+				GraphicalState stateFrom = states.get(i);
+
+				if(curAutomate.getTransitionMatrix().get(i).get(j) == null) continue;
+
+				for(int k=0; k < curAutomate.getTransitionMatrix().get(i).get(j).size(); k++) {
+					GraphicalState stateTo = states.get(curAutomate.getTransitionMatrix().get(i).get(j).get(k));
+
+					GraphicalTransition gt = createGraphicalTransIfNotExist(stateFrom, stateTo);
+
+					if(curAutomate.getAlphabet().get(j) == null) gt.setAcceptsEmptyWord(true);
+					else gt.addChar(curAutomate.getAlphabet().get(j));
+				}
 			}
 		}
 	}
@@ -156,9 +177,7 @@ public class GraphicController extends ViewController {
 		double x_A = from.getTranslateX() + r;
 		double y_A = from.getTranslateY() + r;
 
-		GraphicalTransition trans = new GraphicalTransition();
-		trans.from = from;
-		trans.to = to;
+		GraphicalTransition trans = new GraphicalTransition(from, to);
 
 		if(from != to) {
 			double x_B = to.getTranslateX() + r;
@@ -215,7 +234,7 @@ public class GraphicController extends ViewController {
 
 		trans.hitbox.setFill(Color.RED);
 
-		curAutomate.createTransition(from.numero, to.numero, "", true);
+		curAutomate.createTransition(from.numero, to.numero, "", false);
 		drawArea.getChildren().add(trans);
 		transitions.add(trans);
 
@@ -229,6 +248,7 @@ public class GraphicController extends ViewController {
 	}
 
 	private void deselectState() {
+		selectedState.circle.setFill(Color.WHITE);
 		selectedState = null;
 		objAttr.getChildren().clear();
 	}
@@ -237,6 +257,7 @@ public class GraphicController extends ViewController {
 		objAttr.getChildren().clear();
 
 		selectedState = state;
+		state.circle.setFill(Color.web("#c54607"));
 
 		Label label = new Label("Etat n°" + state.numero_label.getText());
 
@@ -261,6 +282,46 @@ public class GraphicController extends ViewController {
 
 	private void displayTransitionParams(GraphicalTransition transition) {
 		transition.line.setStroke(Color.web("#c54607"));
+		transition.l1.setStroke(Color.web("#c54607"));
+		transition.l2.setStroke(Color.web("#c54607"));
+
+		Label transitionLabel = new Label("Transition de " + transition.from.numero + " vers " + transition.to.numero);
+		transitionLabel.setWrapText(true);
+		TextField chars = new TextField();
+		chars.textProperty().bind(transition.chars.textProperty());
+		chars.setStyle("-fx-text-fill: black;");
+		CheckBox acceptsEmptyWord = new CheckBox("acceptsEmptyWord");
+		acceptsEmptyWord.setSelected(transition.acceptsEmptyWord);
+
+		chars.textProperty().addListener((obs, oldValue, newValue) -> {
+			transition.chars.setText(newValue);
+			curAutomate.editTransition(
+					transition.from.numero,
+					transition.to.numero,
+					newValue,
+					acceptsEmptyWord.isSelected()
+			);
+		});
+
+		acceptsEmptyWord.selectedProperty().addListener((obs, oldValue, newValue) -> {
+			transition.setAcceptsEmptyWord(newValue);
+			curAutomate.editTransition(
+					transition.from.numero,
+					transition.to.numero,
+					chars.getText(),
+					newValue
+			);
+		});
+
+		objAttr.getChildren().addAll(transitionLabel, chars, acceptsEmptyWord);
+	}
+
+	private GraphicalTransition createGraphicalTransIfNotExist(GraphicalState from, GraphicalState to) {
+		for(GraphicalTransition transition: transitions) {
+			if(transition.from == from && transition.to == to) return transition;
+		}
+		addTransition(from, to);
+		return transitions.get(transitions.size() - 1);
 	}
 }
 
@@ -271,6 +332,8 @@ enum Outils {
 
 class GraphicalState extends StackPane {
 	protected static final double STATE_RADIUS = 15;
+	protected static final double HITBOX_WIDTH = 20;
+
 	protected boolean isInitial, isFinal;
 	protected Circle circle, smallCircle;
 	protected int numero;
@@ -329,7 +392,7 @@ class GraphicalState extends StackPane {
 			smallCircle.setStroke(Color.BLACK);
 			getChildren().add(smallCircle);
 		}
-		else if(getChildren().size() == 3){
+		else if(getChildren().size() >= 3){
 			getChildren().remove(getChildren().size() - 1);
 		}
 	}
@@ -349,8 +412,26 @@ class GraphicalTransition extends Arrow {
 	protected Rectangle hitbox = new Rectangle();
 	protected Label chars = new Label();
 	protected GraphicalState from, to;
-	public GraphicalTransition() {
+	protected boolean acceptsEmptyWord;
+	public GraphicalTransition(GraphicalState from, GraphicalState to) {
 		super();
+		this.from = from;
+		this.to = to;
+		getChildren().add(0, hitbox);
 		getChildren().add(chars);
+	}
+
+	public void addChar(Character c) {
+		chars.setText(chars.getText() + ' ' + c);
+	}
+
+	public void clearLabel() {
+		chars.setText("");
+	}
+
+	public void setAcceptsEmptyWord(boolean b) {
+		acceptsEmptyWord = b;
+		if(acceptsEmptyWord) addChar('ε');
+		else chars.getText().replace("ε", "");
 	}
 }
