@@ -87,7 +87,14 @@ public class GraphicController extends ViewController {
 		});
 	}
 
-	// TODO Etat sélectionné : fond de couleur ou jsp quoi trouve un truc jsuis pas ta daronne là oh
+	// TODO Etat sélectionné : fond de couleur ou un autre truc
+	// TODO Débugger: quand on switch puis revient, les transitions disparaissent
+	// TODO Débugger: quand on switch puis revient, les états initiaux et finaux disparaissent
+	// TODO Débugger: mettre un état comme inital le déplace légèrement
+	// TODO Débugger: quand on ajoute des transitions, les couleurs des textes changent
+
+	// TODO Bouton supprimer lorsque transition/état sélectionné(e)
+
 	public void updateModel(MouseEvent click) {
 		if(selectedTool == null) {
 			if(selectedState != null && click.getTarget() == click.getSource()) deselectState();
