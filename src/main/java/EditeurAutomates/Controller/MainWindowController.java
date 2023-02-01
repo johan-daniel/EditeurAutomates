@@ -110,7 +110,7 @@ public class MainWindowController extends Controller {
 	}
 
 	// TODO Open file est buggé: si on charge un fichier dont la checksum est invalide, charge la vue xml vide
-	// TODO débugger checksum (ce n'est pas la même à l'enregistrement et à la sauvegarde)
+	// TODO débugger: quand on enregistre puis qu'on ouvre le fichier, le dernier caractère disparaît wtf
 
 	private void loadFile(String filePath){
 		String content;
@@ -196,7 +196,8 @@ public class MainWindowController extends Controller {
 				if (old_checksum!=-1){ // On remplace l'ancienne checksum par la nouvelle
 					int debut = xml.indexOf("checksum=\"") + 10;
 					int nb_char_old_checksum = String.valueOf(old_checksum).length();
-					contenu_du_fichier = xml.substring(0, debut) + checksum + xml.substring(debut + nb_char_old_checksum, xml.length()-1);
+					int fin = xml.length();
+					contenu_du_fichier = xml.substring(0, debut) + checksum + xml.substring(debut + nb_char_old_checksum, fin);
 				}
 				else { // On ajoute la nouvelle checksum
 					contenu_du_fichier = "checksum=\"" + checksum + "\"" + xml;
