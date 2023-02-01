@@ -49,9 +49,14 @@ public class GraphicController extends ViewController {
 
 		stateTool.setOnAction(e -> {
 			selectedTool = stateTool.isSelected() ? Outils.STATE : null;
-			selectedState = null;
+			deselectState();
+			deselectTransition();
 		});
-		transitionTool.setOnAction(e -> selectedTool = transitionTool.isSelected() ? Outils.TRANSITION : null);
+		transitionTool.setOnAction(e -> {
+			deselectState();
+			deselectTransition();
+			selectedTool = transitionTool.isSelected() ? Outils.TRANSITION : null;
+		});
 
 		drawArea.setOnMouseClicked(this::updateModel);
 
@@ -120,10 +125,12 @@ public class GraphicController extends ViewController {
 	@Override
 	public void pullModel() {
 		if (curAutomate==null) return;
+
+		// Vide les caches de données et l'écran
 		states.clear();
 		transitions.clear();
-
 		drawArea.getChildren().clear();
+
 		for(int i=0; i < curAutomate.getStatesList().size(); i++) {
 			State state = curAutomate.getStatesList().get(i);
 			if (state != null) {
@@ -135,6 +142,31 @@ public class GraphicController extends ViewController {
 				states.add(i, gs);
 			}
 		}
+
+		GraphicalState fromState, toState;
+		Character character;
+		GraphicalTransition transition = null;
+
+		for(int stateIdx=0; stateIdx < curAutomate.getTransitionMatrix().size(); stateIdx++) {
+			fromState = states.get(stateIdx);
+
+			for(int charIdx=0; charIdx < curAutomate.getTransitionMatrix().get(stateIdx).size(); charIdx++) {
+				character = curAutomate.getAlphabet().get(charIdx);
+
+				for(int destIdx=0; destIdx < curAutomate.getTransitionMatrix().get(stateIdx).get(charIdx).size(); destIdx++) {
+					toState = states.get(curAutomate.getTransitionMatrix().get(stateIdx).get(charIdx).get(destIdx));
+
+					if(!transitionExists(fromState.numero, toState.numero))
+						transition = new GraphicalTransition(fromState, toState);
+
+					assert transition != null;
+					if(character == null) transition.setAcceptsEmptyWord(true);
+					transition.addChar(character);
+
+					drawArea.getChildren().add(transition);
+				}
+			}
+		}
 	}
 
 	private void addState(double x, double y) {
@@ -144,6 +176,13 @@ public class GraphicController extends ViewController {
 		states.add(state);
 		state.setOnMouseClicked(me -> onStateClicked(state));
 		curAutomate.createState((int) x, (int) y, state.isInitial, state.isFinal);
+	}
+
+	private boolean transitionExists(int from, int to) {
+		for(GraphicalTransition gt : transitions) {
+			if(gt != null && gt.from.numero == from && gt.to.numero == to) return true;
+		}
+		return false;
 	}
 
 	private void addTransition(GraphicalState from, GraphicalState to) {
@@ -227,7 +266,7 @@ public class GraphicController extends ViewController {
 
 		trans.hitbox.setFill(Color.RED);
 
-		curAutomate.createTransition(from.numero, to.numero, "", false);
+		curAutomate.createTransition(from.numero, to.numero, "yo", false);
 		drawArea.getChildren().add(trans);
 		transitions.add(trans);
 
@@ -457,6 +496,6 @@ class GraphicalTransition extends Arrow {
 	public void setAcceptsEmptyWord(boolean b) {
 		acceptsEmptyWord = b;
 		if(acceptsEmptyWord) addChar('ε');
-		else chars.getText().replace("ε", "");
+		else chars.setText(chars.getText().replace("ε", ""));
 	}
 }
