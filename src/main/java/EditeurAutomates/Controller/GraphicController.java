@@ -182,14 +182,17 @@ public class GraphicController extends ViewController {
 			trans.line.setControlX2(fx_B);
 			trans.line.setControlY2(fy_B);
 
-			Point2D fromPt = new Point2D.Double(x_A, y_A);
-			Point2D toPt = new Point2D.Double(x_B, y_B);
+			Point2D fromPt = new Point2D.Double(fx_A, fy_A  - GraphicalTransition.HITBOX_WIDTH/2);
+			Point2D toPt = new Point2D.Double(fx_B, fy_B);
 			double hitboxLength = fromPt.distance(toPt);
 
 			trans.hitbox.setWidth(hitboxLength);
 			trans.hitbox.setHeight(GraphicalTransition.HITBOX_WIDTH);
 			trans.hitbox.setX(fromPt.getX());
 			trans.hitbox.setY(fromPt.getY());
+
+			//if(y_A > y_B && x_A < x_B) theta += (3*Math.PI)/2;
+			//if(y_A < y_B && x_A > x_B) theta -= Math.PI/2;
 			Rotate rotation = new Rotate(Math.toDegrees(theta), fromPt.getX(), fromPt.getY());
 			trans.hitbox.getTransforms().add(rotation);
 			trans.hitbox.setFill(Color.RED);
