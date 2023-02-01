@@ -30,7 +30,6 @@ public class GraphicController extends ViewController {
 	@FXML private ToggleButton stateTool;
 	@FXML private ToggleButton transitionTool;
 	@FXML private VBox tools, objAttr;
-	private double fromX;
 
 	public GraphicController(){
 		states = new ArrayList<>();
@@ -210,7 +209,10 @@ public class GraphicController extends ViewController {
 	}
 
 	private void onStateClicked(GraphicalState state) {
-		if(selectedTool == null) displayStateParams(state);
+		if(selectedTool == null) {
+			if(selectedState != null) deselectState();
+			displayStateParams(state);
+		}
 		else if(selectedTool == Outils.TRANSITION) {
 			if(selectedState == null) selectedState = state;
 			else addTransition(selectedState, state);
@@ -242,6 +244,7 @@ public class GraphicController extends ViewController {
 
 	private void displayStateParams(GraphicalState state) {
 		objAttr.getChildren().clear();
+		if(selectedTransition != null) deselectTransition();
 
 		selectedState = state;
 		state.circle.setFill(Color.web("#c54607"));
@@ -271,8 +274,12 @@ public class GraphicController extends ViewController {
 
 	private void displayTransitionParams(GraphicalTransition transition) {
 		objAttr.getChildren().clear();
+		if(selectedTransition != null) deselectTransition();
+		if(selectedState != null) deselectState();
+
 		selectedTransition = transition;
 
+		assert transition != null;
 		transition.line.setStroke(Color.web("#c54607"));
 		transition.l1.setStroke(Color.web("#c54607"));
 		transition.l2.setStroke(Color.web("#c54607"));
