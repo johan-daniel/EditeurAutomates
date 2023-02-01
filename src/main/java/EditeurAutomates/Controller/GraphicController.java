@@ -92,11 +92,10 @@ public class GraphicController extends ViewController {
 		});
 	}
 
-	// TODO Débugger: quand on switch puis revient, les transitions disparaissent
-	// TODO Débugger: quand on switch puis revient, les états initiaux et finaux disparaissent
-	// TODO Débugger: quand on ajoute des transitions, les couleurs des textes changent
 
-	// TODO Bouton supprimer lorsque transition sélectionné(e)
+	// TODO Débugger: quand on ajoute des transitions, les couleurs des textes changent
+	// TODO Débugger: quand on switch de view on ne peut plus sélectionner une transition
+	// TODO débugger: pullModel transition n'affiche que le dernier caractère
 
 	public void updateModel(MouseEvent click) {
 		if(selectedTool == null) {
@@ -145,7 +144,6 @@ public class GraphicController extends ViewController {
 
 		GraphicalState fromState, toState;
 		Character character;
-		GraphicalTransition transition = null;
 
 		for(int stateIdx=0; stateIdx < curAutomate.getTransitionMatrix().size(); stateIdx++) {
 			fromState = states.get(stateIdx);
@@ -156,17 +154,30 @@ public class GraphicController extends ViewController {
 				for(int destIdx=0; destIdx < curAutomate.getTransitionMatrix().get(stateIdx).get(charIdx).size(); destIdx++) {
 					toState = states.get(curAutomate.getTransitionMatrix().get(stateIdx).get(charIdx).get(destIdx));
 
-					if(!transitionExists(fromState.numero, toState.numero))
+					GraphicalTransition transition = null;
+					if(!transitionExists(fromState.numero, toState.numero)) {
 						transition = new GraphicalTransition(fromState, toState);
+						transitions.add(transition);
+					}
+					else {
+						transition = getTransition(fromState.numero, toState.numero);
+					}
 
 					assert transition != null;
 					if(character == null) transition.setAcceptsEmptyWord(true);
 					transition.addChar(character);
-
-					drawArea.getChildren().add(transition);
 				}
 			}
 		}
+
+		transitions.forEach(transition -> drawArea.getChildren().add(transition));
+	}
+
+	private GraphicalTransition getTransition(int numero, int numero1) {
+		for(GraphicalTransition gt : transitions) {
+			if(gt != null && gt.from.numero == numero && gt.to.numero == numero1) return gt;
+		}
+		return null;
 	}
 
 	private void addState(double x, double y) {
@@ -191,7 +202,7 @@ public class GraphicController extends ViewController {
 
 		GraphicalTransition trans = new GraphicalTransition(from, to);
 
-		curAutomate.createTransition(from.numero, to.numero, "yo", false);
+		curAutomate.createTransition(from.numero, to.numero, "", false);
 		drawArea.getChildren().add(trans);
 		transitions.add(trans);
 
