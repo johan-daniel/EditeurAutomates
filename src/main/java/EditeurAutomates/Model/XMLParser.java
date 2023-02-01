@@ -9,7 +9,7 @@ public class XMLParser {
 	public static String getViewXML(Automate a){
 		if (a==null) return "";
 
-		return XML_HEADER + "\n<AutomateFile checksum=\"\">\n" + a.toXML() + "\n</AutomateFile>\n";
+		return XML_HEADER + "\n<AutomateFile >\n" + a.toXML() + "\n</AutomateFile>\n";
 	}
 
 	public static String getFileXML(Automate a){
@@ -57,7 +57,6 @@ public class XMLParser {
 				case "?xml" -> { }
 				case "automatefile" -> {
 					first_tag_found = true;
-					if (tokens.length < 2) throw new ParserException("No checksum in string");
 				}
 				case "/automatefile" -> {
 					last_tag_reached = true; // doit être la dernière balise du fichier
