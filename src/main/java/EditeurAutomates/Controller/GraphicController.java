@@ -189,100 +189,7 @@ public class GraphicController extends ViewController {
 		deselectTools();
 		deselectState();
 
-		double r = GraphicalState.STATE_RADIUS;
-		double x_A = from.getTranslateX() + r;
-		double y_A = from.getTranslateY() + r;
-
 		GraphicalTransition trans = new GraphicalTransition(from, to);
-
-		// Transition entre i et j, i!=j
-		if(from != to) {
-			double x_B = to.getTranslateX() + r;
-			double y_B = to.getTranslateY() + r;
-
-			// Flèche de la transition
-
-			double alpha = 2.0;
-			double coefDirecteurDroite = (y_B - y_A) / (x_B - x_A);
-			if (!((x_A>x_B && y_A>y_B) || (x_A<x_B && y_A<y_B))) coefDirecteurDroite = -1.0 * coefDirecteurDroite;
-			double theta = Math.atan(coefDirecteurDroite);
-			double dx = alpha * r * Math.cos(theta);
-			double dy = alpha * r * Math.sin(theta);
-
-			double sign_X = 1, sign_Y = 1;
-			if(x_A > x_B) sign_X = -1;
-			if(y_A > y_B) sign_Y = -1;
-			double fx_A = x_A + sign_X*dx;
-			double fy_A = y_A + sign_Y*dy;
-			double fx_B = x_B - sign_X*dx;
-			double fy_B = y_B - sign_Y*dy;
-
-			trans.setStartX(fx_A);
-			trans.setStartY(fy_A);
-			trans.setEndX(fx_B);
-			trans.setEndY(fy_B);
-
-			// Points de contrôle des courbes de Bézier (on a besoin de droites en l'occurence)
-			trans.line.setControlX1(fx_A);
-			trans.line.setControlY1(fy_A);
-			trans.line.setControlX2(fx_B);
-			trans.line.setControlY2(fy_B);
-
-			// Hitbox de la transition
-
-			Point2D fromPt = new Point2D.Double(fx_A, fy_A  - GraphicalTransition.HITBOX_WIDTH/2);
-			Point2D toPt = new Point2D.Double(fx_B, fy_B);
-			double hitboxLength = fromPt.distance(toPt);
-
-			trans.hitbox.setWidth(hitboxLength);
-			trans.hitbox.setHeight(GraphicalTransition.HITBOX_WIDTH);
-			trans.hitbox.setX(fromPt.getX());
-			trans.hitbox.setY(fromPt.getY());
-
-			// Rotation de la hitbox
-//			if(x_A < x_B && y_A < y_B) theta *= 1; // haut droite
-//			if(x_A < x_B && y_A > y_B) theta *= -1; // bas droite
-
-//			theta = Math.PI /2; // un quart de tour
-//			theta *= -1;
-			System.out.println("rad " + theta);
-			System.out.println("degrés " + Math.toDegrees(theta));
-
-			//if(y_A < y_B && x_A > x_B) theta -= Math.PI/2;
-			Rotate rotation = new Rotate(Math.toDegrees(theta), fromPt.getX(), fromPt.getY());
-			trans.hitbox.getTransforms().add(rotation);
-			trans.hitbox.setFill(Color.RED);
-		}
-
-		// Transition entre i et i
-		else {
-			double theta1 = 3 * Math.PI / 4;
-			double theta2 = Math.PI / 4;
-
-			double x1 = r * Math.cos(theta1) + x_A;
-			double y1 = r * Math.sin(theta1) + y_A;
-
-			double x2 = r * Math.cos(theta2) + x_A;
-			double y2 = r * Math.sin(theta2) + y_A;
-
-			trans.line.setStartX(x1); trans.line.setStartY(y1);
-			trans.line.setEndX(x2); trans.line.setEndY(y2);
-			trans.line.setControlX1(x1-0.5*r); trans.line.setControlY1(y1 + 1.5*r);
-			trans.line.setControlX2(x2+0.5*r); trans.line.setControlY2(y2 + 1.5*r);
-			trans.getChildren().remove(trans.getChildren().size()-3, trans.getChildren().size());
-
-			if(trans.from == trans.to && trans.from.isInitial)
-				trans.line.setTranslateX(GraphicalState.STATE_RADIUS * 0.75);
-		}
-
-		// Label des symboles de la transition
-
-		double x = (from.getTranslateX() + to.getTranslateX()) / 2;
-		double y = (from.getTranslateY() + to.getTranslateY()) / 2 ;
-		trans.chars.setTranslateX(x);
-		trans.chars.setTranslateY(y);
-
-		trans.hitbox.setFill(Color.RED);
 
 		curAutomate.createTransition(from.numero, to.numero, "yo", false);
 		drawArea.getChildren().add(trans);
@@ -503,6 +410,99 @@ class GraphicalTransition extends Arrow {
 		this.to = to;
 		getChildren().add(0, hitbox);
 		getChildren().add(chars);
+
+		double r = GraphicalState.STATE_RADIUS;
+		double x_A = from.getTranslateX() + r;
+		double y_A = from.getTranslateY() + r;
+
+		// Transition entre i et j, i!=j
+		if(from != to) {
+			double x_B = to.getTranslateX() + r;
+			double y_B = to.getTranslateY() + r;
+
+			// Flèche de la transition
+
+			double alpha = 2.0;
+			double coefDirecteurDroite = (y_B - y_A) / (x_B - x_A);
+			if (!((x_A>x_B && y_A>y_B) || (x_A<x_B && y_A<y_B))) coefDirecteurDroite = -1.0 * coefDirecteurDroite;
+			double theta = Math.atan(coefDirecteurDroite);
+			double dx = alpha * r * Math.cos(theta);
+			double dy = alpha * r * Math.sin(theta);
+
+			double sign_X = 1, sign_Y = 1;
+			if(x_A > x_B) sign_X = -1;
+			if(y_A > y_B) sign_Y = -1;
+			double fx_A = x_A + sign_X*dx;
+			double fy_A = y_A + sign_Y*dy;
+			double fx_B = x_B - sign_X*dx;
+			double fy_B = y_B - sign_Y*dy;
+
+			setStartX(fx_A);
+			setStartY(fy_A);
+			setEndX(fx_B);
+			setEndY(fy_B);
+
+			// Points de contrôle des courbes de Bézier (on a besoin de droites en l'occurence)
+			line.setControlX1(fx_A);
+			line.setControlY1(fy_A);
+			line.setControlX2(fx_B);
+			line.setControlY2(fy_B);
+
+			// Hitbox de la transition
+
+			Point2D fromPt = new Point2D.Double(fx_A, fy_A  - GraphicalTransition.HITBOX_WIDTH/2);
+			Point2D toPt = new Point2D.Double(fx_B, fy_B);
+			double hitboxLength = fromPt.distance(toPt);
+
+			hitbox.setWidth(hitboxLength);
+			hitbox.setHeight(GraphicalTransition.HITBOX_WIDTH);
+			hitbox.setX(fromPt.getX());
+			hitbox.setY(fromPt.getY());
+
+			// Rotation de la hitbox
+//			if(x_A < x_B && y_A < y_B) theta *= 1; // haut droite
+//			if(x_A < x_B && y_A > y_B) theta *= -1; // bas droite
+
+//			theta = Math.PI /2; // un quart de tour
+//			theta *= -1;
+			System.out.println("rad " + theta);
+			System.out.println("degrés " + Math.toDegrees(theta));
+
+			//if(y_A < y_B && x_A > x_B) theta -= Math.PI/2;
+			Rotate rotation = new Rotate(Math.toDegrees(theta), fromPt.getX(), fromPt.getY());
+			hitbox.getTransforms().add(rotation);
+			hitbox.setFill(Color.RED);
+		}
+
+		// Transition entre i et i
+		else {
+			double theta1 = 3 * Math.PI / 4;
+			double theta2 = Math.PI / 4;
+
+			double x1 = r * Math.cos(theta1) + x_A;
+			double y1 = r * Math.sin(theta1) + y_A;
+
+			double x2 = r * Math.cos(theta2) + x_A;
+			double y2 = r * Math.sin(theta2) + y_A;
+
+			line.setStartX(x1); line.setStartY(y1);
+			line.setEndX(x2); line.setEndY(y2);
+			line.setControlX1(x1-0.5*r); line.setControlY1(y1 + 1.5*r);
+			line.setControlX2(x2+0.5*r); line.setControlY2(y2 + 1.5*r);
+			getChildren().remove(getChildren().size()-3, getChildren().size());
+
+			if(from == to && from.isInitial)
+				line.setTranslateX(GraphicalState.STATE_RADIUS * 0.75);
+		}
+
+		// Label des symboles de la transition
+
+		double x = (from.getTranslateX() + to.getTranslateX()) / 2;
+		double y = (from.getTranslateY() + to.getTranslateY()) / 2 ;
+		chars.setTranslateX(x);
+		chars.setTranslateY(y);
+
+		hitbox.setFill(Color.RED);
 	}
 
 	public void addChar(Character c) {
