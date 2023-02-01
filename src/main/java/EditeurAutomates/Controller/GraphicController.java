@@ -166,8 +166,6 @@ public class GraphicController extends ViewController {
 					assert transition != null;
 					if(character == null) transition.setAcceptsEmptyWord(true);
 					else transition.addChar(character);
-
-					GraphicalTransition finalTransition = transition;
 				}
 			}
 		}
