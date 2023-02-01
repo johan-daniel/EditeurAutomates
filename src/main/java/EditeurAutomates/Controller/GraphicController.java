@@ -13,13 +13,16 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
+import java.util.Objects;
 
 public class GraphicController extends ViewController {
 	private Outils selectedTool;
 	private GraphicalState selectedState;
+	private GraphicalTransition selectedTransition;
 	private final ArrayList<GraphicalState> states;
 	private final ArrayList<GraphicalTransition> transitions;
 
@@ -84,10 +87,7 @@ public class GraphicController extends ViewController {
 		});
 	}
 
-	// TODO Etats initiaux : petite flèche
 	// TODO Etat sélectionné : fond de couleur ou jsp quoi trouve un truc jsuis pas ta daronne là oh
-
-	// TODO ajouter transitions
 	public void updateModel(MouseEvent click) {
 		if(selectedTool == null) {
 			if(selectedState != null && click.getTarget() == click.getSource()) deselectState();
@@ -95,11 +95,8 @@ public class GraphicController extends ViewController {
 		};
 		if (curAutomate==null) curAutomate = new Automate();
 
-		switch (selectedTool) {
-			case STATE -> addState(click.getX(), click.getY());
-			case TRANSITION -> {
-				if(selectedState == null) break;
-			}
+		if (Objects.requireNonNull(selectedTool) == Outils.STATE) {
+			addState(click.getX(), click.getY());
 		}
 		fileIsUpToDate = false;
 		justLoaded = false;
@@ -197,13 +194,14 @@ public class GraphicController extends ViewController {
 		double y = (from.getTranslateY() + to.getTranslateY()) / 2 ;
 		trans.chars.setTranslateX(x);
 		trans.chars.setTranslateY(y);
+
+		trans.hitbox.setFill(Color.RED);
+
 		curAutomate.createTransition(from.numero, to.numero, "", true);
 		drawArea.getChildren().add(trans);
 		transitions.add(trans);
 
-		trans.setOnMouseClicked(click -> {
-			trans.line.setStroke(Color.web("#c54607"));
-		});
+		trans.setOnMouseClicked(click -> displayTransitionParams(trans));
 	}
 
 	private void deselectTools() {
@@ -242,6 +240,10 @@ public class GraphicController extends ViewController {
 		objAttr.getChildren().add(isInitial);
 		objAttr.getChildren().add(isFinal);
 	}
+
+	private void displayTransitionParams(GraphicalTransition transition) {
+		transition.line.setStroke(Color.web("#c54607"));
+	}
 }
 
 enum Outils {
@@ -261,8 +263,6 @@ class GraphicalState extends StackPane {
 		circle = new Circle(STATE_RADIUS);
 		circle.setFill(Color.WHITE);
 		circle.setStroke(Color.BLACK);
-
-		setBackground(Background.fill(Color.RED));
 
 		numero = nb;
 		numero_label = new Label(Integer.toString(nb));
@@ -328,6 +328,7 @@ class GraphicalState extends StackPane {
 }
 
 class GraphicalTransition extends Arrow {
+	protected Rectangle hitbox = new Rectangle();
 	protected Label chars = new Label();
 	protected GraphicalState from, to;
 	public GraphicalTransition() {
