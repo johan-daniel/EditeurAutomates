@@ -333,12 +333,14 @@ public class GraphicController extends ViewController {
 		drawArea.getChildren().remove(transition);
 		curAutomate.deleteTransition(transition.from.numero, transition.to.numero);
 		deselectTransition();
+		pullModel();
 	}
 
 	private void deleteState(GraphicalState state) {
 		drawArea.getChildren().remove(state);
 		curAutomate.deleteState(state.numero);
 		deselectState();
+		pullModel();
 	}
 }
 
