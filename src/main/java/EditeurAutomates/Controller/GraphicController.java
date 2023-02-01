@@ -195,11 +195,14 @@ public class GraphicController extends ViewController {
 
 		GraphicalTransition trans = new GraphicalTransition(from, to);
 
+		// Transition entre i et j, i!=j
 		if(from != to) {
 			double x_B = to.getTranslateX() + r;
 			double y_B = to.getTranslateY() + r;
-			double alpha = 2.0;
 
+			// Flèche de la transition
+
+			double alpha = 2.0;
 			double coefDirecteurDroite = (y_B - y_A) / (x_B - x_A);
 			if (!((x_A>x_B && y_A>y_B) || (x_A<x_B && y_A<y_B))) coefDirecteurDroite = -1.0 * coefDirecteurDroite;
 			double theta = Math.atan(coefDirecteurDroite);
@@ -219,11 +222,13 @@ public class GraphicController extends ViewController {
 			trans.setEndX(fx_B);
 			trans.setEndY(fy_B);
 
-			// Points de contrôle des courbes de Bézier (on a besoin de droites en l'occurence
+			// Points de contrôle des courbes de Bézier (on a besoin de droites en l'occurence)
 			trans.line.setControlX1(fx_A);
 			trans.line.setControlY1(fy_A);
 			trans.line.setControlX2(fx_B);
 			trans.line.setControlY2(fy_B);
+
+			// Hitbox de la transition
 
 			Point2D fromPt = new Point2D.Double(fx_A, fy_A  - GraphicalTransition.HITBOX_WIDTH/2);
 			Point2D toPt = new Point2D.Double(fx_B, fy_B);
@@ -234,12 +239,22 @@ public class GraphicController extends ViewController {
 			trans.hitbox.setX(fromPt.getX());
 			trans.hitbox.setY(fromPt.getY());
 
-			//if(y_A > y_B && x_A < x_B) theta += (3*Math.PI)/2;
+			// Rotation de la hitbox
+//			if(x_A < x_B && y_A < y_B) theta *= 1; // haut droite
+//			if(x_A < x_B && y_A > y_B) theta *= -1; // bas droite
+
+//			theta = Math.PI /2; // un quart de tour
+//			theta *= -1;
+			System.out.println("rad " + theta);
+			System.out.println("degrés " + Math.toDegrees(theta));
+
 			//if(y_A < y_B && x_A > x_B) theta -= Math.PI/2;
 			Rotate rotation = new Rotate(Math.toDegrees(theta), fromPt.getX(), fromPt.getY());
 			trans.hitbox.getTransforms().add(rotation);
 			trans.hitbox.setFill(Color.RED);
 		}
+
+		// Transition entre i et i
 		else {
 			double theta1 = 3 * Math.PI / 4;
 			double theta2 = Math.PI / 4;
@@ -259,6 +274,9 @@ public class GraphicController extends ViewController {
 			if(trans.from == trans.to && trans.from.isInitial)
 				trans.line.setTranslateX(GraphicalState.STATE_RADIUS * 0.75);
 		}
+
+		// Label des symboles de la transition
+
 		double x = (from.getTranslateX() + to.getTranslateX()) / 2;
 		double y = (from.getTranslateY() + to.getTranslateY()) / 2 ;
 		trans.chars.setTranslateX(x);
