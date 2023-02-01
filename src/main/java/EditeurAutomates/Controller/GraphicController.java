@@ -209,8 +209,8 @@ class GraphicalState extends StackPane {
 		numero.setLayoutX(-numero.getWidth()/2);
 		numero.setLayoutY(-numero.getHeight()/2);
 
-		setTranslateX(x - STATE_RADIUS/2);
-		setTranslateY(y - STATE_RADIUS/2);
+		setTranslateX(x - STATE_RADIUS);
+		setTranslateY(y - STATE_RADIUS);
 
 		getChildren().add(circle);
 		getChildren().add(numero);
