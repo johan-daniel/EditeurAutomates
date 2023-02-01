@@ -110,7 +110,6 @@ public class MainWindowController extends Controller {
 	}
 
 	// TODO Open file est buggé: si on charge un fichier dont la checksum est invalide, charge la vue xml vide
-	// TODO débugger: quand on enregistre puis qu'on ouvre le fichier, le dernier caractère disparaît wtf
 
 	private void loadFile(String filePath){
 		String content;
