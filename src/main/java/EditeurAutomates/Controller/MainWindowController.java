@@ -111,9 +111,6 @@ public class MainWindowController extends Controller {
 		tabChangeHandler(cur_tab, null);
 	}
 
-	// TODO Open file est buggé: si on charge un fichier dont la checksum est invalide, charge la vue xml vide
-	// TODO: known bug: si le number d'un State dépasse 99999999, lag et échec de l'affichage graphique
-
 	private void loadFile(String filePath){
 		String content;
 
