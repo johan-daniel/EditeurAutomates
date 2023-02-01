@@ -13,7 +13,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class GraphicController extends ViewController {
@@ -134,19 +133,25 @@ public class GraphicController extends ViewController {
 		deselectTools();
 		deselectState();
 		GraphicalTransition trans = new GraphicalTransition();
-		double fromX = from.getTranslateX() + GraphicalState.STATE_RADIUS;
-		double fromY = from.getTranslateY() + GraphicalState.STATE_RADIUS;
-		double toX = to.getTranslateX() + GraphicalState.STATE_RADIUS;
-		double toY = to.getTranslateY() + GraphicalState.STATE_RADIUS;
 
-		double coefDirecteurDroite = (toY - fromY) / (toX - fromX);
-		double theta = Math.atan(coefDirecteurDroite / GraphicalState.STATE_RADIUS);
+		double alpha = 1.5;
+		double r = GraphicalState.STATE_RADIUS;
+		double x_A = from.getTranslateX() + r;
+		double y_A = from.getTranslateY() + r;
+		double x_B = to.getTranslateX() + r;
+		double y_B = to.getTranslateY() + r;
 
-		double deltaX = coefDirecteurDroite * Math.cos(theta);
-		double deltaY = coefDirecteurDroite * Math.sin(theta);
+		double coefDirecteurDroite = (y_B - y_A) / (x_B - x_A);
+		double theta = Math.atan(coefDirecteurDroite);
+		double dx = alpha * r * Math.cos(theta);
+		double dy = alpha * r * Math.sin(theta);
 
-		trans.setStartX(fromX + deltaX); trans.setStartY(fromY + deltaY);
-		trans.setEndX(toX); trans.setEndY(toY);
+		trans.setStartX(x_A + dx);
+		trans.setStartY(y_A + dy);
+		trans.setEndX(x_B - dx);
+		trans.setEndY(y_B - dy);
+
+		curAutomate.createTransition(from.numero, to.numero, "a", false);
 		drawArea.getChildren().add(trans);
 	}
 
@@ -166,20 +171,20 @@ public class GraphicController extends ViewController {
 
 		selectedState = state;
 
-		Label label = new Label("Etat n°" + state.numero.getText());
+		Label label = new Label("Etat n°" + state.numero_label.getText());
 
 		CheckBox isInitial = new CheckBox("Etat initial");
 		isInitial.setSelected(state.isInitial);
 		isInitial.selectedProperty().addListener((obs, oldVal, newVal) -> {
 			state.setInitial(newVal);
-			curAutomate.getStatesList().get(Integer.parseInt(state.numero.getText())).isInitial = state.isInitial;
+			curAutomate.getStatesList().get(Integer.parseInt(state.numero_label.getText())).isInitial = state.isInitial;
 		});
 
 		CheckBox isFinal = new CheckBox("Etat final");
 		isFinal.setSelected(state.isFinal);
 		isFinal.selectedProperty().addListener((obs, oldVal, newVal) -> {
 			state.setFinal(newVal);
-			curAutomate.getStatesList().get(Integer.parseInt(state.numero.getText())).isFinal = state.isFinal;
+			curAutomate.getStatesList().get(Integer.parseInt(state.numero_label.getText())).isFinal = state.isFinal;
 		});
 
 		objAttr.getChildren().add(label);
@@ -194,26 +199,28 @@ enum Outils {
 }
 
 class GraphicalState extends StackPane {
-	public static final double STATE_RADIUS = 15;
-	public boolean isInitial, isFinal;
-	public Circle circle, smallCircle;
-	public Label numero;
-	public GraphicalState(double x, double y, int nb) {
+	protected static final double STATE_RADIUS = 15;
+	protected boolean isInitial, isFinal;
+	protected Circle circle, smallCircle;
+	protected int numero;
+	protected Label numero_label;
 
+	public GraphicalState(double x, double y, int nb) {
 		circle = new Circle(STATE_RADIUS);
 		circle.setFill(Color.WHITE);
 		circle.setStroke(Color.BLACK);
 
-		numero = new Label(Integer.toString(nb));
-		numero.setTextFill(Color.BLACK);
-		numero.setLayoutX(-numero.getWidth()/2);
-		numero.setLayoutY(-numero.getHeight()/2);
+		numero = nb;
+		numero_label = new Label(Integer.toString(nb));
+		numero_label.setTextFill(Color.BLACK);
+		numero_label.setLayoutX(-numero_label.getWidth()/2);
+		numero_label.setLayoutY(-numero_label.getHeight()/2);
 
 		setTranslateX(x - STATE_RADIUS);
 		setTranslateY(y - STATE_RADIUS);
 
 		getChildren().add(circle);
-		getChildren().add(numero);
+		getChildren().add(numero_label);
 
 		if(nb == 0) setInitial(true);
 	}
@@ -245,7 +252,7 @@ class GraphicalState extends StackPane {
 				"isInitial=" + isInitial +
 				", isFinal=" + isFinal +
 				", circle=" + circle +
-				", numero=" + numero +
+				", numero_label=" + numero_label +
 				'}';
 	}
 }

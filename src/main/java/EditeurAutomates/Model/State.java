@@ -18,7 +18,7 @@ public class State implements XMLConvertible {
 	@Override
 	public String toString() {
 		return "State{" +
-				"numero=" + numero +
+				"numero_label=" + numero +
 				", x=" + x +
 				", y=" + y +
 				", isInitial=" + isInitial +
