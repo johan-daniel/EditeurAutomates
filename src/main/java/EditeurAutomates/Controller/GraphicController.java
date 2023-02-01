@@ -290,6 +290,7 @@ public class GraphicController extends ViewController {
 	}
 	private void displayTransitionParams(GraphicalTransition transition) {
 		objAttr.getChildren().clear();
+		selectedTransition = transition;
 
 		transition.line.setStroke(Color.web("#c54607"));
 		transition.l1.setStroke(Color.web("#c54607"));
