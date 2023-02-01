@@ -380,6 +380,7 @@ class GraphicalState extends StackPane {
 			arrow.setTranslateX(-STATE_RADIUS*2);
 			getChildren().add(arrow);
 		}
+		else getChildren().remove(arrow);
 	}
 
 	public void setFinal(boolean fin) {
@@ -392,8 +393,8 @@ class GraphicalState extends StackPane {
 			smallCircle.setStroke(Color.BLACK);
 			getChildren().add(smallCircle);
 		}
-		else if(getChildren().size() >= 3){
-			getChildren().remove(getChildren().size() - 1);
+		else {
+			getChildren().remove(smallCircle);
 		}
 	}
 
