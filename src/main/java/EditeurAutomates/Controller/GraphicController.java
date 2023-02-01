@@ -13,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class GraphicController extends ViewController {
@@ -69,18 +70,22 @@ public class GraphicController extends ViewController {
 		});
 	}
 
-	// TODO Etat finaux : doubles ronds
 	// TODO Etats initiaux : petite flèche
 	// TODO Etat sélectionné : fond de couleur ou jsp quoi trouve un truc jsuis pas ta daronne là oh
 
 	// TODO ajouter transitions
 	public void updateModel(MouseEvent click) {
-		if(selectedTool == null) return;
+		if(selectedTool == null) {
+			if(selectedState != null && click.getTarget() == click.getSource()) deselectState();
+			return;
+		};
 		if (curAutomate==null) curAutomate = new Automate();
 
 		switch (selectedTool) {
 			case STATE -> addState(click.getX(), click.getY());
-			case TRANSITION -> System.out.println("Ajouter transition");
+			case TRANSITION -> {
+				if(selectedState == null) break;
+			}
 		}
 		fileIsUpToDate = false;
 		justLoaded = false;
@@ -102,7 +107,7 @@ public class GraphicController extends ViewController {
 				GraphicalState gs = new GraphicalState(state.x, state.y, state.numero);
 				gs.setInitial(state.isInitial);
 				gs.setFinal(state.isFinal);
-				gs.setOnMouseClicked(me -> displayStateParams(gs));
+				gs.setOnMouseClicked(me -> onStateClicked(gs));
 				drawArea.getChildren().add(gs);
 			}
 		}
@@ -113,8 +118,36 @@ public class GraphicController extends ViewController {
 		GraphicalState state = new GraphicalState(x, y, states.size());
 		drawArea.getChildren().add(state);
 		states.add(state);
-		state.setOnMouseClicked(me -> displayStateParams(state));
+		state.setOnMouseClicked(me -> onStateClicked(state));
 		curAutomate.createState((int) x, (int) y, state.isInitial, state.isFinal);
+	}
+
+	private void onStateClicked(GraphicalState state) {
+		if(selectedTool == null) displayStateParams(state);
+		else if(selectedTool == Outils.TRANSITION) {
+			if(selectedState == null) selectedState = state;
+			else addTransition(selectedState, state);
+		}
+	}
+
+	private void addTransition(GraphicalState from, GraphicalState to) {
+		deselectTools();
+		deselectState();
+		GraphicalTransition trans = new GraphicalTransition();
+		double fromX = from.getTranslateX() + GraphicalState.STATE_RADIUS;
+		double fromY = from.getTranslateY() + GraphicalState.STATE_RADIUS;
+		double toX = to.getTranslateX() + GraphicalState.STATE_RADIUS;
+		double toY = to.getTranslateY() + GraphicalState.STATE_RADIUS;
+
+		double coefDirecteurDroite = (toY - fromY) / (toX - fromX);
+		double theta = Math.atan(coefDirecteurDroite / GraphicalState.STATE_RADIUS);
+
+		double deltaX = coefDirecteurDroite * Math.cos(theta);
+		double deltaY = coefDirecteurDroite * Math.sin(theta);
+
+		trans.setStartX(fromX + deltaX); trans.setStartY(fromY + deltaY);
+		trans.setEndX(toX); trans.setEndY(toY);
+		drawArea.getChildren().add(trans);
 	}
 
 	private void deselectTools() {
@@ -161,13 +194,13 @@ enum Outils {
 }
 
 class GraphicalState extends StackPane {
-	private static final double STATE_WIDTH = 15;
+	public static final double STATE_RADIUS = 15;
 	public boolean isInitial, isFinal;
 	public Circle circle, smallCircle;
 	public Label numero;
 	public GraphicalState(double x, double y, int nb) {
 
-		circle = new Circle(STATE_WIDTH);
+		circle = new Circle(STATE_RADIUS);
 		circle.setFill(Color.WHITE);
 		circle.setStroke(Color.BLACK);
 
@@ -176,8 +209,8 @@ class GraphicalState extends StackPane {
 		numero.setLayoutX(-numero.getWidth()/2);
 		numero.setLayoutY(-numero.getHeight()/2);
 
-		setTranslateX(x - STATE_WIDTH/2);
-		setTranslateY(y - STATE_WIDTH/2);
+		setTranslateX(x - STATE_RADIUS/2);
+		setTranslateY(y - STATE_RADIUS/2);
 
 		getChildren().add(circle);
 		getChildren().add(numero);
@@ -187,18 +220,8 @@ class GraphicalState extends StackPane {
 
 	public void setInitial(boolean init) {
 		if(isInitial && init) return;
-
 		isInitial = init;
-		if(isInitial) {
-			smallCircle = new Circle(0.8 * STATE_WIDTH);
-			smallCircle.setFill(Color.TRANSPARENT);
-			if(isFinal) smallCircle.setStroke(Color.WHITE);
-			else smallCircle.setStroke(Color.BLACK);
-			getChildren().add(smallCircle);
-		}
-		else if(getChildren().size() == 3){
-			getChildren().remove(getChildren().size() - 1);
-		}
+
 	}
 
 	public void setFinal(boolean fin) {
@@ -206,16 +229,13 @@ class GraphicalState extends StackPane {
 
 		isFinal = fin;
 		if(isFinal) {
-			circle.setFill(Color.BLACK);
-			circle.setStroke(Color.WHITE);
-			numero.setTextFill(Color.WHITE);
-			if(isInitial) smallCircle.setStroke(Color.WHITE);
+			smallCircle = new Circle(0.8 * STATE_RADIUS);
+			smallCircle.setFill(Color.TRANSPARENT);
+			smallCircle.setStroke(Color.BLACK);
+			getChildren().add(smallCircle);
 		}
-		else {
-			circle.setFill(Color.WHITE);
-			circle.setStroke(Color.BLACK);
-			numero.setTextFill(Color.BLACK);
-			if(isInitial) smallCircle.setStroke(Color.BLACK);
+		else if(getChildren().size() == 3){
+			getChildren().remove(getChildren().size() - 1);
 		}
 	}
 
@@ -228,4 +248,9 @@ class GraphicalState extends StackPane {
 				", numero=" + numero +
 				'}';
 	}
+}
+
+class GraphicalTransition extends Arrow {
+	String chars;
+	public GraphicalTransition() { super(); }
 }
