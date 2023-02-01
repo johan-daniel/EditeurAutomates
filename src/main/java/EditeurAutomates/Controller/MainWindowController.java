@@ -19,6 +19,8 @@ import java.nio.file.*;
 import java.util.Objects;
 import java.util.Optional;
 
+import static java.lang.Thread.sleep;
+
 public class MainWindowController extends Controller {
 	// Constantes
 	private final boolean isMacos;
@@ -110,6 +112,7 @@ public class MainWindowController extends Controller {
 	}
 
 	// TODO Open file est buggé: si on charge un fichier dont la checksum est invalide, charge la vue xml vide
+	// TODO: known bug: si le number d'un State dépasse 99999999, lag et échec de l'affichage graphique
 
 	private void loadFile(String filePath){
 		String content;
@@ -167,7 +170,7 @@ public class MainWindowController extends Controller {
 			curFile = null;
 
 			// Delete temp file (after letting time at the reader to open it)
-			Thread.sleep(300);
+			sleep(300);
 			if (!myFile.delete()) System.err.println("Le fichier temporaire \"" + PATH + "\" n'a pas pu être supprimé");
 		}
 
@@ -314,12 +317,12 @@ public class MainWindowController extends Controller {
 		about_window.setContentText("""
 				Sur Windows et Linux, le raccourcis "Shortcut" est la touche "Ctrl", sur macOS il s'agit de la touche "Command".
 				
-				Shortcut+N\t\tNouveau fichier
-				Shortcut+S\t\tEnregistrer
+				Shortcut+N\t\t\tNouveau fichier
+				Shortcut+S\t\t\tEnregistrer
 				Shortcut+Shift+S\tEnregistrer sous
-				F1\t\t\t\tDocumentation XML
-				Ctrl+1\t\t\tVue graphique
-				Ctrl+2\t\t\tVue XML
+				F1\t\t\t\t\tDocumentation XML
+				Ctrl+1\t\t\t\tVue graphique
+				Ctrl+2\t\t\t\tVue XML
 				
 				""");
 		about_window.showAndWait();
