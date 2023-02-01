@@ -9,7 +9,8 @@ import javafx.scene.shape.Line;
 
 public class Arrow extends Group {
 
-	public final CubicCurve line;
+	protected final CubicCurve line;
+	protected final Line l1, l2;
 
 	public Arrow() {
 		this(new CubicCurve(), new Line(), new Line());
@@ -21,6 +22,8 @@ public class Arrow extends Group {
 	private Arrow(CubicCurve line, Line arrow1, Line arrow2) {
 		super(line, arrow1, arrow2);
 		this.line = line;
+		l1 = arrow1;
+		l2 = arrow2;
 
 		line.setStroke(Color.BLACK);
 		line.setFill(Color.TRANSPARENT);
