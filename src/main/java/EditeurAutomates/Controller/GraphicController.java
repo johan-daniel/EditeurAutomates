@@ -95,7 +95,7 @@ public class GraphicController extends ViewController {
 
 	// TODO Débugger: quand on ajoute des transitions, les couleurs des textes changent
 	// TODO Débugger: quand on switch de view on ne peut plus sélectionner une transition
-	// TODO débugger: pullModel transition n'affiche que le dernier caractère
+	// TODO Débugger: pas de hitbox et de label pour les autotransitions
 
 	public void updateModel(MouseEvent click) {
 		if(selectedTool == null) {
@@ -165,12 +165,16 @@ public class GraphicController extends ViewController {
 
 					assert transition != null;
 					if(character == null) transition.setAcceptsEmptyWord(true);
-					transition.addChar(character);
+					else transition.addChar(character);
+
+					GraphicalTransition finalTransition = transition;
 				}
 			}
 		}
-
-		transitions.forEach(transition -> drawArea.getChildren().add(transition));
+		for(GraphicalTransition transition : transitions) {
+			transition.setOnMouseClicked(me -> displayTransitionParams(transition));
+			drawArea.getChildren().add(transition);
+		}
 	}
 
 	private GraphicalTransition getTransition(int numero, int numero1) {
@@ -518,10 +522,6 @@ class GraphicalTransition extends Arrow {
 
 	public void addChar(Character c) {
 		chars.setText(chars.getText() + ' ' + c);
-	}
-
-	public void clearLabel() {
-		chars.setText("");
 	}
 
 	public void setAcceptsEmptyWord(boolean b) {
