@@ -288,7 +288,7 @@ public class MainWindowController extends Controller {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("AutomatesLab - Enregistrer sous...");
 		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Files (*.xml)", "*.xml"));
-		if (curFile!=null) fc.setInitialDirectory(new File(curFile.getAbsolutePath()));
+		if (curFile!=null) fc.setInitialDirectory(new File(curFile.getParent()));
 
 		File res = fc.showSaveDialog(null);
 
