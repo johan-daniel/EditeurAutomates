@@ -316,8 +316,6 @@ public class MainWindowController extends Controller {
 		boolean is_accepted = curAutomate.parseWord(word);
 		String response = (is_accepted) ? "\" EST RECONNU par l'automate" : "\" N'EST PAS RECONNU par l'automate";
 		showAlert("Tester mot", "Le mot \"" + word + response, "Résultat de la fonction: " + is_accepted);
-
-		System.out.println("\"" + input.getEditor().getText() + "\" is accepted: " + is_accepted); // DEBUG
 	}
 
 	public void setActiveGraphicalView() {
