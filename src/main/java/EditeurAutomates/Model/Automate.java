@@ -175,6 +175,28 @@ public class Automate implements XMLConvertible {
 		s.isFinal = !s.isFinal;
 	}
 
+	public boolean parseWord(String word){
+		// On prend le premier état intial que l'on trouve (si il y en a plusieurs)
+		for(State s : statesList) if (s != null && s.isInitial) return parseWord(word, s.numero);
+		return false;
+	}
+
+	private boolean parseWord(String mot, int cur_state){
+		State s = statesList.get(cur_state);
+		if (s==null) return false;
+
+		if (Objects.equals(mot, "")) return statesList.get(cur_state).isFinal; // On n'a plus de symboles à parser : si l'état est final on accepte, sinon on refuse
+
+		int cur_char_index = getIndex(mot.charAt(0));
+		if (cur_char_index == -1) return false; // L'état courant n'a pas de transition par le symbole
+
+		Destinations destinations = transitionMatrix.get(cur_state).get(cur_char_index);
+		boolean res = false;
+		for(int d : destinations) res = (res || parseWord(mot.substring(1), d)); // Un OR de tous les états disponibles
+
+		return res;
+	}
+
 	private int getNextFreeStateNumber(){
 		if (statesList.size()==0) return 0;
 		int i = 0;

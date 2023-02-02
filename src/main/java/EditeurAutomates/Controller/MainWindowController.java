@@ -298,6 +298,28 @@ public class MainWindowController extends Controller {
 		saveButton();
 	}
 
+	public void testWord(){
+		if (curAutomate==null) {
+			showError("Pas d'automate à tester", "Impossible de tester un mot", "Il n'y a pas d'automate actuellement chargé pour tester de mot.");
+			return;
+		}
+
+		TextInputDialog input = new TextInputDialog();
+		input.setTitle("Tester mot");
+		input.setHeaderText("Entrez le mot à tester par l'automate");
+		input.setContentText(null);
+		Optional<String> res = input.showAndWait();
+
+		if (res.isEmpty()) return; // Cancel by user
+
+		String word = input.getEditor().getText();
+		boolean is_accepted = curAutomate.parseWord(word);
+		String response = (is_accepted) ? "\" EST RECONNU par l'automate" : "\" N'EST PAS RECONNU par l'automate";
+		showAlert("Tester mot", "Le mot \"" + word + response, "Résultat de la fonction: " + is_accepted);
+
+		System.out.println("\"" + input.getEditor().getText() + "\" is accepted: " + is_accepted); // DEBUG
+	}
+
 	public void setActiveGraphicalView() {
 		viewsTabpane.getSelectionModel().select(graphicViewTab);
 	}

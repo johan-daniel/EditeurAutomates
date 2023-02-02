@@ -14,6 +14,9 @@
 			<MenuItem text="Enregistrer" onAction="#saveButton" accelerator="Shortcut+S"/>
 			<MenuItem text="Enregistrer sous..." onAction="#saveAsButton" accelerator="Shortcut+Shift+S"/>
 		</Menu>
+		<Menu text="Outils">
+			<MenuItem text="Tester mot" onAction="#testWord" accelerator="Shortcut+T"/>
+		</Menu>
 		<Menu text="Vue">
 			<MenuItem text="Affichage graphique" onAction="#setActiveGraphicalView" accelerator="Ctrl+1"/> <!-- Le raccourcis ne fonctionne pas sous macOS et Linux pour une raison obscure -->
 			<MenuItem text="Affichage XML" onAction="#setActiveXMLView" accelerator="Ctrl+2"/> <!-- Le raccourcis ne fonctionne pas sous Linux mais fonctionne sous macOS pour une raison encore plus obscure -->
