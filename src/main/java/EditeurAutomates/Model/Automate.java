@@ -187,13 +187,22 @@ public class Automate implements XMLConvertible {
 
 	private boolean parseWord(String mot, int cur_state, int nb_iter_remaning){
 		State s = statesList.get(cur_state);
-		if (s==null) return false;
-		if (Objects.equals(mot, "")) return statesList.get(cur_state).isFinal; // On n'a plus de symboles à parser : si l'état est final on accepte, sinon on refuse
-		if (nb_iter_remaning==0) return false; // On a atteint le nombre maximum d'itérations
-
-		int cur_char_index = getIndex(mot.charAt(0));
+		int cur_char_index = (mot.length()>0) ? getIndex(mot.charAt(0)) : -1;
 		int empty_word_index = getIndex(null);
-		if (cur_char_index == -1 && empty_word_index == -1) return false; // L'état courant n'a pas de transition par le symbole
+
+		// On a atteint le nombre maximum d'itérations
+		if (nb_iter_remaning==0) return false;
+
+		// Etat invalide (ne devrait pas arriver mais on sait jamais)
+		if (s==null) return false;
+
+		// L'état courant n'a pas de transition par le symbole ou par le mot vide (on est bloqués)
+		if (cur_char_index == -1 && empty_word_index == -1) return false;
+
+		// Si on a fini de parser et qu'on est sur un état final, on retourne true
+		if (Objects.equals(mot, "") && s.isFinal) return true;
+
+		// Sinon, on continue le parcours
 
 		boolean res = false;
 		Destinations destinations;
