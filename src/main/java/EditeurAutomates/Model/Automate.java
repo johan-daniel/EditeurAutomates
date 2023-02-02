@@ -176,23 +176,35 @@ public class Automate implements XMLConvertible {
 	}
 
 	public boolean parseWord(String word){
+		// Limite d'itérations (en réalité, limite de passage par une epsilon transition) = n²
+		int n = statesList.size();
+
 		// On prend le premier état intial que l'on trouve (si il y en a plusieurs)
-		for(State s : statesList) if (s != null && s.isInitial) return parseWord(word, s.numero);
+		for(State s : statesList) if (s != null && s.isInitial) return parseWord(word, s.numero, n*n);
+
 		return false;
 	}
 
-	private boolean parseWord(String mot, int cur_state){
+	private boolean parseWord(String mot, int cur_state, int nb_iter_remaning){
 		State s = statesList.get(cur_state);
 		if (s==null) return false;
-
 		if (Objects.equals(mot, "")) return statesList.get(cur_state).isFinal; // On n'a plus de symboles à parser : si l'état est final on accepte, sinon on refuse
+		if (nb_iter_remaning==0) return false; // On a atteint le nombre maximum d'itérations
 
 		int cur_char_index = getIndex(mot.charAt(0));
-		if (cur_char_index == -1) return false; // L'état courant n'a pas de transition par le symbole
+		int empty_word_index = getIndex(null);
+		if (cur_char_index == -1 && empty_word_index == -1) return false; // L'état courant n'a pas de transition par le symbole
 
-		Destinations destinations = transitionMatrix.get(cur_state).get(cur_char_index);
 		boolean res = false;
-		for(int d : destinations) res = (res || parseWord(mot.substring(1), d)); // Un OR de tous les états disponibles
+		Destinations destinations;
+		if (cur_char_index != -1){
+			destinations = transitionMatrix.get(cur_state).get(cur_char_index); // Transitions par le symbole courant
+			for(int d : destinations) res = (res || parseWord(mot.substring(1), d, nb_iter_remaning)); // Un OR pour tous les chemins possible par cur_char
+		}
+		if (empty_word_index != -1){
+			destinations = transitionMatrix.get(cur_state).get(empty_word_index); // Transitions par le mot vide
+			for(int d : destinations) res = (res || parseWord(mot, d, nb_iter_remaning-1)); // Un OR pour tous les chemins possible par le mot vide
+		}
 
 		return res;
 	}
@@ -337,6 +349,5 @@ public class Automate implements XMLConvertible {
 		res.append("\t</Automate>");
 		return res.toString();
 	}
-
 
 }
